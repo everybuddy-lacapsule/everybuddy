@@ -1,4 +1,7 @@
-import { Button, Text, View } from "react-native";
+//! import { Button, Text, View } from "react-native";
+//TODO/ removencjdsnfj
+//*jrqkrejnfrn
+// normal
 
 export default function MapScreen(props) {
   return (

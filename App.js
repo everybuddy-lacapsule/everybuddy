@@ -21,6 +21,13 @@ import {
   View,
   Input,
 } from "react-native";
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from '@react-navigation/drawer';
+
 LogBox.ignoreAllLogs();
 
 
@@ -33,8 +40,10 @@ import { Feather } from "@expo/vector-icons";
 // NAV FACTORISATIONS
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+const Drawer = createDrawerNavigator();
 
-// BOTTOM TABS
+
+// TABS
 const TabsNavigator = function () {
   return (
     <Tab.Navigator
@@ -90,7 +99,9 @@ const TabsNavigator = function () {
 
           headerRight: () => (
             <TouchableOpacity style={styles.right}>
-              <Ionicons name="options" size={24} color="white" />
+              <Ionicons name="options" size={24} color="white" 
+            //TODO onPress={() => props.navigation.toggleDrawer()}
+             />
             </TouchableOpacity>
           ),
         }}
@@ -101,8 +112,37 @@ const TabsNavigator = function () {
   );
 };
 
+//! DRAWERS
+// function CustomDrawerContent(props) {
+//   return (
+//     <DrawerContentScrollView {...props}>
+//       <DrawerItemList {...props} />
+//       <DrawerItem
+//         label="Close drawer"
+//         onPress={() => props.navigation.closeDrawer()}
+//       />
+//       <DrawerItem
+//         label="Toggle drawer"
+//         onPress={() => props.navigation.toggleDrawer()}
+//       />
+//     </DrawerContentScrollView>
+//   );
+// }
+
+// const MyDrawer = function () {
+//   return (
+//     <Drawer.Navigator
+//       useLegacyImplementation
+//       drawerContent={(props) => <CustomDrawerContent {...props} />}
+//     >
+//       <Drawer.Screen name="Buddies" component={BuddiesScreen} />
+//       <Drawer.Screen name="MyProfile" component={{MyProfileScreen}} />
+//     </Drawer.Navigator>
+//   );
+// }
+
 // APP ----------------------------------------------------------------
-export default function App() {
+export default function App(props) {
   return (
     // <Provider store={store}>
     <NavigationContainer>
@@ -113,7 +153,8 @@ export default function App() {
           headerTitleStyle: { alignSelf: "flex-start" },
           headerLeft: () => (
             <TouchableOpacity style={styles.left}>
-              <Feather name="menu" size={24} color="white" />
+              <Feather name="menu" size={24} color="white" onPress={() => props.navigation.toggleDrawer()}
+/>
             </TouchableOpacity>
           ),
           headerRight: () => (
@@ -134,17 +175,13 @@ export default function App() {
           }}
         />
         <Stack.Screen
-          name="Buddies"
-          component={BuddiesScreen}
-          options={{
-            title: "Buddies",
-          }}
-        ></Stack.Screen>
-        <Stack.Screen name="Results" component={ProfileScreen} />
-        <Stack.Screen name="Profile" component={MyProfileScreen} />
-        <Stack.Screen
           name="TabsNavigator"
           component={TabsNavigator}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="MyDrawer"
+          component={MyDrawer}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

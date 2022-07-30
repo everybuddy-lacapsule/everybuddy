@@ -19,24 +19,6 @@ export default function MapScreen(props) {
         title="Go to Login"
         onPress={() => props.navigation.navigate("Login")}
       ></Button>
-      <Button
-        title="Go to Buddies"
-        onPress={() => {
-          props.navigation.navigate("Buddies");
-        }}
-      />
-      <Button
-        title="Go to Results"
-        onPress={() => {
-          props.navigation.navigate("Results");
-        }}
-      />
-      <Button
-        title="Go to Profile"
-        onPress={() => {
-          props.navigation.navigate("Profile");
-        }}
-      />
       </View>
     </View>
   );
