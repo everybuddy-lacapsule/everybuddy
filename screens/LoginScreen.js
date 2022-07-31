@@ -1,7 +1,7 @@
-//! import { Button, Text, View } from "react-native";
+import { Button, Text, View } from "react-native";
 //TODO/ removencjdsnfj
 //*jrqkrejnfrn
-// normal
+//
 
 export default function MapScreen(props) {
   return (
@@ -17,7 +17,7 @@ export default function MapScreen(props) {
       <Button
         title="Go to Map"
         onPress={() => {
-          props.navigation.navigate("TabsNavigator", { screen: "Map" });
+          props.navigation.navigate("Home");
         }}
       />
     </View>
