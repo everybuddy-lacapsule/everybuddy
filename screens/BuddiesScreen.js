@@ -1,4 +1,4 @@
-import { Button, Text, View, StyleSheet,TouchableOpacity } from "react-native";
+import { Button, Text, View } from "react-native";
 
 export default function BuddiesScreen(props) {
 	return (
@@ -20,14 +20,3 @@ export default function BuddiesScreen(props) {
 		</View>
 	);
 }
-
-const styles = StyleSheet.create({
-	bottomNav: {
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    flexDirection: 'row',
-		backgroundColor: "#0E0E66",
-		height: 60,
-		color: "#FFFFFF",
-	},
-});

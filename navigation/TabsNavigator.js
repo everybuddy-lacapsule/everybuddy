@@ -1,9 +1,10 @@
 import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { TouchableOpacity, StyleSheet } from "react-native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
+
 import MapScreen from "../screens/MapScreen";
 import NewsScreen from "../screens/NewsScreen";
 import MessengerScreen from "../screens/MessengerScreen";
@@ -13,15 +14,31 @@ import MyProfileScreen from "../screens/MyProfileScreen";
 const Tab = createBottomTabNavigator();
 const hiddenTabs = ["Buddies", "MyProfile"];
 
-
-const TabsNavigator = function () {
+const TabsNavigator = function (props) {
 	return (
 		<Tab.Navigator
 			screenOptions={({ route }) => ({
-				
+				headerRight: () => (
+					<TouchableOpacity style={styles.right}>
+						<Ionicons name="options" size={24} color="white" />
+					</TouchableOpacity>
+				),
+				headerLeft: () => (
+					<TouchableOpacity style={styles.left}>
+						<Feather
+							name="menu"
+							size={24}
+							color="white"
+							onPress={() => props.navigation.toggleDrawer()}
+						/>
+					</TouchableOpacity>
+				),
+				headerStyle: {
+					backgroundColor: "#0E0E66",
+				},
+				headerTintColor: "#fff",
 				tabBarIcon: ({ color }) => {
 					let iconName;
-
 					if (route.name === "Home") {
 						iconName = "map-marked-alt";
 					} else if (route.name === "Discussions") {
@@ -36,7 +53,7 @@ const TabsNavigator = function () {
 						return <Ionicons name={iconName} size={24} color={color} />;
 					}
 				},
-				tabBarButton: hiddenTabs.includes(route.name) ? () => null : undefined
+				tabBarButton: hiddenTabs.includes(route.name) ? () => null : undefined,
 			})}
 			tabBarOptions={{
 				showLabel: false,
@@ -56,15 +73,11 @@ const TabsNavigator = function () {
 				inactiveTintColor: "#8686b3",
 			}}
 		>
-			<Tab.Screen
-				name="Home"
-				component={MapScreen}
-				options={{headerShown : false}}
-			/>
-			<Tab.Screen name="Discussions" component={MessengerScreen} options={{headerShown : false}}/>
-			<Tab.Screen name="Buddies" component={BuddiesScreen} options={{headerShown : false}} />
-			<Tab.Screen name="MyProfile" component={MyProfileScreen} options={{headerShown : false}} />
-			<Tab.Screen name="News" component={NewsScreen} options={{headerShown : false}}/>
+			<Tab.Screen name="Home" component={MapScreen} />
+			<Tab.Screen name="Discussions" component={MessengerScreen} />
+			<Tab.Screen name="Buddies" component={BuddiesScreen} />
+			<Tab.Screen name="MyProfile" component={MyProfileScreen} />
+			<Tab.Screen name="News" component={NewsScreen} />
 		</Tab.Navigator>
 	);
 };
@@ -75,10 +88,6 @@ const styles = StyleSheet.create({
 		backgroundColor: "#fff",
 		alignItems: "center",
 		justifyContent: "center",
-	},
-	headers: {
-		backgroundColor: "#0E0E66",
-		height: 90,
 	},
 	left: {
 		marginLeft: 20,

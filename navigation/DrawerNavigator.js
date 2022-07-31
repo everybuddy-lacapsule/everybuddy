@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, Button, TouchableOpacity } from "react-native";
+import { StyleSheet } from "react-native";
 import {
 	createDrawerNavigator,
 	DrawerContentScrollView,
@@ -8,6 +8,7 @@ import {
 } from "@react-navigation/drawer";
 import TabsNavigator from "./TabsNavigator";
 import { LinearGradient } from "expo-linear-gradient";
+import { Ionicons } from "@expo/vector-icons";
 
 const Drawer = createDrawerNavigator();
 
@@ -41,24 +42,49 @@ const DrawerNavigator = () => {
 	return (
 		<Drawer.Navigator
 			screenOptions={{
+				headerStyle: {
+					backgroundColor: "#0E0E66",
+				},
+				headerTintColor: "#fff",
 				overlayColor: "transparent",
 				drawerType: "front",
 				drawerStyle: {
 					width: " 80%",
 					marginTop: 84.5,
 					marginBottom: 48,
+					headerRight: () => (
+						<TouchableOpacity style={styles.right}>
+							<Ionicons name="options" size={24} color="white" />
+						</TouchableOpacity>
+					),
 				},
 			}}
+			
 			useLegacyImplementation
 			drawerContent={(props) => <CustomDrawerContent {...props} />}
 		>
 			<Drawer.Screen
 				name="Home"
 				component={TabsNavigator}
-				options={{ drawerItemStyle: { height: 0 } }}
+				options={{ drawerItemStyle: { height: 0 },headerShown : false }}
 			/>
 		</Drawer.Navigator>
 	);
 };
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: "#fff",
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	left: {
+		marginLeft: 20,
+	},
+	right: {
+		marginRight: 20,
+	},
+});
 
 export default DrawerNavigator;
