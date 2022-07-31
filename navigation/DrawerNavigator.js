@@ -59,14 +59,13 @@ const DrawerNavigator = () => {
 					),
 				},
 			}}
-			
 			useLegacyImplementation
 			drawerContent={(props) => <CustomDrawerContent {...props} />}
 		>
 			<Drawer.Screen
 				name="Home"
 				component={TabsNavigator}
-				options={{ drawerItemStyle: { height: 0 },headerShown : false }}
+				options={{ drawerItemStyle: { height: 0 }, headerShown: false }}
 			/>
 		</Drawer.Navigator>
 	);
