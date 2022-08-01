@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useRef} from "react";
 import { TouchableOpacity, StyleSheet,View, TextInput } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -15,13 +15,39 @@ import MyProfileScreen from "../screens/MyProfileScreen";
 const Tab = createBottomTabNavigator();
 const hiddenTabs = ["Buddies", "MyProfile"];
 
+
 const TabsNavigator = function (props) {
 	function HeaderSearchBar() {
+		const [location, setLocation] = useState('')
+		const [searchResults, setSearchResults] = useState([])
+		var searchRef = useRef(null);
+
+		async function loadSearchResults() {
+			var searchResults = await fetch(`http://172.16.190.131:3000/searchByLocation?location=${location}`);
+			  console.log(searchResults);
+			  searchResults = await searchResults.json();
+			  console.log(searchResults);
+			  setSearchResults(searchResults.users)
+			}
+			console.log(location)
+		
 		return (
 			<View style={styles.headerTitle}>
-				<TextInput style={styles.searchBar} placeholder="Type in city" />
-				<TouchableOpacity style={styles.searchButtonBackground}>
-				<FontAwesome style={styles.searchButton} name="search" size={16} color="white" />
+				<TextInput 
+				style={styles.searchBar} 
+				placeholder="Type in city"
+				onChangeText={(value) => setLocation(value)}  
+				/>
+				<TouchableOpacity 
+				style={styles.searchButtonBackground}
+				onPress={()=> loadSearchResults()}
+				>
+				<FontAwesome 
+				style={styles.searchButton}
+				name="search" 
+				size={16} 
+				color="white" 
+				/>
 				</TouchableOpacity>
 			</View>
 		);
