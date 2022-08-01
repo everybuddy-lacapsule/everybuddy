@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import DrawerNavigator from "./DrawerNavigator";
+import RightDrawerScreen from "./DrawerNavigator";
 import LoginScreen from "../screens/LoginScreen";
 
 const Stack = createStackNavigator();
@@ -28,7 +28,7 @@ const StackNavigator = function () {
 			/>
 			<Stack.Screen
 				name="Home"
-				component={DrawerNavigator}
+				component={RightDrawerScreen}
 				options={{ headerShown: false }}
 			/>
 		</Stack.Navigator>

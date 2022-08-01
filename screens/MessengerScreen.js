@@ -13,7 +13,7 @@ export default function MessengerScreen(props) {
       <Text>Hello Messenger</Text>
       <Button
         title="Go to Map"
-        onPress={() => props.navigation.navigate("Map")}
+        onPress={() => props.navigation.navigate("Home")}
       />
     </View>
   );

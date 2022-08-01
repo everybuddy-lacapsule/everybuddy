@@ -20,7 +20,14 @@ const TabsNavigator = function (props) {
 			screenOptions={({ route }) => ({
 				headerRight: () => (
 					<TouchableOpacity style={styles.right}>
-						<Ionicons name="options" size={24} color="white" />
+						<Ionicons
+							name="options"
+							size={25}
+							color="white"
+							onPress={() =>
+								props.navigation.getParent("RightDrawer").toggleDrawer()
+							}
+						/>
 					</TouchableOpacity>
 				),
 				headerLeft: () => (
