@@ -13,7 +13,7 @@ const windowHeight = Dimensions.get('window').height;
 		return(
 		<View>
 			<Text style={styles.listHeader}
-			>Y'a 1000000 resultats enculé <Text style={styles.link} onPress={()=>downDisplay}>show {resultLink}</Text></Text>		
+			>Y'a 1000000 resultats enculé <Text style={styles.link}>show {resultLink}</Text></Text>		
 		</View>)
 	}
 	return (

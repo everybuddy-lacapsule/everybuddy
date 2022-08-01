@@ -39,7 +39,7 @@ const TabsNavigator = function (props) {
 					>
 						<Ionicons
 							name="options"
-							size={26}
+							size={24}
 							color="white"
 						/>
 					</TouchableOpacity>
