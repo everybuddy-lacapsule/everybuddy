@@ -36,25 +36,32 @@ function LoginScreen(props) {
       >
         <Text>{errorMessage}</Text>
       </Overlay>
-      <View style={{ width: "70%" }}>
-        <Input
-          className="Login-input"
-          onChangeText={(email) => setSigninEmail(email)}
-          value={signinEmail}
-          placeholder="john@lacapsule.com"
-        />
+      <View style={styles.content}>
+        <Text style={styles.text}>
+            Consultez vos emails pour récupérer votre mot de passe
+          </Text>
+          <View style={styles.input}>
+          <Input
+            className="Login-input"
+            onChangeText={(email) => setSigninEmail(email)}
+            value={signinEmail}
+            placeholder="john@lacapsule.com"
+          />
+        </View>
+        <View style={styles.input}>
+          <Input
+            secureTextEntry={true}
+            className="Login-input"
+            onChangeText={(pwd) => setSigninPwd(pwd)}
+            value={signinPwd}
+            placeholder="Password"
+          />
+        </View>
       </View>
-      <View style={{ width: "70%" }}>
-        <Input
-          secureTextEntry={true}
-          className="Login-input"
-          onChangeText={(pwd) => setSigninPwd(pwd)}
-          value={signinPwd}
-          placeholder="Password"
-        />
-      </View>
-      <Button type="solid" onPress={() => handleSubmitSignIn()}>
-        <Icon name="chevron-right" color="red" />
+      <Button 
+        type="solid" 
+        color='#E74C3C' 
+        onPress={() => handleSubmitSignIn()}>
         Confirmer
       </Button>
     </View>
@@ -65,14 +72,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  image: {
+  content: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
+  input: {
+    width: "80%",
+  },
+
   text: {
-    justifyContent: "center",
-    alignItems: "center",
+    width: "80%",
+    fontSize: 20,
+    textAlign: "center",
+    marginBottom: 80,
   },
 });
 
