@@ -1,51 +1,62 @@
 import React, { useState } from "react";
 import { View, ImageBackground, StyleSheet, Text } from "react-native";
-import { Button, Icon, Input } from "@rneui/themed";
-import { connect } from "react-redux";
+import { Overlay, Button, Icon, Input } from "@rneui/themed";
 
 function LoginScreen(props) {
-  const [signinEmail, setSigninEmail] = useState('');
-  const [signinPwd, setSigninPwd] = useState('');
+  const [visible, setVisible] = useState(false);
+  const [signinEmail, setSigninEmail] = useState("");
+  const [signinPwd, setSigninPwd] = useState("");
+  const [errorMessage, setErrorMessage] = useState();
+
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
 
   var handleSubmitSignIn = async () => {
-    var res = await fetch('http://172.16.189.141:3000/users/sign-in', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      body: `email=${signinEmail}&pwd=${signinPwd}`
-    })
-    res = await res.json()
-    if (res.saved) {
-      props.navigation.navigate('Home')
+    var res = await fetch("http://172.16.189.141:3000/users/sign-in", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `email=${signinEmail}&pwd=${signinPwd}`,
+    });
+    res = await res.json();
+    if (res.isLogin) {
+      props.navigation.navigate("Home");
+    } else {
+      setErrorMessage(res.errorMessage);
+      toggleOverlay();
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
-        <View style={{ width: "70%" }}>
-          <Input
-            className="Login-input"
-            onChangeText={(user) => setSigninEmail(user)}
-            value={signinEmail}
-            placeholder="john@lacapsule.com"
-          />
-        </View>
-        <View style={{ width: "70%" }}>
-          <Input
-            secureTextEntry= {true}
-            className="Login-input"
-            onChangeText={(email) => setSigninPwd(email)}
-            value={signinPwd}
-            leftIcon={{ type: "font-awesome", name: "user", color: "#eb4d4b" }}
-            placeholder="Password"
-          />
-        </View>
-        <Button
-          type="solid"
-          onPress={()=> handleSubmitSignIn()}
-        >
-          <Icon name="chevron-right" color="red" />
-          Confirmer
-        </Button>
+      <Overlay
+        overlayStyle={{ width: 300 }}
+        isVisible={visible}
+        onBackdropPress={toggleOverlay}
+      >
+        <Text>{errorMessage}</Text>
+      </Overlay>
+      <View style={{ width: "70%" }}>
+        <Input
+          className="Login-input"
+          onChangeText={(email) => setSigninEmail(email)}
+          value={signinEmail}
+          placeholder="john@lacapsule.com"
+        />
+      </View>
+      <View style={{ width: "70%" }}>
+        <Input
+          secureTextEntry={true}
+          className="Login-input"
+          onChangeText={(pwd) => setSigninPwd(pwd)}
+          value={signinPwd}
+          placeholder="Password"
+        />
+      </View>
+      <Button type="solid" onPress={() => handleSubmitSignIn()}>
+        <Icon name="chevron-right" color="red" />
+        Confirmer
+      </Button>
     </View>
   );
 }
@@ -65,4 +76,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default (LoginScreen);
+export default LoginScreen;
