@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import RightDrawerScreen from "./DrawerNavigator";
+import DrawerNavigator from "./DrawerNavigator";
 import LoginScreen from "../screens/LoginScreen";
 
 const Stack = createStackNavigator();
@@ -13,7 +13,6 @@ const StackNavigator = function () {
 			screenOptions={{
 				headerStyle: styles.headers,
 				headerTintColor: "#fff",
-				headerTitleStyle: { alignSelf: "flex-start" },
 			}}
 		>
 			<Stack.Screen
@@ -23,12 +22,13 @@ const StackNavigator = function () {
 					title: "S'identifier",
 					headerStyle: styles.headers,
 					headerTintColor: "#fff",
-					headerBackVisible: false,
+					headerTitleAlign: 'center',
+					headerBackVisible: true,
 				}}
 			/>
 			<Stack.Screen
 				name="Home"
-				component={RightDrawerScreen}
+				component={DrawerNavigator}
 				options={{ headerShown: false }}
 			/>
 		</Stack.Navigator>
@@ -38,7 +38,7 @@ const StackNavigator = function () {
 const styles = StyleSheet.create({
 	headers: {
 		backgroundColor: "#0E0E66",
-		height: 85,
+		height: 55,
 	},
 });
 
