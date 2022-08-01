@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { View, ImageBackground, StyleSheet, Text } from "react-native";
-import { Overlay, Button, Icon, Input } from "@rneui/themed";
+import { View, StyleSheet, Text } from "react-native";
+import { Overlay, Button, Input } from "@rneui/themed";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function LoginScreen(props) {
   const [visible, setVisible] = useState(false);
@@ -20,6 +21,7 @@ function LoginScreen(props) {
     });
     res = await res.json();
     if (res.isLogin) {
+      AsyncStorage.setItem("userID", res.userID)
       props.navigation.navigate("Home");
     } else {
       setErrorMessage(res.errorMessage);
@@ -89,4 +91,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default (LoginScreen);
