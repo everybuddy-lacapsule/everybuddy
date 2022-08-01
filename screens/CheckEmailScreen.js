@@ -1,42 +1,40 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text } from "react-native";
-import { Overlay, Button, Input } from "@rneui/themed";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { View, ImageBackground, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { Overlay, Button, Icon, Input } from "@rneui/themed";
 
-function LoginScreen(props) {
+function CheckEmailScreen(props) {
   const [visible, setVisible] = useState(false);
   const [signinEmail, setSigninEmail] = useState("");
-  const [signinPwd, setSigninPwd] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const toggleOverlay = () => {
     setVisible(!visible);
   };
 
-  var handleSubmitSignIn = async () => {
-    var res = await fetch("http://172.16.189.141:3000/users/sign-in", {
+  var handleCheckEmail = async () => {
+    var res = await fetch("http://172.16.190.139:3000/users/check-email", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `email=${signinEmail}&pwd=${signinPwd}`,
+      body: `email=${signinEmail}`,
     });
     res = await res.json();
-    if (res.isLogin) {
-      AsyncStorage.setItem("userID", res.userID)
-      props.navigation.navigate("Home");
+    if (res.emailExists) {
+      props.navigation.navigate("LoginScreen");
     } else {
       setErrorMessage(res.errorMessage);
       toggleOverlay();
     }
   };
 
+  //---------------------------------------------------------------------------------
   return (
 
     <ImageBackground 
     source={require('../assets/logo.jpg')} 
     style={styles.container}
     >
-
     <View style={styles.container}>
+
       <Overlay
         overlayStyle={{ width: 300 }}
         isVisible={visible}
@@ -46,9 +44,9 @@ function LoginScreen(props) {
       </Overlay>
       <View style={styles.content}>
         <Text style={styles.text}>
-            Consultez vos emails pour récupérer votre mot de passe
-          </Text>
-          <View style={styles.input}>
+          Renseignez votre E-mail de connexion Ariane
+        </Text>
+        <View style={styles.input}>
           <Input
             className="Login-input"
             onChangeText={(email) => setSigninEmail(email)}
@@ -56,24 +54,18 @@ function LoginScreen(props) {
             placeholder="john@lacapsule.com"
           />
         </View>
-        <View style={styles.input}>
-          <Input
-            secureTextEntry={true}
-            className="Login-input"
-            onChangeText={(pwd) => setSigninPwd(pwd)}
-            value={signinPwd}
-            placeholder="Password"
-          />
-        </View>
       </View>
-      <Button 
-        type="solid" 
-        color='#E74C3C' 
-        onPress={() => handleSubmitSignIn()}>
-        Confirmer
-      </Button>
+<TouchableOpacity 
+style={styles.button} 
+
+onPress={() => handleCheckEmail()}>
+<Text style={styles.confirm}>Confirmer</Text>
+</TouchableOpacity>
+
+
     </View>
     </ImageBackground>
+
   );
 }
 
@@ -96,6 +88,19 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 80,
   },
+  button: {
+    width: '90%',
+    borderRadius: 10,
+    backgroundColor: "#E74C3C",
+    marginBottom:25,
+    padding: 15,
+    alignSelf: 'center',
+  },
+  confirm : {
+    fontSize: 20,
+    textAlign: "center",
+    color: '#FFFFFF',
+  }
 });
 
-export default (LoginScreen);
+export default CheckEmailScreen;
