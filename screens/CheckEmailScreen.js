@@ -73,10 +73,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  background: {
-    flex: 1,
-opacity: 0.5,
-  },
   content: {
     flex: 1,
     justifyContent: "center",
