@@ -99,7 +99,6 @@ const TabsNavigator = function (props) {
 				name="Home"
 				component={MapScreen}
 				options={{
-					title: "S'identifier",
 					headerStyle: styles.headers,
 					headerTintColor: "#fff",
 					headerTitleAlign: "center",
@@ -133,7 +132,7 @@ const styles = StyleSheet.create({
 	},
 	headers: {
 		backgroundColor: "#0E0E66",
-		height:56
+		height:56,
 	},
 	headerTitle:{
 		flexDirection:'row',
@@ -155,13 +154,13 @@ const styles = StyleSheet.create({
 		flex:1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		width:'100%',
+		width:64,
 	},
 	right: {
 		flex:1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		width:'100%',
+		width:64,
 	},
 });
 
