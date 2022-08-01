@@ -1,11 +1,28 @@
 import { Text, View, StyleSheet, Dimensions } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import BottomDrawer from "react-native-bottom-drawer-view";
+import { connect } from "react-redux";
 
-export default function MapScreen() {
+function MapScreen(props) {
   const [resultLink, setResultLink] = useState("list");
+
+  console.log(props.searchResults);
+
+  /*--------------------Automate apparence of list Redux-------------*/
+
+  const searchResultsList = props.searchResults.map((user, i) => {
+    return (
+      <Marker
+        key={`${i}-${user.address.lat}-${user.address.long}`}
+        coordinate={{ latitude: user.address.lat, longitude: user.address.long }}
+        title={`${user.name} ${user.firstName}`}
+        description={user.post.post}
+        pinColor="blue"
+      />
+    );
+  });
 
   //*BOTTOM DRAWER
   const windowHeight = Dimensions.get("window").height;
@@ -24,12 +41,21 @@ export default function MapScreen() {
       <MapView
         provider="google"
         style={styles.map}
+        initialRegion={{
+          latitude: 45.7537667,
+          longitude: 4.862333,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
         mapType="mutedStandard"
         userInterfaceStyle="dark"
         zoomEnabled={true}
         zoomTapEnabled={true}
         zoomControlEnabled={true}
-      />
+      >
+        {searchResultsList}
+      </MapView>
+
       <BottomDrawer
         containerHeight={windowHeight}
         offset={0}
@@ -75,3 +101,12 @@ var styles = StyleSheet.create({
     textAlignVertical: "center",
   },
 });
+
+/*--------------------Component => communicate with Redux and component presentation-------------*/
+const mapStateToProps = (state) => {
+  return {
+    searchResults: state.searchResults,
+  };
+};
+
+export default connect(mapStateToProps, null)(MapScreen);
