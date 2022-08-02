@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import { TouchableOpacity, StyleSheet, View, TextInput } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -11,31 +11,15 @@ import NewsScreen from "../screens/NewsScreen";
 import MessengerScreen from "../screens/MessengerScreen";
 import BuddiesScreen from "../screens/BuddiesScreen";
 import MyProfileScreen from "../screens/MyProfileScreen";
+import HeaderSearchBar from "../components/HeaderSearchBar";
+
+import { connect } from "react-redux";
 
 const Tab = createBottomTabNavigator();
 const hiddenTabs = ["Buddies", "MyProfile"];
 
 const TabsNavigator = function (props) {
-	function HeaderSearchBar() {
-		return (
-			<View style={styles.headerTitle}>
-				<TextInput
-					style={styles.searchBar}
-					placeholder="Type in city"
-					placeholderTextColor="rgba(255, 255, 255, 0.5)"
-				/>
-				<TouchableOpacity style={styles.searchButtonBackground}>
-					<FontAwesome
-						style={styles.searchButton}
-						name="search"
-						size={16}
-						color="white"
-					/>
-				</TouchableOpacity>
-			</View>
-		);
-	}
-
+	
 	return (
 		<Tab.Navigator
 			screenOptions={({ route }) => ({
