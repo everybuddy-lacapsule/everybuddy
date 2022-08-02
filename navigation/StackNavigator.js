@@ -30,36 +30,37 @@ const StackNavigator = function () {
         }}
       />
 
-      <Stack.Screen
-        name="CheckEmail"
-        component={CheckEmailScreen}
-        options={{
-          title: "S'identifier",
-          headerStyle: styles.headers,
-          headerTintColor: "#fff",
-          headerBackVisible: false,
-        }}
-      />
 
-      <Stack.Screen
-        name="LoginScreen"
-        component={LoginScreen}
-        options={{
-          title: "S'identifier",
-          headerStyle: styles.headers,
-          headerTintColor: "#fff",
-          headerBackVisible: false,
-        }}
-      />
+  <Stack.Screen
+    name="CheckEmail"
+    component={CheckEmailScreen}
+    options={{
+      title: "S'identifier",
+      headerStyle: styles.headers,
+      headerTintColor: "#fff",
+      headerBackVisible: false,
+    }}
+  />
+
+  <Stack.Screen
+    name="LoginScreen"
+    component={LoginScreen}
+    options={{
+      title: "S'identifier",
+      headerStyle: styles.headers,
+      headerTintColor: "#fff",
+      headerBackVisible: false,
+    }}
+  />
 
 
 
-      <Stack.Screen
-        name="Home"
-        component={RightDrawerScreen}
-        options={{ headerShown: false }}
-      />
-    </Stack.Navigator>
+  <Stack.Screen
+    name="Home"
+    component={RightDrawerScreen}
+    options={{ headerShown: false }}
+  />
+</Stack.Navigator>
   );
 };
 
