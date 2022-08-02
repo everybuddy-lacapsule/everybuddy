@@ -16,7 +16,7 @@ function HeaderSearchBar(props) {
   async function loadSearchResults() {
     if (location) {
       var searchResults = await fetch(
-        `http:/172.16.190.142:3000/searchByLocation?location=${location}`
+        `http:/172.16.189.145:3000/searchByLocation?location=${location}`
       );
 
       searchResults = await searchResults.json();

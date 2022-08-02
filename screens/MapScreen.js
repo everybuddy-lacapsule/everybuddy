@@ -16,7 +16,7 @@ function MapScreen(props) {
   // Cordinate of research
   const [searchLocation, setSearchLocation] = useState({});
   // Radius default, unit = meter
-  const [radius, setRadius] = useState(1000);
+  const [radius, setRadius] = useState(5000);
   const [buddyList, setBuddyList] = useState([])
 
   /*--------------------Change map focus when searched (reducer searchResult) -------------*/
@@ -138,8 +138,8 @@ return (
         region={{
           latitude: Number(searchLocation.lat),
           longitude: Number(searchLocation.long),
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          latitudeDelta: 0.1922,
+          longitudeDelta: 0.1421,
         }}
         mapType="mutedStandard"
         userInterfaceStyle="dark"
