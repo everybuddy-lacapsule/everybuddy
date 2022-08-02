@@ -24,7 +24,7 @@ function LoginScreen(props) {
     if (props.userEmail) {
       setSigninEmail(props.userEmail);
     }
-  }, []);
+  }, [props.userEmail]);
 
   var handleSubmitSignIn = async () => {
     var res = await fetch("http://172.16.189.145:3000/users/sign-in", {

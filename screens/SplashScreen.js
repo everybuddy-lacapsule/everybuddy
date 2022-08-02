@@ -3,7 +3,7 @@ import { View, ImageBackground, StyleSheet, Text, TouchableOpacity } from "react
 import { Overlay, Button, Icon, Input } from "@rneui/themed";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connect } from "react-redux";
-
+console.log(process.env)
 
 function SplashScreen(props) {
 
@@ -29,7 +29,7 @@ function SplashScreen(props) {
       </View>
       <TouchableOpacity style={styles.button} 
        onPress={() => handleStart()}>
-        <Text style={styles.confirm}>Confirmerrrr</Text>
+        <Text style={styles.confirm}>Confirmer</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} 
        onPress={() => {AsyncStorage.clear(), props.setUserID(null)}}>
