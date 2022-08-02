@@ -14,7 +14,7 @@ export default function BuddiesScreen(props) {
 			<Button
 				title="Go to Map"
 				onPress={() => {
-					props.navigation.navigate("TabsNavigator", { screen: "Map" });
+					props.navigation.navigate("HomeMap");
 				}}
 			/>
 		</View>
