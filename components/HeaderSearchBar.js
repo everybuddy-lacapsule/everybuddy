@@ -1,9 +1,5 @@
 import React, { useState, useRef } from "react";
 import { TouchableOpacity, StyleSheet, View, TextInput, Keyboard } from "react-native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 
 import { connect } from "react-redux";
