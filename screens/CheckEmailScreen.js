@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {connect} from 'react-redux';
 import { View, ImageBackground, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { Overlay, Button, Icon, Input } from "@rneui/themed";
 
@@ -11,8 +12,9 @@ function CheckEmailScreen(props) {
     setVisible(!visible);
   };
 
+  //------------------ FETCH récupère en BDD ------------------------------------
   var handleCheckEmail = async () => {
-    var res = await fetch("http://172.16.189.145:3000/users/check-email", {
+    var res = await fetch("http://172.16.190.138:3000/users/check-email", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `email=${signinEmail}`,
@@ -20,6 +22,7 @@ function CheckEmailScreen(props) {
     res = await res.json();
     if (res.emailExists) {
       props.navigation.navigate("LoginScreen");
+      props.getEmail(res.userEmail)
     } else {
       setErrorMessage(res.errorMessage);
       toggleOverlay();
@@ -63,6 +66,16 @@ function CheckEmailScreen(props) {
   );
 }
 
+//fonction pour le redux, récupère dans HandleCheckEmail le user email et l'envoie dans le reducer userEmail
+function mapDispatchToProps(dispatch) {
+  return {
+    getEmail : function (email) {
+      dispatch({ type: "saveEmail", userEmail: email });
+    },
+  };
+}
+
+// --------- Style CSS --------------------
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -97,4 +110,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CheckEmailScreen;
+export default connect(
+  null,
+  mapDispatchToProps
+)(CheckEmailScreen);

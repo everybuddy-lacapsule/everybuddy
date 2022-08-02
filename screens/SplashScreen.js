@@ -9,7 +9,7 @@ function SplashScreen(props) {
 
   useEffect(() => {
     AsyncStorage.getItem("userID", function (error, id) {
-      console.log(id)
+      console.log('id', id)
       props.setUserID(id);
     });
   }, []);
@@ -39,6 +39,20 @@ function SplashScreen(props) {
   );
 }
 
+//fonction pour le redux, relié au reducer userID
+function mapStateToProps(state) {
+  return { userID: state.userID };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setUserID: function (userID) {
+      dispatch({ type: "register", userID });
+    },
+  };
+}
+
+// --------- Style CSS --------------------
 const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -76,15 +90,5 @@ const styles = StyleSheet.create({
     }
   });
 
-  function mapStateToProps(state) {
-    return { userID: state.userID };
-  }
 
-  function mapDispatchToProps(dispatch) {
-    return {
-      setUserID: function (userID) {
-        dispatch({ type: "register", userID });
-      },
-    };
-  }
   export default connect(mapStateToProps, mapDispatchToProps)(SplashScreen);

@@ -1,11 +1,6 @@
-import React, { useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  ImageBackground,
-  TouchableOpacity,
-} from "react-native";
+import React, { useState, useEffect } from "react";
+import {connect} from 'react-redux';;
+import { View, StyleSheet, Text, ImageBackground, TouchableOpacity } from "react-native";
 import { Overlay, Button, Input } from "@rneui/themed";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -19,8 +14,15 @@ function LoginScreen(props) {
     setVisible(!visible);
   };
 
+useEffect(() => {
+  if (props.userEmail) {
+      setSigninEmail(props.userEmail)
+    };
+}, []);
+
+
   var handleSubmitSignIn = async () => {
-    var res = await fetch("http://172.16.189.145:3000/users/sign-in", {
+    var res = await fetch("http://172.16.190.138:3000/users/sign-in", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `email=${signinEmail}&pwd=${signinPwd}`,
@@ -88,6 +90,13 @@ function LoginScreen(props) {
   );
 }
 
+//Fonction qui récupère dans le reducers userEmail l'email et le renvoie dans la fonction
+function mapStateToProps(state) {
+  return { userEmail: state.userEmail };
+}
+
+
+// --------- Style CSS --------------------
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -126,4 +135,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default LoginScreen;
+export default connect(mapStateToProps, null)(LoginScreen);
