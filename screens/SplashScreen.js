@@ -18,7 +18,7 @@ function SplashScreen(props) {
     if (props.userID) {
     props.navigation.navigate("Home");
     } else {
-    props.navigation.navigate("CheckEmail");
+    props.navigation.navigate("LoginScreen");
     }
   };
 
