@@ -1,28 +1,54 @@
 import { Text, View, StyleSheet, Dimensions } from "react-native";
 import React, { useEffect, useState } from "react";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, Circle } from "react-native-maps";
 import * as Location from "expo-location";
 import BottomDrawer from "react-native-bottom-drawer-view";
 import { connect } from "react-redux";
 
 function MapScreen(props) {
   const [resultLink, setResultLink] = useState("list");
+  // Cordinate of research
+  const [searchLocation, setSearchLocation] = useState({});
+  // Radius default, unit = meter
+  const [radius, setRadius] = useState(1000);
 
-  console.log(props.searchResults);
+  /*--------------------Change map focus when searched (reducer searchResult) -------------*/
+  useEffect(() => {
+    setSearchLocation(props.searchResults.searchLocation);
+  }, [props.searchResults]);
 
-  /*--------------------Automate apparence of list Redux-------------*/
-
-  const searchResultsList = props.searchResults.map((user, i) => {
+  /*--------------------Automate appearance of list users (reducer searchResult)-------------*/
+  const searchResultsList = props.searchResults.searchResults.map((user, i) => {
     return (
       <Marker
         key={`${i}-${user.address.lat}-${user.address.long}`}
-        coordinate={{ latitude: user.address.lat, longitude: user.address.long }}
+        coordinate={{
+          latitude: user.address.lat,
+          longitude: user.address.long,
+        }}
         title={`${user.name} ${user.firstName}`}
-        description={user.post.post}
+        description={user.work.work}
         pinColor="blue"
       />
     );
   });
+
+  /*--------------------Generate circle radius when search is true (reducer searchResult)-------------*/
+  let circle;
+  if (props.searchResults.search) {
+    circle = (
+      <Circle
+        center={{
+          longitude: searchLocation.long,
+          latitude: searchLocation.lat,
+        }}
+        strokeWidth={1}
+        strokeColor={"#1a66ff"}
+        fillColor={"rgba(230,238,255,0.5)"}
+        radius={radius}
+      />
+    );
+  }
 
   //*BOTTOM DRAWER
   const windowHeight = Dimensions.get("window").height;
@@ -41,9 +67,9 @@ function MapScreen(props) {
       <MapView
         provider="google"
         style={styles.map}
-        initialRegion={{
-          latitude: 45.7537667,
-          longitude: 4.862333,
+        region={{
+          latitude: searchLocation.lat,
+          longitude: searchLocation.long,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
@@ -53,6 +79,7 @@ function MapScreen(props) {
         zoomTapEnabled={true}
         zoomControlEnabled={true}
       >
+        {circle}
         {searchResultsList}
       </MapView>
 

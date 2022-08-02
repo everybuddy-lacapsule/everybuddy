@@ -15,16 +15,25 @@ function HeaderSearchBar(props) {
 
   async function loadSearchResults() {
     var searchResults = await fetch(
-      `http://192.168.0.149:3000/searchByLocation?location=${location}`
+      `http:/172.16.188.131:3000/searchByLocation?location=${location}`
     );
     //console.log(searchResults);
     searchResults = await searchResults.json();
     //console.log(searchResults);
-    setSearchResults(searchResults.users);
-    props.search(searchResults.users);
-  }
-  //console.log(location)
+    setSearchResults(searchResults);
 
+    props.search({
+      search: searchResults.success,
+      searchResults: searchResults.users,
+      searchLocation: searchResults.location,
+    });
+  }
+  /*
+  console.log({
+      searchResults: searchResults.users,
+      searchLocation: searchResults.searchLocation,
+    })
+*/
   return (
     <View style={styles.headerTitle}>
       <TextInput
@@ -77,8 +86,8 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    search: function (listResults) {
-      dispatch({ type: "search", listResults: listResults });
+    search: function (results) {
+      dispatch({ type: "search", results: results });
     },
   };
 };
