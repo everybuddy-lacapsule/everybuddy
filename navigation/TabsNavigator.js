@@ -1,9 +1,10 @@
 import React from "react";
-import { TouchableOpacity, StyleSheet } from "react-native";
+import { TouchableOpacity, StyleSheet,View, TextInput } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 
 import MapScreen from "../screens/MapScreen";
 import NewsScreen from "../screens/NewsScreen";
@@ -15,28 +16,42 @@ const Tab = createBottomTabNavigator();
 const hiddenTabs = ["Buddies", "MyProfile"];
 
 const TabsNavigator = function (props) {
+	function HeaderSearchBar() {
+		return (
+			<View style={styles.headerTitle}>
+				<TextInput style={styles.searchBar} placeholder="Type in city" />
+				<TouchableOpacity style={styles.searchButtonBackground}>
+				<FontAwesome style={styles.searchButton} name="search" size={16} color="white" />
+				</TouchableOpacity>
+			</View>
+		);
+	}
+
 	return (
 		<Tab.Navigator
 			screenOptions={({ route }) => ({
 				headerRight: () => (
-					<TouchableOpacity style={styles.right}>
+					<TouchableOpacity 
+					style={styles.right}
+					onPress={() =>
+					props.navigation.getParent("RightDrawer").toggleDrawer()
+					}
+					>
 						<Ionicons
 							name="options"
-							size={25}
+							size={24}
 							color="white"
-							onPress={() =>
-								props.navigation.getParent("RightDrawer").toggleDrawer()
-							}
 						/>
 					</TouchableOpacity>
 				),
 				headerLeft: () => (
-					<TouchableOpacity style={styles.left}>
+					<TouchableOpacity style={styles.left}
+					onPress={() => props.navigation.toggleDrawer()}
+					>
 						<Feather
 							name="menu"
 							size={24}
 							color="white"
-							onPress={() => props.navigation.toggleDrawer()}
 						/>
 					</TouchableOpacity>
 				),
@@ -80,7 +95,16 @@ const TabsNavigator = function (props) {
 				inactiveTintColor: "#8686b3",
 			}}
 		>
-			<Tab.Screen name="Home" component={MapScreen} />
+			<Tab.Screen
+				name="Home"
+				component={MapScreen}
+				options={{
+					headerStyle: styles.headers,
+					headerTintColor: "#fff",
+					headerTitleAlign: "center",
+					headerTitle: (props) => <HeaderSearchBar {...props} />,
+				}}
+			/>
 			<Tab.Screen name="Discussions" component={MessengerScreen} />
 			<Tab.Screen name="Buddies" component={BuddiesScreen} />
 			<Tab.Screen name="MyProfile" component={MyProfileScreen} />
@@ -96,11 +120,47 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "center",
 	},
+	searchBar: {
+		height: "100%",
+		width: '100%',
+		backgroundColor: "rgba(255, 255, 255, 0.5)",
+		color: "white",
+		borderTopLeftRadius: 50,
+		borderBottomLeftRadius: 50,
+		paddingLeft: 15,
+		paddingRight: 15,
+	},
+	headers: {
+		backgroundColor: "#0E0E66",
+		height:56,
+	},
+	headerTitle:{
+		flexDirection:'row',
+		marginRight:30,
+
+	},
+	searchButton:{
+	alignSelf: 'center',
+	backgroundColor: '#E74C3C',	
+	padding:6,	
+	borderRadius:50,
+	},
+	searchButtonBackground:{
+		backgroundColor: "rgba(255, 255, 255, 0.5)",
+		borderTopRightRadius: 50,
+		borderBottomRightRadius: 50,
+	},
 	left: {
-		marginLeft: 20,
+		flex:1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		width:64,
 	},
 	right: {
-		marginRight: 20,
+		flex:1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		width:64,
 	},
 });
 

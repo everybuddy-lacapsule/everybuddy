@@ -14,7 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 const Drawer = createDrawerNavigator();
 
 //*LEFT DRAWER CONTENT
-function CustomDrawerContent(props) {
+function CustomLeftDrawerContent(props) {
 	const colors = ["#7C4DFF", "#F94A56", "#FF1744"];
 	const hollowWhite = "rgba(255, 255, 255, 0.5)";
 
@@ -52,7 +52,7 @@ function CustomDrawerContent(props) {
 	);
 }
 //* LEFT DRAWER
-const DrawerNavigator = () => {
+const LeftDrawerScreen = () => {
 	return (
 		<Drawer.Navigator
 			screenOptions={{
@@ -63,11 +63,13 @@ const DrawerNavigator = () => {
 				overlayColor: "transparent",
 				drawerType: "front",
 				drawerStyle: {
+					marginTop: 56,
+					marginBottom: 48.5,
 					width: " 80%",
 				},
 			}}
 			useLegacyImplementation
-			drawerContent={(props) => <CustomDrawerContent {...props} />}
+			drawerContent={(props) => <CustomLeftDrawerContent {...props} />}
 		>
 			<Drawer.Screen
 				name="Home"
@@ -104,7 +106,7 @@ function CustomRightDrawerContent(props) {
 		</LinearGradient>
 	);
 }
-
+//*RIGHT DRAWER Wrapping LEFT DRAWER
 const RightDrawer = createDrawerNavigator();
 const RightDrawerScreen = () => {
 	return (
@@ -120,6 +122,8 @@ const RightDrawerScreen = () => {
 				overlayColor: "transparent",
 				drawerType: "front",
 				drawerStyle: {
+					marginTop: 56,
+					marginBottom: 48.5,
 					width: " 80%",
 					headerRight: () => (
 						<TouchableOpacity
@@ -136,7 +140,7 @@ const RightDrawerScreen = () => {
 		>
 			<RightDrawer.Screen
 				name="HomeDrawer"
-				component={DrawerNavigator}
+				component={LeftDrawerScreen}
 				options={{ drawerItemStyle: { height: 0 }, headerShown: false }}
 			/>
 		</RightDrawer.Navigator>
