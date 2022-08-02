@@ -5,11 +5,11 @@ import StackNavigator from './navigation/StackNavigator'
 
 import { Provider } from "react-redux";
 import { createStore, combineReducers } from "redux";
-import user from "./reducers/user";
+import userID from "./reducers/userID";
 
 LogBox.ignoreAllLogs();
 
-const store = createStore(combineReducers({ user }));
+const store = createStore(combineReducers({ userID }));
 
 
 // APP ----------------------------------------------------------------

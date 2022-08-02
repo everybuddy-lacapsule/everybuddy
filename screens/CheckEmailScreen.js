@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { View, ImageBackground, StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+  View,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { Overlay, Button, Icon, Input } from "@rneui/themed";
 
 function CheckEmailScreen(props) {
@@ -12,7 +18,7 @@ function CheckEmailScreen(props) {
   };
 
   var handleCheckEmail = async () => {
-    var res = await fetch("http://172.16.190.139:3000/users/check-email", {
+    var res = await fetch("http://172.16.189.145:3000/users/check-email", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `email=${signinEmail}`,
@@ -26,46 +32,40 @@ function CheckEmailScreen(props) {
     }
   };
 
-  //---------------------------------------------------------------------------------
   return (
-
-    <ImageBackground 
-    source={require('../assets/logo.jpg')} 
-    style={styles.container}
+    <ImageBackground
+      source={require("../assets/logo.jpg")}
+      style={styles.container}
     >
-    <View style={styles.container}>
-
-      <Overlay
-        overlayStyle={{ width: 300 }}
-        isVisible={visible}
-        onBackdropPress={toggleOverlay}
-      >
-        <Text>{errorMessage}</Text>
-      </Overlay>
-      <View style={styles.content}>
-        <Text style={styles.text}>
-          Renseignez votre E-mail de connexion Ariane
-        </Text>
-        <View style={styles.input}>
-          <Input
-            className="Login-input"
-            onChangeText={(email) => setSigninEmail(email)}
-            value={signinEmail}
-            placeholder="john@lacapsule.com"
-          />
+      <View style={styles.container}>
+        <Overlay
+          overlayStyle={{ width: 300 }}
+          isVisible={visible}
+          onBackdropPress={toggleOverlay}
+        >
+          <Text>{errorMessage}</Text>
+        </Overlay>
+        <View style={styles.content}>
+          <Text style={styles.text}>
+            Renseignez votre E-mail de connexion Ariane
+          </Text>
+          <View style={styles.input}>
+            <Input
+              className="Login-input"
+              onChangeText={(email) => setSigninEmail(email)}
+              value={signinEmail}
+              placeholder="john@lacapsule.com"
+            />
+          </View>
         </View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => handleCheckEmail()}
+        >
+          <Text style={styles.confirm}>Confirmer</Text>
+        </TouchableOpacity>
       </View>
-<TouchableOpacity 
-style={styles.button} 
-
-onPress={() => handleCheckEmail()}>
-<Text style={styles.confirm}>Confirmer</Text>
-</TouchableOpacity>
-
-
-    </View>
     </ImageBackground>
-
   );
 }
 
@@ -89,18 +89,18 @@ const styles = StyleSheet.create({
     marginBottom: 80,
   },
   button: {
-    width: '90%',
+    width: "90%",
     borderRadius: 10,
     backgroundColor: "#E74C3C",
-    marginBottom:25,
+    marginBottom: 25,
     padding: 15,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
-  confirm : {
+  confirm: {
     fontSize: 20,
     textAlign: "center",
-    color: '#FFFFFF',
-  }
+    color: "#FFFFFF",
+  },
 });
 
 export default CheckEmailScreen;
