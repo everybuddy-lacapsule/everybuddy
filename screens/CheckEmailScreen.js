@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {connect} from 'react-redux';
 import { View, ImageBackground, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { Overlay, Button, Icon, Input } from "@rneui/themed";
 
@@ -11,6 +12,7 @@ function CheckEmailScreen(props) {
     setVisible(!visible);
   };
 
+  //------------------ FETCH récupère en BDD ------------------------------------
   var handleCheckEmail = async () => {
     var res = await fetch("http://172.16.190.139:3000/users/check-email", {
       method: "POST",
@@ -69,6 +71,15 @@ onPress={() => handleCheckEmail()}>
   );
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    getEmail : function (email) {
+      dispatch({ type: "saveEmail", userEmail: email });
+    },
+  };
+}
+
+// --------- Style CSS --------------------
 const styles = StyleSheet.create({
   container: {
     flex: 1,

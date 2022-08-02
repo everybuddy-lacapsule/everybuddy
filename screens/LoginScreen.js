@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {connect} from 'react-redux';;
 import { View, ImageBackground, StyleSheet, Text } from "react-native";
 import { Overlay, Button, Icon, Input } from "@rneui/themed";
 
