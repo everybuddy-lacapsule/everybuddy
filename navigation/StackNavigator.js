@@ -42,7 +42,7 @@ const StackNavigator = function () {
       />
 
       <Stack.Screen
-        name="Login"
+        name="LoginScreen"
         component={LoginScreen}
         options={{
           title: "S'identifier",

@@ -1,10 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { View, ImageBackground, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { Overlay, Button, Icon, Input } from "@rneui/themed";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { connect } from "react-redux";
+
 
 function SplashScreen(props) {
+
+  useEffect(() => {
+    AsyncStorage.getItem("userID", function (error, id) {
+      console.log(id)
+      props.setUserID(id);
+    });
+  }, []);
+
   var handleStart = async () => {
+    if (props.userID) {
+    props.navigation.navigate("Home");
+    } else {
     props.navigation.navigate("CheckEmail");
+    }
   };
 
   return (
@@ -12,10 +27,13 @@ function SplashScreen(props) {
         <View style={styles.content}>
       <Text>EVERBUTTY</Text>
       </View>
-
       <TouchableOpacity style={styles.button} 
        onPress={() => handleStart()}>
-        <Text style={styles.confirm}>Confirmer</Text>
+        <Text style={styles.confirm}>Confirmerrrr</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} 
+       onPress={() => {AsyncStorage.clear(), props.setUserID(null)}}>
+        <Text style={styles.confirm}>Clear local storage</Text>
       </TouchableOpacity>
     </View>
   );
@@ -58,4 +76,15 @@ const styles = StyleSheet.create({
     }
   });
 
-export default SplashScreen;
+  function mapStateToProps(state) {
+    return { userID: state.userID };
+  }
+
+  function mapDispatchToProps(dispatch) {
+    return {
+      setUserID: function (userID) {
+        dispatch({ type: "register", userID });
+      },
+    };
+  }
+  export default connect(mapStateToProps, mapDispatchToProps)(SplashScreen);

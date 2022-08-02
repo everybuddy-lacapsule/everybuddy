@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import {connect} from 'react-redux';;
-import { View, ImageBackground, StyleSheet, Text } from "react-native";
-import { Overlay, Button, Icon, Input } from "@rneui/themed";
+import { View, StyleSheet, Text, ImageBackground } from "react-native";
+import { Overlay, Button, Input } from "@rneui/themed";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function LoginScreen(props) {
   const [visible, setVisible] = useState(false);
@@ -14,13 +15,14 @@ function LoginScreen(props) {
   };
 
   var handleSubmitSignIn = async () => {
-    var res = await fetch("http://172.16.189.141:3000/users/sign-in", {
+    var res = await fetch("http://172.16.189.145:3000/users/sign-in", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `email=${signinEmail}&pwd=${signinPwd}`,
     });
     res = await res.json();
     if (res.isLogin) {
+      AsyncStorage.setItem("userID", res.userID)
       props.navigation.navigate("Home");
     } else {
       setErrorMessage(res.errorMessage);
@@ -97,4 +99,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default (LoginScreen);
