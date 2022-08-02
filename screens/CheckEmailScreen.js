@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  ImageBackground,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import { View, ImageBackground, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { Overlay, Button, Icon, Input } from "@rneui/themed";
 
 function CheckEmailScreen(props) {

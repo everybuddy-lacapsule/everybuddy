@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, ImageBackground } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  ImageBackground,
+  TouchableOpacity,
+} from "react-native";
 import { Overlay, Button, Input } from "@rneui/themed";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -21,7 +27,7 @@ function LoginScreen(props) {
     });
     res = await res.json();
     if (res.isLogin) {
-      AsyncStorage.setItem("userID", res.userID)
+      AsyncStorage.setItem("userID", res.userID);
       props.navigation.navigate("Home");
     } else {
       setErrorMessage(res.errorMessage);
@@ -30,49 +36,54 @@ function LoginScreen(props) {
   };
 
   return (
-
-    <ImageBackground 
-    source={require('../assets/logo.jpg')} 
-    style={styles.container}
+    <ImageBackground
+      source={require("../assets/logo.jpg")}
+      style={styles.container}
     >
-
-    <View style={styles.container}>
-      <Overlay
-        overlayStyle={{ width: 300 }}
-        isVisible={visible}
-        onBackdropPress={toggleOverlay}
-      >
-        <Text>{errorMessage}</Text>
-      </Overlay>
-      <View style={styles.content}>
-        <Text style={styles.text}>
+      <View style={styles.container}>
+        <Overlay
+          overlayStyle={{ width: 300 }}
+          isVisible={visible}
+          onBackdropPress={toggleOverlay}
+        >
+          <Text>{errorMessage}</Text>
+        </Overlay>
+        <View style={styles.content}>
+          <Text style={styles.text}>
             Consultez vos emails pour récupérer votre mot de passe
           </Text>
           <View style={styles.input}>
-          <Input
-            className="Login-input"
-            onChangeText={(email) => setSigninEmail(email)}
-            value={signinEmail}
-            placeholder="john@lacapsule.com"
-          />
+            <Input
+              className="Login-input"
+              onChangeText={(email) => setSigninEmail(email)}
+              value={signinEmail}
+              placeholder="john@lacapsule.com"
+            />
+          </View>
+          <View style={styles.input}>
+            <Input
+              secureTextEntry={true}
+              className="Login-input"
+              onChangeText={(pwd) => setSigninPwd(pwd)}
+              value={signinPwd}
+              placeholder="Password"
+            />
+          </View>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate("CheckEmail")}
+          >
+            <Text style={styles.resetmdp}>Première fois ici ?</Text>
+            <Text style={styles.resetmdp}>Oublie de mot de passe ?</Text>
+
+          </TouchableOpacity>
         </View>
-        <View style={styles.input}>
-          <Input
-            secureTextEntry={true}
-            className="Login-input"
-            onChangeText={(pwd) => setSigninPwd(pwd)}
-            value={signinPwd}
-            placeholder="Password"
-          />
-        </View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => handleSubmitSignIn()}
+        >
+          <Text style={styles.confirm}>Confirmer</Text>
+        </TouchableOpacity>
       </View>
-      <Button 
-        type="solid" 
-        color='#E74C3C' 
-        onPress={() => handleSubmitSignIn()}>
-        Confirmer
-      </Button>
-    </View>
     </ImageBackground>
   );
 }
@@ -89,13 +100,30 @@ const styles = StyleSheet.create({
   input: {
     width: "80%",
   },
-
   text: {
     width: "80%",
     fontSize: 20,
     textAlign: "center",
     marginBottom: 80,
   },
+  button: {
+    width: "90%",
+    borderRadius: 10,
+    backgroundColor: "#E74C3C",
+    marginBottom: 25,
+    padding: 15,
+    alignSelf: "center",
+  },
+  confirm: {
+    fontSize: 20,
+    textAlign: "center",
+    color: "#FFFFFF",
+  },
+  resetmdp: {
+    textDecorationLine: "underline",
+    fontSize: 15,
+    color: "#e74c3c"
+  }
 });
 
-export default (LoginScreen);
+export default LoginScreen;
