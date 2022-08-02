@@ -13,7 +13,7 @@ export default function MyProfileScreen(props) {
       <Text>Hello MyProfile</Text>
       <Button
         title="Go to Map"
-        onPress={() => props.navigation.navigate("Map")}
+        onPress={() => props.navigation.navigate("Home")}
       />
     </View>
     )

@@ -7,13 +7,13 @@ export default function NewsScreen(props) {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "black",
+        backgroundColor: "#E0FBFC",
       }}
     >
       <Text style={{color: 'white'}}>Hello News</Text>
       <Button
         title="Go to Map"
-        onPress={() => props.navigation.navigate("Map")}
+        onPress={() => props.navigation.navigate("Home")}
       />
     </View>
     );

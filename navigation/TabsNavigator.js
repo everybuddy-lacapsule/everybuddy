@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity, StyleSheet,View, TextInput } from "react-native";
+import { TouchableOpacity, StyleSheet, View, TextInput } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
@@ -19,9 +19,18 @@ const TabsNavigator = function (props) {
 	function HeaderSearchBar() {
 		return (
 			<View style={styles.headerTitle}>
-				<TextInput style={styles.searchBar} placeholder="Type in city" />
+				<TextInput
+					style={styles.searchBar}
+					placeholder="Type in city"
+					placeholderTextColor="rgba(255, 255, 255, 0.5)"
+				/>
 				<TouchableOpacity style={styles.searchButtonBackground}>
-				<FontAwesome style={styles.searchButton} name="search" size={16} color="white" />
+					<FontAwesome
+						style={styles.searchButton}
+						name="search"
+						size={16}
+						color="white"
+					/>
 				</TouchableOpacity>
 			</View>
 		);
@@ -31,28 +40,21 @@ const TabsNavigator = function (props) {
 		<Tab.Navigator
 			screenOptions={({ route }) => ({
 				headerRight: () => (
-					<TouchableOpacity 
-					style={styles.right}
-					onPress={() =>
-					props.navigation.getParent("RightDrawer").toggleDrawer()
-					}
+					<TouchableOpacity
+						style={styles.right}
+						onPress={() =>
+							props.navigation.getParent("RightDrawer").toggleDrawer()
+						}
 					>
-						<Ionicons
-							name="options"
-							size={24}
-							color="white"
-						/>
+						<Ionicons name="options" size={24} color="white" />
 					</TouchableOpacity>
 				),
 				headerLeft: () => (
-					<TouchableOpacity style={styles.left}
-					onPress={() => props.navigation.toggleDrawer()}
+					<TouchableOpacity
+						style={styles.left}
+						onPress={() => props.navigation.toggleDrawer()}
 					>
-						<Feather
-							name="menu"
-							size={24}
-							color="white"
-						/>
+						<Feather name="menu" size={24} color="white" />
 					</TouchableOpacity>
 				),
 				headerStyle: {
@@ -61,7 +63,7 @@ const TabsNavigator = function (props) {
 				headerTintColor: "#fff",
 				tabBarIcon: ({ color }) => {
 					let iconName;
-					if (route.name === "Home") {
+					if (route.name === "HomeMap") {
 						iconName = "map-marked-alt";
 					} else if (route.name === "Discussions") {
 						iconName = "chatbubbles";
@@ -92,11 +94,11 @@ const TabsNavigator = function (props) {
 				activeBackgroundColor: "#0E0E66",
 				inactiveBackgroundColor: "#0E0E66",
 				activeTintColor: "#FFFFFF",
-				inactiveTintColor: "#8686b3",
+				inactiveTintColor: "rgba(255, 255, 255, 0.5)",
 			}}
 		>
 			<Tab.Screen
-				name="Home"
+				name="HomeMap"
 				component={MapScreen}
 				options={{
 					headerStyle: styles.headers,
@@ -105,10 +107,49 @@ const TabsNavigator = function (props) {
 					headerTitle: (props) => <HeaderSearchBar {...props} />,
 				}}
 			/>
-			<Tab.Screen name="Discussions" component={MessengerScreen} />
-			<Tab.Screen name="Buddies" component={BuddiesScreen} />
-			<Tab.Screen name="MyProfile" component={MyProfileScreen} />
-			<Tab.Screen name="News" component={NewsScreen} />
+			<Tab.Screen
+				name="Discussions"
+				component={MessengerScreen}
+				options={{
+					headerRight: () => <View style={styles.right}></View>,
+				}}
+			/>
+			<Tab.Screen
+				name="Buddies"
+				component={BuddiesScreen}
+				options={{
+					headerRight: () => <View style={styles.right}></View>,
+				}}
+			/>
+			<Tab.Screen
+				name="MyProfile"
+				component={MyProfileScreen}
+				options={{
+					headerRight: () => (
+						<TouchableOpacity
+							style={styles.right}
+							//TODO enable profile modification mode
+							//TODO onPress={() => }
+						>
+							<Ionicons name="pencil" size={20} color="white" />
+						</TouchableOpacity>
+					),
+				}}
+			/>
+			<Tab.Screen
+				name="News"
+				component={NewsScreen}
+				options={{
+					headerRight: () => (
+						<TouchableOpacity
+							style={styles.right}
+							onPress={() => props.navigation.navigate("HomeMap")}
+						>
+							<Ionicons name="md-close" size={20} color="white" />
+						</TouchableOpacity>
+					),
+				}}
+			/>
 		</Tab.Navigator>
 	);
 };
@@ -122,7 +163,7 @@ const styles = StyleSheet.create({
 	},
 	searchBar: {
 		height: "100%",
-		width: '100%',
+		width: "100%",
 		backgroundColor: "rgba(255, 255, 255, 0.5)",
 		color: "white",
 		borderTopLeftRadius: 50,
@@ -132,35 +173,34 @@ const styles = StyleSheet.create({
 	},
 	headers: {
 		backgroundColor: "#0E0E66",
-		height:56,
+		height: 56,
 	},
-	headerTitle:{
-		flexDirection:'row',
-		marginRight:30,
-
+	headerTitle: {
+		flexDirection: "row",
+		marginRight: 30,
 	},
-	searchButton:{
-	alignSelf: 'center',
-	backgroundColor: '#E74C3C',	
-	padding:6,	
-	borderRadius:50,
+	searchButton: {
+		alignSelf: "baseline",
+		backgroundColor: "#E74C3C",
+		padding: 6,
+		borderRadius: 50,
 	},
-	searchButtonBackground:{
+	searchButtonBackground: {
 		backgroundColor: "rgba(255, 255, 255, 0.5)",
 		borderTopRightRadius: 50,
 		borderBottomRightRadius: 50,
 	},
 	left: {
-		flex:1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		width:64,
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+		width: 64,
 	},
 	right: {
-		flex:1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		width:64,
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+		width: 64,
 	},
 });
 
