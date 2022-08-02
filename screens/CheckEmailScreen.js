@@ -20,6 +20,7 @@ function CheckEmailScreen(props) {
       body: `email=${signinEmail}`,
     });
     res = await res.json();
+    console.log('res', res)
     if (res.emailExists) {
       props.navigation.navigate("LoginScreen");
       props.getEmail(res.userEmail)

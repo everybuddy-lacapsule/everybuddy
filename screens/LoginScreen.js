@@ -14,11 +14,6 @@ function LoginScreen(props) {
     setVisible(!visible);
   };
 
-useEffect(() => {
-  if (props.userEmail) {
-      setSigninEmail(props.userEmail)
-    };
-}, []);
 
 
   var handleSubmitSignIn = async () => {
@@ -57,13 +52,13 @@ useEffect(() => {
             Consultez vos emails pour récupérer votre mot de passe
           </Text>
           <View style={styles.input}>
-          <Input
-            className="Login-input"
-            onChangeText={(email) => setSigninEmail(email)}
-            value={signinEmail}
-            placeholder="john@lacapsule.com"
-          />
-        </View>
+      <Input
+        className="Login-input"
+        onChangeText={(email) => setSigninEmail(email)}
+        value={signinEmail}
+        placeholder="john@lacapsule.com"
+      />
+    </View>
         <View style={styles.input}>
           <Input
             secureTextEntry={true}
