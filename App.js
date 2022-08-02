@@ -6,10 +6,11 @@ import StackNavigator from './navigation/StackNavigator'
 import { Provider } from "react-redux";
 import { createStore, combineReducers } from "redux";
 import userID from "./reducers/userID";
+import userEmail from "./reducers/userEmail";
 
 LogBox.ignoreAllLogs();
 
-const store = createStore(combineReducers({ userID }));
+const store = createStore(combineReducers({ userID, userEmail }));
 
 
 // APP ----------------------------------------------------------------
