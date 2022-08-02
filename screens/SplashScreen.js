@@ -29,7 +29,7 @@ function SplashScreen(props) {
       </View>
       <TouchableOpacity style={styles.button} 
        onPress={() => handleStart()}>
-        <Text style={styles.confirm}>Confirmerrrr</Text>
+        <Text style={styles.confirm}>Confirmer</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} 
        onPress={() => {AsyncStorage.clear(), props.setUserID(null)}}>

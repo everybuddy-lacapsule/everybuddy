@@ -14,7 +14,11 @@ function LoginScreen(props) {
     setVisible(!visible);
   };
 
-
+  useEffect(() => {
+    if (props.userEmail) {
+      setSigninEmail(props.userEmail);
+    }
+  }, []);
 
   var handleSubmitSignIn = async () => {
     var res = await fetch("http://172.16.190.138:3000/users/sign-in", {
