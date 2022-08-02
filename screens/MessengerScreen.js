@@ -7,7 +7,7 @@ export default function MessengerScreen(props) {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "red",
+        backgroundColor: "#98C1D9",
       }}
     >
       <Text>Hello Messenger</Text>
