@@ -24,10 +24,10 @@ function LoginScreen(props) {
     if (props.userEmail) {
       setSigninEmail(props.userEmail);
     }
-  }, []);
+  }, [props.userEmail]);
 
   var handleSubmitSignIn = async () => {
-    var res = await fetch("http://172.16.189.145:3000/users/sign-in", {
+    var res = await fetch("http://172.16.190.138:3000/users/sign-in", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `email=${signinEmail}&pwd=${signinPwd}`,
