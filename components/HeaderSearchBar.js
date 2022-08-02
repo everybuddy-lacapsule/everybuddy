@@ -14,19 +14,20 @@ function HeaderSearchBar(props) {
   var searchRef = useRef(null);
 
   async function loadSearchResults() {
-    var searchResults = await fetch(
-      `http:/172.16.188.131:3000/searchByLocation?location=${location}`
-    );
-    //console.log(searchResults);
-    searchResults = await searchResults.json();
-    //console.log(searchResults);
-    setSearchResults(searchResults);
+    if (location) {
+      var searchResults = await fetch(
+        `http:/172.16.188.131:3000/searchByLocation?location=${location}`
+      );
 
-    props.search({
-      search: searchResults.success,
-      searchResults: searchResults.users,
-      searchLocation: searchResults.location,
-    });
+      searchResults = await searchResults.json();
+      setSearchResults(searchResults);
+
+      props.search({
+        search: searchResults.success,
+        searchResults: searchResults.users,
+        searchLocation: searchResults.location,
+      });
+    }
   }
   /*
   console.log({
