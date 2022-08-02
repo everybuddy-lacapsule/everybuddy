@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { TouchableOpacity, StyleSheet, View, TextInput } from "react-native";
+import { TouchableOpacity, StyleSheet, View, TextInput, Keyboard } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
@@ -16,17 +16,18 @@ function HeaderSearchBar(props) {
   async function loadSearchResults() {
     if (location) {
       var searchResults = await fetch(
-        `http:/172.16.188.131:3000/searchByLocation?location=${location}`
+        `http:/172.16.190.142:3000/searchByLocation?location=${location}`
       );
 
       searchResults = await searchResults.json();
       setSearchResults(searchResults);
 
       props.search({
-        search: searchResults.success,
+        search: true,
         searchResults: searchResults.users,
         searchLocation: searchResults.location,
       });
+      Keyboard.dismiss()
     }
   }
   /*
@@ -41,6 +42,7 @@ function HeaderSearchBar(props) {
         style={styles.searchBar}
         placeholder="Type in city"
         onChangeText={(value) => setLocation(value)}
+        onSubmitEditing={({ nativeEvent: { text, eventCount, target }}) =>loadSearchResults()}
       />
       <TouchableOpacity
         style={styles.searchButtonBackground}

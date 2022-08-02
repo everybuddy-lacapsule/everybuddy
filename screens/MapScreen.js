@@ -30,8 +30,8 @@ function MapScreen(props) {
       circle = (
         <Circle
           center={{
-            longitude: searchLocation.long,
-            latitude: searchLocation.lat,
+            longitude: Number(searchLocation.long),
+            latitude: Number(searchLocation.lat),
           }}
           strokeWidth={1}
           strokeColor={"#1a66ff"}
@@ -136,8 +136,8 @@ return (
         provider="google"
         style={styles.map}
         region={{
-          latitude: searchLocation.lat,
-          longitude: searchLocation.long,
+          latitude: Number(searchLocation.lat),
+          longitude: Number(searchLocation.long),
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
