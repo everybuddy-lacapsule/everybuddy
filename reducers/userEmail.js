@@ -1,7 +1,7 @@
 export default function(userEmail=null, action) {
     if(action.type === 'saveEmail') {
-        
-        return action.userEmail ;
+        var userEmailCopy = action.userEmail;
+        return userEmailCopy;
     } else {
         return userEmail;
     }

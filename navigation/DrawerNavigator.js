@@ -10,6 +10,9 @@ import { Divider } from "@rneui/themed";
 import TabsNavigator from "./TabsNavigator";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { connect } from "react-redux";
+
 
 const Drawer = createDrawerNavigator();
 
@@ -46,6 +49,12 @@ function CustomLeftDrawerContent(props) {
 				<DrawerItem
 					label="Paramètres"
 					inactiveTintColor={hollowWhite}
+				></DrawerItem>
+				<DrawerItem
+					label="Se déconnecter"
+					inactiveTintColor={hollowWhite}
+					activeTintColor="white"
+					onPress={() => {AsyncStorage.clear(), props.navigation.navigate("LoginScreen")}}
 				></DrawerItem>
 			</DrawerContentScrollView>
 		</LinearGradient>
