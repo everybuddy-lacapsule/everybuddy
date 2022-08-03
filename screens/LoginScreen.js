@@ -20,6 +20,7 @@ function LoginScreen(props) {
     setVisible(!visible);
   };
 
+  //------------------------------------Affichage auto de l'email rempli dans CheckEmailScreen--------------------------------
   useEffect(() => {
     if (props.userEmail) {
       setSigninEmail(props.userEmail);
@@ -34,7 +35,8 @@ function LoginScreen(props) {
     });
     res = await res.json();
     if (res.isLogin) {
-      AsyncStorage.setItem("userID", res.userID);
+      AsyncStorage.setItem("userID", res.userDatas._id);
+      props.setUserDatas(res.userDatas);
       props.navigation.navigate("Home");
     } else {
       setErrorMessage(res.errorMessage);
@@ -77,12 +79,12 @@ function LoginScreen(props) {
             />
           </View>
           <TouchableOpacity
-          onPress={() => props.navigation.navigate("CheckEmail")}
-        >
-          <Text style={styles.resetmdp}>
-            Première connexion ou mot de passe oublié ?
-          </Text>
-        </TouchableOpacity>
+            onPress={() => props.navigation.navigate("CheckEmail")}
+          >
+            <Text style={styles.resetmdp}>
+              Première connexion ou mot de passe oublié ?
+            </Text>
+          </TouchableOpacity>
         </View>
         <TouchableOpacity
           style={styles.button}
@@ -140,4 +142,12 @@ function mapStateToProps(state) {
   return { userEmail: state.userEmail };
 }
 
-export default connect(mapStateToProps, null)(LoginScreen);
+function mapDispatchToProps(dispatch) {
+  return {
+    setUserDatas: function (userDatas) {
+      dispatch({ type: "register", userDatas });
+    },
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

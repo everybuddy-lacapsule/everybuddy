@@ -1,6 +1,12 @@
 import React, { useState } from "react";
-import {connect} from 'react-redux';
-import { View, ImageBackground, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { connect } from "react-redux";
+import {
+  View,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { Overlay, Button, Icon, Input } from "@rneui/themed";
 
 function CheckEmailScreen(props) {
@@ -20,10 +26,10 @@ function CheckEmailScreen(props) {
       body: `email=${signinEmail}`,
     });
     res = await res.json();
-    console.log('res', res)
+    console.log("res", res);
     if (res.emailExists) {
       props.navigation.navigate("LoginScreen");
-      props.getEmail(res.userEmail)
+      props.getEmail(res.userEmail);
     } else {
       setErrorMessage(res.errorMessage);
       toggleOverlay();
@@ -70,7 +76,7 @@ function CheckEmailScreen(props) {
 //fonction pour le redux, récupère dans HandleCheckEmail le user email et l'envoie dans le reducer userEmail
 function mapDispatchToProps(dispatch) {
   return {
-    getEmail : function (email) {
+    getEmail: function (email) {
       dispatch({ type: "saveEmail", userEmail: email });
     },
   };
@@ -111,7 +117,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(CheckEmailScreen);
+export default connect(null, mapDispatchToProps)(CheckEmailScreen);
