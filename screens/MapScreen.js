@@ -13,16 +13,9 @@ function MapScreen(props) {
   
   
   const [resultLink, setResultLink] = useState("list");
-  // Cordinate of research
-  const [searchLocation, setSearchLocation] = useState({});
   // Radius default, unit = meter
   const [radius, setRadius] = useState(5000);
   const [buddyList, setBuddyList] = useState([])
-
-  /*--------------------Change map focus when searched (reducer searchResult) -------------*/
-  useEffect(() => {
-    setSearchLocation(props.searchResults.searchLocation);
-  }, [props.searchResults]);
 
     /*--------------------Generate circle radius when search is true (reducer searchResult)-------------*/
     let circle;
@@ -30,8 +23,8 @@ function MapScreen(props) {
       circle = (
         <Circle
           center={{
-            longitude: Number(searchLocation.long),
-            latitude: Number(searchLocation.lat),
+            longitude: Number(props.searchResults.searchLocation.long),
+            latitude: Number(props.searchResults.searchLocation.lat),
           }}
           strokeWidth={1}
           strokeColor={"#1a66ff"}
@@ -136,8 +129,8 @@ return (
         provider="google"
         style={styles.map}
         region={{
-          latitude: Number(searchLocation.lat),
-          longitude: Number(searchLocation.long),
+          latitude: Number(props.searchResults.searchLocation.lat),
+          longitude: Number(props.searchResults.searchLocation.long),
           latitudeDelta: 0.1922,
           longitudeDelta: 0.1421,
         }}
