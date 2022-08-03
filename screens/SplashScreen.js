@@ -3,7 +3,7 @@ import { View, ImageBackground, StyleSheet, Text, TouchableOpacity } from "react
 import { Overlay, Button, Icon, Input } from "@rneui/themed";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connect } from "react-redux";
-
+console.log(process.env)
 
 function SplashScreen(props) {
 

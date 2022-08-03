@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import { createStore, combineReducers } from "redux";
 import userID from "./reducers/userID";
 import userEmail from "./reducers/userEmail";
-import searchResults from "./reducers/searchResults";
+import {searchResults} from "./reducers/searchResults";
 
 LogBox.ignoreAllLogs();
 
