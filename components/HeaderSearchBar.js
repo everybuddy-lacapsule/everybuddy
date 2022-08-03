@@ -1,9 +1,5 @@
 import React, { useState, useRef } from "react";
 import { TouchableOpacity, StyleSheet, View, TextInput, Keyboard } from "react-native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 
 import { connect } from "react-redux";
@@ -16,7 +12,7 @@ function HeaderSearchBar(props) {
   async function loadSearchResults() {
     if (location) {
       var searchResults = await fetch(
-        `http:/172.16.190.142:3000/searchByLocation?location=${location}`
+        `http:/172.16.190.6:3000/searchByLocation?location=${location}`
       );
 
       searchResults = await searchResults.json();
