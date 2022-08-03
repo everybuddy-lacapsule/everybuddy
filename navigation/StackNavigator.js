@@ -10,65 +10,61 @@ import SplashScreen from "../screens/SplashScreen";
 const Stack = createStackNavigator();
 
 const StackNavigator = function () {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerStyle: styles.headers,
-        headerTintColor: "#fff",
-        headerTitleStyle: { alignSelf: "flex-start" },
-      }}
-    >
+	return (
+		<Stack.Navigator
+			screenOptions={{
+				headerStyle: styles.headers,
+				headerTintColor: "#fff",
+				headerTitleStyle: { alignSelf: "flex-start" },
+			}}
+		>
+			<Stack.Screen
+				name="SplashScreen"
+				component={SplashScreen}
+				options={{
+					title: "S'identifier",
+					headerStyle: styles.headers,
+					headerTintColor: "#fff",
+					headerBackVisible: false,
+				}}
+			/>
 
-<Stack.Screen
-        name="SplashScreen"
-        component={SplashScreen}
-        options={{
-          title: "S'identifier",
-          headerStyle: styles.headers,
-          headerTintColor: "#fff",
-          headerBackVisible: false,
-        }}
-      />
+			<Stack.Screen
+				name="CheckEmail"
+				component={CheckEmailScreen}
+				options={{
+					title: "S'identifier",
+					headerStyle: styles.headers,
+					headerTintColor: "#fff",
+					headerBackVisible: false,
+				}}
+			/>
 
+			<Stack.Screen
+				name="LoginScreen"
+				component={LoginScreen}
+				options={{
+					title: "S'identifier",
+					headerStyle: styles.headers,
+					headerTintColor: "#fff",
+					headerBackVisible: false,
+				}}
+			/>
 
-  <Stack.Screen
-    name="CheckEmail"
-    component={CheckEmailScreen}
-    options={{
-      title: "S'identifier",
-      headerStyle: styles.headers,
-      headerTintColor: "#fff",
-      headerBackVisible: false,
-    }}
-  />
-
-  <Stack.Screen
-    name="LoginScreen"
-    component={LoginScreen}
-    options={{
-      title: "S'identifier",
-      headerStyle: styles.headers,
-      headerTintColor: "#fff",
-      headerBackVisible: false,
-    }}
-  />
-
-
-
-  <Stack.Screen
-    name="Home"
-    component={RightDrawerScreen}
-    options={{ headerShown: false }}
-  />
-</Stack.Navigator>
-  );
+			<Stack.Screen
+				name="Home"
+				component={RightDrawerScreen}
+				options={{ headerShown: false }}
+			/>
+		</Stack.Navigator>
+	);
 };
 
 const styles = StyleSheet.create({
-  headers: {
-    backgroundColor: "#0E0E66",
-    height: 85,
-  },
+	headers: {
+		backgroundColor: "#0E0E66",
+		height: 85,
+	},
 });
 
 export default StackNavigator;
