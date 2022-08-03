@@ -68,7 +68,7 @@ function MapScreen(props) {
 return (
        <View>
          <Text style={styles.listHeader}>
-           {searchResults.length} resultats{""}
+           {searchResults.length} resultats {""}
            <Text style={styles.link}>show {resultLink}</Text>
          </Text>
          <ScrollView>
