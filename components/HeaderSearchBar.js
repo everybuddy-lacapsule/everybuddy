@@ -1,5 +1,11 @@
 import React, { useState, useRef } from "react";
-import { TouchableOpacity, StyleSheet, View, TextInput, Keyboard } from "react-native";
+import {
+  TouchableOpacity,
+  StyleSheet,
+  View,
+  TextInput,
+  Keyboard,
+} from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 
 import { connect } from "react-redux";
@@ -20,7 +26,7 @@ function HeaderSearchBar(props) {
         searchResults: searchResults.users,
         searchLocation: searchResults.location,
       });
-      Keyboard.dismiss()
+      Keyboard.dismiss();
     }
   }
 
@@ -31,7 +37,9 @@ function HeaderSearchBar(props) {
         placeholder="Type in city"
         placeholderTextColor="rgba(255, 255, 255, 0.5)"
         onChangeText={(value) => setLocation(value)}
-        onSubmitEditing={({ nativeEvent: { text, eventCount, target }}) =>loadSearchResults()}
+        onSubmitEditing={({ nativeEvent: { text, eventCount, target } }) =>
+          loadSearchResults()
+        }
       />
       <TouchableOpacity
         style={styles.searchButtonBackground}
