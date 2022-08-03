@@ -11,6 +11,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { TextInput } from "react-native-gesture-handler";
 import { FontAwesome } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
+import InsetShadow from "react-native-inset-shadow";
 
 /*----Web socket----*/
 import socketIOClient from "socket.io-client";
@@ -18,19 +19,21 @@ var socket = socketIOClient("http://172.16.188.131:3000");
 
 export default function ChatScreen() {
 	const colors = ["#7C4DFF", "#F94A56", "#FF1744"];
-  const colorz = ["#FF1744", "#F94A56", "#7C4DFF"];
+	const colorz = ["#FF1744", "#F94A56", "#7C4DFF"];
 
 	const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    socket.on("sendMessageToAll", (message) => {
-      console.log(message);
-    });
-    return () => socket.off("sendMessageToAll"); // for delete all: // socket.off()
-  }, [message]);
+	useEffect(() => {
+		socket.on("sendMessageToAll", (message) => {
+			console.log(message);
+		});
+		return () => socket.off("sendMessageToAll"); // for delete all: // socket.off()
+	}, [message]);
 
 	return (
-		<View style={{ flex: 1 }}>
+		<InsetShadow
+			style={{ flex: 1, elevation: 10, shadowRadius: 10, shadowOpacity: 1 }}
+		>
 			<ScrollView style={{ flex: 1 }}>
 				<View style={styles.leftMessage}>
 					<Image
@@ -47,9 +50,9 @@ export default function ChatScreen() {
 					>
 						<View style={{ alignSelf: "flex-start", width: "100%" }}>
 							<Text style={styles.messageSender}>Xavier MELINAND</Text>
-              <Text style={{ textAlign: "left", color: "white" }}>
-                Coucou Will !
-              </Text>
+							<Text style={{ textAlign: "left", color: "white" }}>
+								Coucou Will !
+							</Text>
 						</View>
 					</LinearGradient>
 				</View>
@@ -67,7 +70,7 @@ export default function ChatScreen() {
 						end={{ x: 1, y: 0.3 }}
 					>
 						<View style={{ alignSelf: "flex-start", width: "100%" }}>
-              <Text style={styles.rightMessageSender}>William WERLÉ</Text>
+							<Text style={styles.rightMessageSender}>William WERLÉ</Text>
 							<Text style={{ textAlign: "right", color: "white" }}>
 								Coucou Qui ! Comment ça va ? Moi la pêche, on bosse bien c'est
 								cool, mais le front ca commence à me gaver par contre !!
@@ -76,9 +79,7 @@ export default function ChatScreen() {
 					</LinearGradient>
 				</View>
 			</ScrollView>
-      <KeyboardAvoidingView
-        style={styles.textInput}
-      >
+			<KeyboardAvoidingView style={styles.textInput}>
 				<View style={{ flexDirection: "row", alignItems: "center" }}>
 					<TextInput
 						style={styles.searchBar}
@@ -88,23 +89,23 @@ export default function ChatScreen() {
 							setMessage(value);
 							console.log(value);
 						}}
-            value={{ message }}
+						value={{ message }}
 
-            //onSubmitEditing={({ nativeEvent: { text, eventCount, target } }) =>
-            //loadSearchResults()
-            //}
+						//onSubmitEditing={({ nativeEvent: { text, eventCount, target } }) =>
+						//loadSearchResults()
+						//}
 					/>
 					<TouchableOpacity
 						style={styles.searchButtonBackground}
-            onPress={() => socket.emit("sendMessage", message)}
+						onPress={() => socket.emit("sendMessage", message)}
 					>
-            <View style={styles.searchButton}>
-              <FontAwesome name="send" size={16} color="white" />
-            </View>
+						<View style={styles.searchButton}>
+							<FontAwesome name="send" size={16} color="white" />
+						</View>
 					</TouchableOpacity>
 				</View>
 			</KeyboardAvoidingView>
-		</View>
+		</InsetShadow>
 	);
 }
 
@@ -114,7 +115,7 @@ var styles = StyleSheet.create({
 		borderTopLeftRadius: 50,
 		borderBottomLeftRadius: 50,
 		width: "80%",
-    height: "95%",
+		height: "100%",
 		paddingLeft: 15,
 		paddingRight: 15,
 	},
@@ -133,21 +134,29 @@ var styles = StyleSheet.create({
 		alignSelf: "flex-end",
 		width: "75%",
 		marginLeft: "3%",
+		marginBottom: "1%",
 		flexGrow: 1,
 		padding: 15,
 		borderTopLeftRadius: 10,
 		borderTopRightRadius: 15,
 		borderBottomRightRadius: 15,
+		elevation: 5,
+		shadowRadius: 10,
+		shadowOpacity: 1,
 	},
 	rightMessageBox: {
 		alignSelf: "flex-end",
 		width: "75%",
 		marginRight: "3%",
+		marginBottom: "3%",
 		flexGrow: 1,
 		padding: 15,
 		borderTopLeftRadius: 10,
 		borderTopRightRadius: 15,
 		borderBottomLeftRadius: 15,
+		elevation: 5,
+		shadowRadius: 15,
+		shadowOpacity: 1,
 	},
 	textInput: {
 		backgroundColor: "#8686b3",
@@ -162,6 +171,7 @@ var styles = StyleSheet.create({
 		height: 34,
 		paddingTop: 10,
 		marginLeft: "3%",
+		marginBottom: "1%",
 	},
 	rightImg: {
 		alignSelf: "flex-end",
@@ -170,6 +180,7 @@ var styles = StyleSheet.create({
 		height: 34,
 		paddingTop: 10,
 		marginRight: "3%",
+		marginBottom: "3%",
 	},
 	leftMessage: {
 		flexDirection: "row",
@@ -184,16 +195,16 @@ var styles = StyleSheet.create({
 		marginTop: "5%",
 		alignItems: "center",
 	},
-  messageSender: {
-									textAlign: "left",
-									color: "rgba(255, 255, 255, 0.5)",
-									fontWeight: "bold",
-									fontSize: 10,
-								},
-  rightMessageSender: {
-									textAlign: "right",
-									color: "rgba(255, 255, 255, 0.5)",
-									fontWeight: "bold",
-									fontSize: 10,
-  },
+	messageSender: {
+		textAlign: "left",
+		color: "rgba(255, 255, 255, 0.5)",
+		fontWeight: "bold",
+		fontSize: 10,
+	},
+	rightMessageSender: {
+		textAlign: "right",
+		color: "rgba(255, 255, 255, 0.5)",
+		fontWeight: "bold",
+		fontSize: 10,
+	},
 });

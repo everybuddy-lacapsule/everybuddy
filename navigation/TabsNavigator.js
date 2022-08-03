@@ -4,7 +4,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
 
 import MapScreen from "../screens/MapScreen";
 import NewsScreen from "../screens/NewsScreen";
@@ -67,7 +66,7 @@ const TabsNavigator = function (props) {
 			tabBarOptions={{
 				showLabel: false,
 				style: {
-					height: 40,
+					height: 55,
 					position: "absolute",
 					bottom: 0,
 					left: 0,

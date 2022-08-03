@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { DrawerToggleButton } from "@react-navigation/drawer";
 
 function MapScreen(props) {
-  const [resultLink, setResultLink] = useState("list");
+  const [resultLink, setResultLink] = useState("liste");
   // Radius default, unit = meter
   const [radius, setRadius] = useState(5000);
   const [buddyList, setBuddyList] = useState([]);
@@ -64,8 +64,8 @@ function MapScreen(props) {
     return (
       <View>
         <Text style={styles.listHeader}>
-          {searchResults.length} resultats{""}
-          <Text style={styles.link}>show {resultLink}</Text>
+          {searchResults.length} resultats {""}
+          <Text style={styles.link}>voir {resultLink}</Text>
         </Text>
         <ScrollView>
           {searchResults.map((r, i) => {
