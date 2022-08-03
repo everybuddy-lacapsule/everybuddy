@@ -41,7 +41,7 @@ function MapScreen(props) {
       );
     }
 
-  /*--------------------Automate apparence of list Redux-------------*/
+  /*--------------------Automate appearance of list Redux-------------*/
   const searchResultsList = props.searchResults.searchResults.map((user, i) => {
     return (
       <Marker
@@ -66,8 +66,6 @@ function MapScreen(props) {
       setBuddyList(buddyList.filter((o)=> o._id !== buddy._id))
     }
   };
-
-  //useEffect(() => {},[buddyList]);
 
    //*BOTTOM DRAWER
    const windowHeight = Dimensions.get("window").height;

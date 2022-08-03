@@ -6,19 +6,16 @@ import { connect } from "react-redux";
 
 function HeaderSearchBar(props) {
   const [location, setLocation] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  var searchRef = useRef(null);
 
   async function loadSearchResults() {
     if (location) {
       var searchResults = await fetch(
-        `http:/172.16.190.6:3000/searchByLocation?location=${location}`
+        `http:/172.16.190.142:3000/searchByLocation?location=${location}`
       );
-
       searchResults = await searchResults.json();
-      setSearchResults(searchResults);
 
       props.search({
+        // search :true is used to display the radius circle after first search, even with no results
         search: true,
         searchResults: searchResults.users,
         searchLocation: searchResults.location,
@@ -26,12 +23,7 @@ function HeaderSearchBar(props) {
       Keyboard.dismiss()
     }
   }
-  /*
-  console.log({
-      searchResults: searchResults.users,
-      searchLocation: searchResults.searchLocation,
-    })
-*/
+
   return (
     <View style={styles.headerTitle}>
       <TextInput
