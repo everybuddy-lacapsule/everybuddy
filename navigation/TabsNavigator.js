@@ -16,7 +16,7 @@ import HeaderSearchBar from "../components/HeaderSearchBar";
 import { connect } from "react-redux";
 
 const Tab = createBottomTabNavigator();
-const hiddenTabs = ["Buddies", "MyProfile"];
+const hiddenTabs = ["Buddies", "MyProfile", "Chat"];
 
 const TabsNavigator = function (props) {
 	
@@ -100,6 +100,13 @@ const TabsNavigator = function (props) {
 			/>
 			<Tab.Screen
 				name="Buddies"
+				component={BuddiesScreen}
+				options={{
+					headerRight: () => <View style={styles.right}></View>,
+				}}
+			/>
+			<Tab.Screen
+				name="Chat"
 				component={BuddiesScreen}
 				options={{
 					headerRight: () => <View style={styles.right}></View>,
