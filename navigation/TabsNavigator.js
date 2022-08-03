@@ -12,6 +12,7 @@ import MessengerScreen from "../screens/MessengerScreen";
 import BuddiesScreen from "../screens/BuddiesScreen";
 import MyProfileScreen from "../screens/MyProfileScreen";
 import HeaderSearchBar from "../components/HeaderSearchBar";
+import ChatScreen from "../screens/ChatScreen";
 
 import { connect } from "react-redux";
 
@@ -107,7 +108,7 @@ const TabsNavigator = function (props) {
 			/>
 			<Tab.Screen
 				name="Chat"
-				component={BuddiesScreen}
+				component={ChatScreen}
 				options={{
 					headerRight: () => <View style={styles.right}></View>,
 				}}
