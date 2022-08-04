@@ -11,14 +11,19 @@ import { Divider, Switch, Badge, Slider, Icon, Button } from "@rneui/themed";
 import { LinearGradient } from "expo-linear-gradient";
 import { ListItem } from "@rneui/base";
 import { ListItemAccordion } from "@rneui/base/dist/ListItem/ListItem.Accordion";
+import { FontAwesome } from "@expo/vector-icons";
+
+import { connect } from "react-redux";
+import { IPLOCAL } from "@env";
 
 //* RIGHT DRAWER CONTENT
-export default function CustomRightDrawerContent(props) {
+function CustomRightDrawerContent(props) {
   let colors = ["#FF1744", "#F94A56", "#7C4DFF"];
 
   // Etats du slider radius
   const [km, setKm] = useState(0);
-  const [batch, setBatch] = useState(1);
+  const [batch, setBatch] = useState("");
+  const [location, setLocation] = useState("");
 
   // Etats pour dérouler et afficher les différentes catégories
   const [expandedCapsule, setExpandedCapsule] = useState(false);
@@ -29,6 +34,8 @@ export default function CustomRightDrawerContent(props) {
   const [toggledStatus, setToggledStatus] = useState();
   const [toggledTags, setToggledTags] = useState();
   const [toggledJobs, setToggledJobs] = useState();
+
+  // Etats à renvoyer au back pour Recherche avancée
 
   // Etat avec toutes les datas
   const [filters, setFilters] = useState({
@@ -48,6 +55,9 @@ export default function CustomRightDrawerContent(props) {
     filters.radius = km;
   }, [km]);
   useEffect(() => {
+    filters.location = location;
+  }, [location]);
+  useEffect(() => {
     filters.nbBatch = batch;
   }, [batch]);
 
@@ -65,7 +75,22 @@ export default function CustomRightDrawerContent(props) {
     setFilters(filtersCopy);
   }
 
-  console.log("filters:", filters);
+  async function loadSearchResults() {
+    var searchResults = await fetch(`http://172.16.190.139:3000/search`, {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(filters),
+    });
+    searchResults = await searchResults.json();
+    console.log("searchResults", searchResults);
+
+    props.search({
+      // search :true is used to display the radius circle after first search, even with no results
+      search: true,
+      searchResults: searchResults.users,
+      searchLocation: searchResults.location,
+    });
+  }
 
   const campusDatasList1 = ["Paris", "Lyon", "Marseille"];
   const campusDatasList2 = ["Toulouse", "Bordeaux", "Monaco"];
@@ -114,26 +139,6 @@ export default function CustomRightDrawerContent(props) {
     displayValue = "Monde";
   }
 
-  async function loadSearchResults() {
-    var searchResults = await fetch(
-      'http://172.16.189.147:3000/search',
-      {
-        method: "post",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(filters),
-      }
-    );
-    searchResults = await searchResults.json();
-
-    props.search({
-      // search :true is used to display the radius circle after first search, even with no results
-      search: true,
-      searchResults: searchResults.users,
-      searchLocation: searchResults.location,
-    });
-    Keyboard.dismiss();
-  }
-
   return (
     <LinearGradient
       colors={colors}
@@ -143,6 +148,23 @@ export default function CustomRightDrawerContent(props) {
     >
       <DrawerContentScrollView {...props}>
         <View style={{ alignItems: "center" }}>
+          <View style={styles.headerTitle}>
+            <TextInput
+              style={styles.searchBar}
+              placeholder="Type in city"
+              placeholderTextColor="rgba(255, 255, 255, 0.5)"
+              onChangeText={(value) => setLocation(value)}
+              onSubmitEditing={({
+                nativeEvent: { text, eventCount, target },
+              }) => loadSearchResults()}
+            ></TextInput>
+            <FontAwesome
+              style={styles.searchButton}
+              name="search"
+              size={16}
+              color="white"
+            />
+          </View>
           <View style={[styles.contentView]}>
             <Slider
               value={km}
@@ -160,18 +182,16 @@ export default function CustomRightDrawerContent(props) {
               thumbProps={{
                 children: (
                   <Icon
-                    name="map-pin"
+                    name="circle"
                     type="font-awesome"
-                    size={15}
-                    reverse
-                    containerStyle={{ bottom: 20, right: 20 }}
+                    size={20}
+                    // reverse
+                    // containerStyle={{ bottom: 15, right: 20 }}
                   />
                 ),
               }}
             />
-            <Text style={{ paddingTop: 20, color: "#FFFFFF" }}>
-              Km: {displayValue}
-            </Text>
+            <Text style={{ color: "#FFFFFF" }}>Km: {displayValue}</Text>
           </View>
         </View>
 
@@ -286,9 +306,7 @@ export default function CustomRightDrawerContent(props) {
                 }}
               >
                 <View style={[styles.DDitem, { flexDirection: "row" }]}>
-                  <Text style={[styles.text, { fontWeight: "bold" }]}>
-                    Campus
-                  </Text>
+                  <Text style={styles.text}>Campus</Text>
                 </View>
                 <View style={{ flexDirection: "row" }}>
                   <View
@@ -362,9 +380,7 @@ export default function CustomRightDrawerContent(props) {
                 </View>
                 <Divider style={styles.divider} />
                 <View style={[styles.DDitem, { flexDirection: "row" }]}>
-                  <Text style={[styles.text, { fontWeight: "bold" }]}>
-                    Cursus
-                  </Text>
+                  <Text style={styles.text}>Cursus</Text>
                 </View>
                 <View style={{ flexDirection: "column" }}>
                   {cursusDatasList.map(function (cursus, i) {
@@ -485,7 +501,7 @@ export default function CustomRightDrawerContent(props) {
               style={{ flex: 1, color: "#ffffff", flexDirection: "column" }}
             >
               <View style={[styles.DDitem, { flexDirection: "row" }]}>
-                <Text style={[styles.text, { fontWeight: "bold" }]}>Poste</Text>
+                <Text style={styles.text}>Poste</Text>
               </View>
 
               {workDatasList.map(function (work, i) {
@@ -525,7 +541,7 @@ export default function CustomRightDrawerContent(props) {
             <Divider style={styles.divider} />
 
             <View style={[styles.DDitem, { flexDirection: "row" }]}>
-              <Text style={[styles.text, { fontWeight: "bold" }]}>Statut</Text>
+              <Text style={styles.text}>Statut</Text>
             </View>
 
             {workTypeDatasList.map(function (workType, i) {
@@ -564,10 +580,15 @@ export default function CustomRightDrawerContent(props) {
           </ListItemAccordion>
         </View>
       </DrawerContentScrollView>
-      <Button buttonStyle={styles.button} onPress={() => {loadSearchResults(); props.navigation.toggleDrawer()}}>
-
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          loadSearchResults();
+          props.navigation.toggleDrawer();
+        }}
+      >
         <Text style={{ fontSize: 20, color: "#7C4DFF" }}>Rechercher</Text>
-      </Button>
+      </TouchableOpacity>
     </LinearGradient>
   );
 }
@@ -616,8 +637,7 @@ const styles = StyleSheet.create({
     margin: 15,
   },
   contentView: {
-    padding: 20,
-    width: "90%",
+    width: "80%",
     justifyContent: "center",
     alignItems: "stretch",
   },
@@ -637,4 +657,31 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   text: { color: "rgba(255, 255, 255, 0.7)" },
+  searchBar: {
+    height: "100%",
+    width: "80%",
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    color: "white",
+    borderRadius: 50,
+    paddingLeft: 15,
+    paddingRight: 15,
+  },
+  headerTitle: {
+    flexDirection: "row",
+    paddingVertical: 20,
+  },
+  searchButton: {
+    left: -25,
+    top: 5,
+  },
 });
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    search: function (results) {
+      dispatch({ type: "search", results: results });
+    },
+  };
+};
+
+export default connect(null, mapDispatchToProps)(CustomRightDrawerContent);

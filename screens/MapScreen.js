@@ -10,7 +10,6 @@ import { connect } from "react-redux";
 import { DrawerToggleButton } from "@react-navigation/drawer";
 
 function MapScreen(props) {
-  console.log(props.userDatas);
 
   const [resultLink, setResultLink] = useState("list");
   // Radius default, unit = meter
@@ -19,7 +18,12 @@ function MapScreen(props) {
 
   /*--------------------Generate circle radius when search is true (reducer searchResult)-------------*/
   let circle;
+  let latDelta = 0.1922
+  let longDelta = 0.1421
+  console.log('RADIUS-----',props.searchResults.searchLocation.radius)
   if (props.searchResults.search) {
+    latDelta = 0.03231*props.searchResults.searchLocation.radius
+    longDelta =  0.01421*props.searchResults.searchLocation.radius
     circle = (
       <Circle
         center={{
@@ -29,7 +33,7 @@ function MapScreen(props) {
         strokeWidth={1}
         strokeColor={"#1a66ff"}
         fillColor={"rgba(230,238,255,0.5)"}
-        radius={radius}
+        radius={props.searchResults.searchLocation.radius*1000}
       />
     );
   }
@@ -125,8 +129,8 @@ function MapScreen(props) {
         region={{
           latitude: Number(props.searchResults.searchLocation.lat),
           longitude: Number(props.searchResults.searchLocation.long),
-          latitudeDelta: 0.1922,
-          longitudeDelta: 0.1421,
+          latitudeDelta: latDelta,
+          longitudeDelta:longDelta,
         }}
         mapType="mutedStandard"
         userInterfaceStyle="dark"
