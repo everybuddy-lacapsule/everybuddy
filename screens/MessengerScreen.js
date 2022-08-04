@@ -17,9 +17,8 @@ function MessengerScreen(props) {
   useEffect(() => {
     const getDiscussions = async () => {
       try{
-        const response = await fetch(`http://172.16.190.12:3000/discussions/${props.userDatas._id}`);
+        const response = await fetch(`http://172.16.188.131:3000/discussions/${props.userDatas._id}`);
         let userDiscussions = await response.json();
-        console.log(userDiscussions);
         setDiscussions(userDiscussions);
       }
       catch(error){
@@ -29,11 +28,12 @@ function MessengerScreen(props) {
     getDiscussions();
   }, [props.userDatas._id]);
 
+  console.log("userDiscussions is", discussions);
   return (
     <View>
       <ScrollView>
         {discussions.map((discussion) => (
-          <DiscussionComponent discussion={discussion} currentUser={props.userDatas} navigation={props.navigation}/>
+          <DiscussionComponent discussionID = {discussion._id} discussion={discussion} currentUser={props.userDatas} navigation={props.navigation}/>
         ))}
       </ScrollView>
     </View>
@@ -49,15 +49,13 @@ const mapStateToProps = (state) => {
     userDatas: state.userDatas,
   };
 };
-/*
 
 const mapDispatchToProps = (ditpatch) => {
   return {
-    sendIdChat: function (idChat) {
-      dispatch({ type: "sendIdChat", idChat: idChat });
+    discussionID: function (discussionID) {
+      dispatch({ type: "getDiscussionID", discussionID: discussionID });
     },
   };
 };
-*/
 
-export default connect(mapStateToProps, null)(MessengerScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(MessengerScreen);

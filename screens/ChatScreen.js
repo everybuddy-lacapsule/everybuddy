@@ -18,24 +18,25 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 /*----Web socket----*/
 import socketIOClient from "socket.io-client";
-var socket = socketIOClient("http://172.16.190.12:3000");
+var socket = socketIOClient("http://172.16.188.131:3000");
 
 function ChatScreen(props) {
   const colors = ["#7C4DFF", "#F94A56", "#FF1744"];
   const colorz = ["#FF1744", "#F94A56", "#7C4DFF"];
 
   const [message, setMessage] = useState("");
-  console.log(props.userDatas._id);
+  //console.log(props.userDatas._id);
+  console.log(props.discussionID);
 
   useEffect(() => {
     AsyncStorage.getItem("userID", function (error, id) {
-      console.log("idLocalStorage" + id);
+      //console.log("idLocalStorage" + id);
     });
   }, []);
 
 	useEffect(() => {
 		socket.on("sendMessageToAll", (message) => {
-			console.log(message);
+			//console.log(message);
 		});
 		return () => socket.off("sendMessageToAll"); // for delete all: // socket.off()
 	}, [message]);
@@ -97,7 +98,7 @@ function ChatScreen(props) {
 						placeholderTextColor="rgba(255, 255, 255, 0.5)"
 						onChangeText={(value) => {
 							setMessage(value);
-							console.log(value);
+							//console.log(value);
 						}}
 						// value={{ message }}
 
@@ -222,6 +223,7 @@ var styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     userDatas: state.userDatas,
+	discussionID: state.discussionID
   };
 };
 
