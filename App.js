@@ -7,11 +7,11 @@ import { createStore, combineReducers } from "redux";
 import userDatas from "./reducers/userDatas";
 import userEmail from "./reducers/userEmail";
 import {searchResults} from "./reducers/searchResults";
-import {discussionID} from "./reducers/discussionID";
+import {discussionInfos} from "./reducers/discussionInfos";
 
 LogBox.ignoreAllLogs();
 
-const store = createStore(combineReducers({ userDatas, userEmail, searchResults, discussionID }));
+const store = createStore(combineReducers({ userDatas, userEmail, searchResults, discussionInfos }));
 
 // APP ----------------------------------------------------------------
 export default function App() {

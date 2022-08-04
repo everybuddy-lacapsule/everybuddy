@@ -25,7 +25,7 @@ function Discussion({ discussionID, discussion, currentUser, navigation, getDisc
 
     const getAnotherMember = async () => {
       const response = await fetch(
-        `http://172.16.190.12:3000/users/getUserDatas?userID=${anotherMemberID}`
+        `http://172.16.188.131:3000/users/getUserDatas?userID=${anotherMemberID}`
       );
       const dataJSON = await response.json();
       //console.log(dataJSON);
@@ -34,10 +34,11 @@ function Discussion({ discussionID, discussion, currentUser, navigation, getDisc
     getAnotherMember();
   }, [discussion, currentUser._id]);
 
+
   useEffect(() => {
     const displayLastMessage = async ()=> {
     const response =  await fetch(
-      `http://172.16.190.12:3000/messages/${discussionID}/lastMessage`
+      `http://172.16.188.131:3000/messages/${discussionID}/lastMessage`
     );
 
     const dataJSON = await response.json();
@@ -47,14 +48,14 @@ function Discussion({ discussionID, discussion, currentUser, navigation, getDisc
   displayLastMessage();
 }, []);
 
-console.log(discussionID)
+console.log()
 
   return (
     <ListItem
       bottomDivider
       onPress={() => {
         navigation.navigate("Chat");
-        getDiscussionID(discussionID);
+        getDiscussionID({discussionID:discussionID, anotherMember:anotherMember});
 
       }}
     >
@@ -75,8 +76,8 @@ var styles = StyleSheet.create({
 
 const mapDispatchToProps = (ditpatch) => {
   return {
-    getDiscussionID: function (ID) {
-      ditpatch({ type: "getDiscussionID", discussionID: ID });
+    getDiscussionID: function (discussionInfos) {
+      ditpatch({ type: "getDiscussionID", discussionInfos: discussionInfos });
     },
   };
 };
