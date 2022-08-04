@@ -20,13 +20,12 @@ function CheckEmailScreen(props) {
 
   //------------------ FETCH récupère en BDD ------------------------------------
   var handleCheckEmail = async () => {
-    var res = await fetch("http://172.16.190.142:3000/users/check-email", {
+    var res = await fetch("http://172.16.189.147:3000/users/check-email", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `email=${signinEmail}`,
     });
     res = await res.json();
-    console.log("res", res);
     if (res.emailExists) {
       props.navigation.navigate("LoginScreen");
       props.getEmail(res.userEmail);
