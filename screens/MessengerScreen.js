@@ -1,55 +1,63 @@
-import { Button, StyleSheet, View, ScrollView } from 'react-native';
+import { Button, StyleSheet, View, ScrollView, Text } from "react-native";
 import { ListItem, Avatar } from "@rneui/base";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
+import { connect } from "react-redux";
+import DiscussionComponent from "../components/DiscussionComponent";
 
-export default function MessengerScreen(props) {
-  var buddyIcon = "person-add";
-  var buddyIconColor = "#0E0E66";
-  var buddyIconStyle = { paddingRight: 2 };
-    buddyIcon = "person";
-    buddyIconColor = "#E74C3C";
-    buddyIconStyle = { paddingRight: 0 };
+//import socketIOClient from "socket.io-client";
+import { useEffect, useState } from "react";
+
+//var socket = socketIOClient("http://172.16.188.131:3000");
+
+function MessengerScreen(props) {
+
+  const [discussions, setDiscussions] = useState([]);
+
+  useEffect(() => {
+    const getDiscussions = async () => {
+      try{
+        const response = await fetch(`http://192.168.0.149:3000/discussions/${props.userDatas._id}`);
+        userDiscussions = await response.json();
+        console.log(userDiscussions);
+        setDiscussions(userDiscussions);
+      }
+      catch(error){
+        console.log(error);
+      }
+    };
+    getDiscussions();
+  }, [props.userDatas._id]);
+
   return (
-<View>
-        <ScrollView>
-              <ListItem bottomDivider
-                                  onPress={() => {
-                                    props.navigation.navigate('Chat')
-                                  }}
-                                  >
-                <Avatar rounded size={90} source={require('../assets/splash.png')} />
-                <ListItem.Content>
-                  <ListItem.Title>
-                    Xavier MELINAND
-                  </ListItem.Title>
-                  <ListItem.Subtitle>FartCompany</ListItem.Subtitle>
-                  <ListItem.Subtitle style={styles.listItemText}>
-                    Batch #55
-                  </ListItem.Subtitle>
-                  <ListItem.Subtitle style={styles.listItemText}>
-                    Dayveuleaupeure
-                  </ListItem.Subtitle>
-                  <ListItem.Subtitle style={styles.listItemText}>
-                    Foule Stack
-                  </ListItem.Subtitle>
-                </ListItem.Content>
-                <View style={buddyIconStyle}>
-                  <Ionicons
-                    name={buddyIcon}
-                    size={32}
-                    color={buddyIconColor}
-                  />
-                </View>
-                <FontAwesome name="paper-plane" size={32} color="#0E0E66" />
-              </ListItem>
-        </ScrollView>
-      </View>
+    <View>
+      <ScrollView>
+        {discussions.map((discussion) => (
+          <DiscussionComponent discussion={discussion} currentUser={props.userDatas} navigation={props.navigation}/>
+        ))}
+      </ScrollView>
+    </View>
   );
 }
 
 var styles = StyleSheet.create({
-  listItemText: {
-    fontSize: 12,
-  },
+  
 });
+
+const mapStateToProps = (state) => {
+  return {
+    userDatas: state.userDatas,
+  };
+};
+/*
+
+const mapDispatchToProps = (ditpatch) => {
+  return {
+    sendIdChat: function (idChat) {
+      dispatch({ type: "sendIdChat", idChat: idChat });
+    },
+  };
+};
+*/
+
+export default connect(mapStateToProps, null)(MessengerScreen);

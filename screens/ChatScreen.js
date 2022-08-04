@@ -1,12 +1,12 @@
 import {
-	Image,
-	KeyboardAvoidingView,
-	ScrollView,
-	Text,
-	View,
-	StyleSheet,
-	TextInput,
-	TouchableOpacity,
+  Image,
+  KeyboardAvoidingView,
+  ScrollView,
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome } from "@expo/vector-icons";
@@ -17,11 +17,18 @@ import InsetShadow from "react-native-inset-shadow";
 import socketIOClient from "socket.io-client";
 var socket = socketIOClient("http://172.16.190.12:3000");
 
-export default function ChatScreen() {
-	const colors = ["#7C4DFF", "#F94A56", "#FF1744"];
-	const colorz = ["#FF1744", "#F94A56", "#7C4DFF"];
+function ChatScreen(props) {
+  const colors = ["#7C4DFF", "#F94A56", "#FF1744"];
+  const colorz = ["#FF1744", "#F94A56", "#7C4DFF"];
 
-	const [message, setMessage] = useState("");
+  const [message, setMessage] = useState("");
+  console.log(props.userDatas._id);
+
+  useEffect(() => {
+    AsyncStorage.getItem("userID", function (error, id) {
+      console.log("idLocalStorage" + id);
+    });
+  }, []);
 
 	useEffect(() => {
 		socket.on("sendMessageToAll", (message) => {
@@ -208,3 +215,11 @@ var styles = StyleSheet.create({
 		fontSize: 10,
 	},
 });
+
+const mapStateToProps = (state) => {
+  return {
+    userDatas: state.userDatas,
+  };
+};
+
+export default connect(mapStateToProps, null)(ChatScreen);
