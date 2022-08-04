@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
-import { Divider, Switch, Badge, Slider, Icon } from "@rneui/themed";
+import { Divider, Switch, Badge, Slider, Icon, Button } from "@rneui/themed";
 import { LinearGradient } from "expo-linear-gradient";
 import { ListItem } from "@rneui/base";
 import { ListItemAccordion } from "@rneui/base/dist/ListItem/ListItem.Accordion";
@@ -17,7 +17,8 @@ export default function CustomRightDrawerContent(props) {
   let colors = ["#FF1744", "#F94A56", "#7C4DFF"];
 
   // Etats du slider radius
-  const [value, setValue] = useState(0);
+  const [km, setKm] = useState(0);
+  const [batch, setBatch] = useState(1);
 
   // Etats pour dérouler et afficher les différentes catégories
   const [expandedCapsule, setExpandedCapsule] = useState(false);
@@ -29,16 +30,42 @@ export default function CustomRightDrawerContent(props) {
   const [toggledTags, setToggledTags] = useState();
   const [toggledJobs, setToggledJobs] = useState();
 
-  // Etats à renvoyer au back pour Recherche avancée
-  const [nbBatch, setNbBatch] = useState(1);
-  const [location, setLocation] = useState("");
-  const [radius, setRadius] = useState(5000);
-  const [campusList, setCampusList] = useState([]);
-  const [cursusList, setCursusList] = useState([]);
-  const [statusList, setStatusList] = useState([]);
-  const [tagsList, setTagsList] = useState([]);
-  const [workList, setWorkList] = useState([]);
-  const [workTypeList, setWorkTypeList] = useState([]);
+  // Etat avec toutes les datas
+  const [filters, setFilters] = useState({
+    nbBatch: "", // Number
+    location: "", // String
+    radius: "", // Number
+    campus: [], // Array
+    cursus: [], // Array
+    status: [], // Array
+    tags: [], // Array
+    work: [], // Array
+    workType: [], // Array
+  });
+
+  // Allow the KM slider to set Filters.radius depending on his value state
+  useEffect(() => {
+    filters.radius = km;
+  }, [km]);
+  useEffect(() => {
+    filters.nbBatch = batch;
+  }, [batch]);
+
+  function addFilters(filter, value) {
+    let filtersCopy = { ...filters };
+    if (filter === "nbBatch" || filter === "location" || filter === "radius") {
+      filtersCopy[filter] = value;
+    } else {
+      if (!filtersCopy[filter].find((e) => e === value)) {
+        filtersCopy[filter] = [...filtersCopy[filter], value];
+      } else {
+        filtersCopy[filter] = filtersCopy[filter].filter((e) => e !== value);
+      }
+    }
+    setFilters(filtersCopy);
+  }
+
+  console.log("filters:", filters);
 
   const campusDatasList1 = ["Paris", "Lyon", "Marseille"];
   const campusDatasList2 = ["Toulouse", "Bordeaux", "Monaco"];
@@ -82,57 +109,29 @@ export default function CustomRightDrawerContent(props) {
     "En recherche",
   ];
 
-  function addCampus(campus) {
-    if (!campusList.find((e) => e === campus)) {
-      setCampusList([...campusList, campus]);
-    } else {
-      setCampusList(campusList.filter((e) => e !== campus));
-    }
-  }
-
-  function addCursus(cursus) {
-    if (!cursusList.find((e) => e === cursus)) {
-      setCursusList([...cursusList, cursus]);
-    } else {
-      setCursusList(cursusList.filter((e) => e !== cursus));
-    }
-  }
-
-  function addStatus(status) {
-    if (!statusList.find((e) => e === status)) {
-      setStatusList([...statusList, status]);
-    } else {
-      setStatusList(statusList.filter((e) => e !== status));
-    }
-  }
-
-  function addTag(tag) {
-    if (!tagsList.find((e) => e === tag)) {
-      setTagsList([...tagsList, tag]);
-    } else {
-      setTagsList(tagsList.filter((e) => e !== tag));
-    }
-  }
-
-  function addWork(work) {
-    if (!workList.find((e) => e === work)) {
-      setWorkList([...workList, work]);
-    } else {
-      setWorkList(workList.filter((e) => e !== work));
-    }
-  }
-
-  function addWorkType(workType) {
-    if (!workTypeList.find((e) => e === workType)) {
-      setWorkTypeList([...workTypeList, workType]);
-    } else {
-      setWorkTypeList(workTypeList.filter((e) => e !== workType));
-    }
-  }
-
-  var displayValue = value;
-  if (value === 300) {
+  var displayValue = km;
+  if (km === 300) {
     displayValue = "Monde";
+  }
+
+  async function loadSearchResults() {
+    var searchResults = await fetch(
+      'http://172.16.189.147:3000/search',
+      {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(filters),
+      }
+    );
+    searchResults = await searchResults.json();
+
+    props.search({
+      // search :true is used to display the radius circle after first search, even with no results
+      search: true,
+      searchResults: searchResults.users,
+      searchLocation: searchResults.location,
+    });
+    Keyboard.dismiss();
   }
 
   return (
@@ -146,8 +145,8 @@ export default function CustomRightDrawerContent(props) {
         <View style={{ alignItems: "center" }}>
           <View style={[styles.contentView]}>
             <Slider
-              value={value}
-              onValueChange={setValue}
+              value={km}
+              onValueChange={setKm}
               maximumValue={300}
               minimumValue={0}
               step={5}
@@ -203,7 +202,7 @@ export default function CustomRightDrawerContent(props) {
               {/*//* DROPDOWN #1 - OPTION #2*/}
               {statusDatasList.map(function (status, i) {
                 var checked = false;
-                if (statusList.find((e) => e === status)) {
+                if (filters.status.find((e) => e === status)) {
                   checked = true;
                 }
                 return (
@@ -228,7 +227,7 @@ export default function CustomRightDrawerContent(props) {
                         style={{ alignSelf: "flex-end" }}
                         value={checked}
                         color="#fff"
-                        onValueChange={() => addStatus(status)}
+                        onValueChange={() => addFilters("status", status)}
                       />
                     </View>
                   </View>
@@ -274,6 +273,7 @@ export default function CustomRightDrawerContent(props) {
                 <TextInput
                   style={styles.input}
                   placeholder="#_ _"
+                  onChangeText={(value) => setBatch(value)}
                   placeholderTextColor="rgba(255, 255, 255, 0.5)"
                 />
               </View>
@@ -300,7 +300,7 @@ export default function CustomRightDrawerContent(props) {
                   >
                     {campusDatasList1.map(function (campus, i) {
                       var checked = false;
-                      if (campusList.find((e) => e === campus)) {
+                      if (filters.campus.find((e) => e === campus)) {
                         checked = true;
                       }
                       return (
@@ -319,7 +319,7 @@ export default function CustomRightDrawerContent(props) {
                             style={{ alignSelf: "flex-end" }}
                             value={checked}
                             color="#fff"
-                            onValueChange={() => addCampus(campus)}
+                            onValueChange={() => addFilters("campus", campus)}
                           />
                         </View>
                       );
@@ -334,7 +334,7 @@ export default function CustomRightDrawerContent(props) {
                   >
                     {campusDatasList2.map(function (campus, i) {
                       var checked = false;
-                      if (campusList.find((e) => e === campus)) {
+                      if (filters.campus.find((e) => e === campus)) {
                         checked = true;
                       }
                       return (
@@ -353,7 +353,7 @@ export default function CustomRightDrawerContent(props) {
                             style={{ alignSelf: "flex-end" }}
                             value={checked}
                             color="#fff"
-                            onValueChange={() => addCampus(campus)}
+                            onValueChange={() => addFilters("campus", campus)}
                           />
                         </View>
                       );
@@ -369,7 +369,7 @@ export default function CustomRightDrawerContent(props) {
                 <View style={{ flexDirection: "column" }}>
                   {cursusDatasList.map(function (cursus, i) {
                     var checked = false;
-                    if (cursusList.find((e) => e === cursus)) {
+                    if (filters.cursus.find((e) => e === cursus)) {
                       checked = true;
                     }
                     return (
@@ -388,7 +388,7 @@ export default function CustomRightDrawerContent(props) {
                           style={{ alignSelf: "flex-end" }}
                           value={checked}
                           color="#fff"
-                          onValueChange={() => addCursus(cursus)}
+                          onValueChange={() => addFilters("cursus", cursus)}
                         />
                       </View>
                     );
@@ -435,7 +435,7 @@ export default function CustomRightDrawerContent(props) {
               {tagsDatasList.map(function (tag, i) {
                 var color = "#ffffff";
                 var status = "light";
-                if (tagsList.find((i) => i === tag)) {
+                if (filters.tags.find((i) => i === tag)) {
                   color = "#0e0e66";
                   status = "white";
                 }
@@ -443,7 +443,7 @@ export default function CustomRightDrawerContent(props) {
                   <Badge
                     key={i}
                     value={tag}
-                    onPress={() => addTag(tag)}
+                    onPress={() => addFilters("tags", tag)}
                     containerStyle={{ margin: 5 }}
                     status={status}
                     textStyle={{ color: color, fontSize: 13 }}
@@ -490,7 +490,7 @@ export default function CustomRightDrawerContent(props) {
 
               {workDatasList.map(function (work, i) {
                 var checked = false;
-                if (workList.find((e) => e === work)) {
+                if (filters.work.find((e) => e === work)) {
                   checked = true;
                 }
                 return (
@@ -515,7 +515,7 @@ export default function CustomRightDrawerContent(props) {
                         style={{ alignSelf: "flex-end" }}
                         value={checked}
                         color="#fff"
-                        onValueChange={() => addWork(work)}
+                        onValueChange={() => addFilters("work", work)}
                       />
                     </View>
                   </View>
@@ -530,7 +530,7 @@ export default function CustomRightDrawerContent(props) {
 
             {workTypeDatasList.map(function (workType, i) {
               var checked = false;
-              if (workTypeList.find((e) => e === workType)) {
+              if (filters.workType.find((e) => e === workType)) {
                 checked = true;
               }
               return (
@@ -555,7 +555,7 @@ export default function CustomRightDrawerContent(props) {
                       style={{ alignSelf: "flex-end" }}
                       value={checked}
                       color="#fff"
-                      onValueChange={() => addWorkType(workType)}
+                      onValueChange={() => addFilters("workType", workType)}
                     />
                   </View>
                 </View>
@@ -564,9 +564,10 @@ export default function CustomRightDrawerContent(props) {
           </ListItemAccordion>
         </View>
       </DrawerContentScrollView>
-      <TouchableOpacity style={styles.button}>
+      <Button buttonStyle={styles.button} onPress={() => {loadSearchResults(); props.navigation.toggleDrawer()}}>
+
         <Text style={{ fontSize: 20, color: "#7C4DFF" }}>Rechercher</Text>
-      </TouchableOpacity>
+      </Button>
     </LinearGradient>
   );
 }
@@ -587,6 +588,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     padding: 5,
     textAlign: "center",
+    color: "white",
   },
   DDitem: {
     flex: 1,
