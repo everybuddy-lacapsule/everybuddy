@@ -16,7 +16,7 @@ function SplashScreen(props) {
       console.log(userID)
       if (userID !== null) {
         var datas = await fetch(
-          `http://172.16.189.147:3000/users/getUserDatas?userID=${userID}`
+          `http://172.16.190.139:3000/users/getUserDatas?userID=${userID}`
         );
         datas = await datas.json();
         props.setUserDatas(datas.userDatas);

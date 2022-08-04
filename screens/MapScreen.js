@@ -23,8 +23,8 @@ function MapScreen(props) {
     circle = (
       <Circle
         center={{
-          longitude: Number(props.searchResults.searchLocation.long),
-          latitude: Number(props.searchResults.searchLocation.lat),
+          longitude: props.searchResults.searchLocation.long,
+          latitude: props.searchResults.searchLocation.lat,
         }}
         strokeWidth={1}
         strokeColor={"#1a66ff"}
