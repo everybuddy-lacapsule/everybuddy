@@ -5,17 +5,17 @@ import {
 	Text,
 	View,
 	StyleSheet,
+	TextInput,
 	TouchableOpacity,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { TextInput } from "react-native-gesture-handler";
 import { FontAwesome } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
 import InsetShadow from "react-native-inset-shadow";
 
 /*----Web socket----*/
 import socketIOClient from "socket.io-client";
-var socket = socketIOClient("http://172.16.188.131:3000");
+var socket = socketIOClient("http://172.16.190.12:3000");
 
 export default function ChatScreen() {
 	const colors = ["#7C4DFF", "#F94A56", "#FF1744"];
@@ -89,7 +89,7 @@ export default function ChatScreen() {
 							setMessage(value);
 							console.log(value);
 						}}
-						value={{ message }}
+						// value={{ message }}
 
 						//onSubmitEditing={({ nativeEvent: { text, eventCount, target } }) =>
 						//loadSearchResults()
