@@ -30,8 +30,8 @@ function MapScreen(props) {
       circle = (
         <Circle
           center={{
-            longitude: Number(searchLocation.long),
-            latitude: Number(searchLocation.lat),
+            longitude: searchLocation.long,
+            latitude: searchLocation.lat,
           }}
           strokeWidth={1}
           strokeColor={"#1a66ff"}
@@ -67,7 +67,6 @@ function MapScreen(props) {
     }
   };
 
-  //useEffect(() => {},[buddyList]);
 
    //*BOTTOM DRAWER
    const windowHeight = Dimensions.get("window").height;
@@ -136,8 +135,8 @@ return (
         provider="google"
         style={styles.map}
         region={{
-          latitude: Number(searchLocation.lat),
-          longitude: Number(searchLocation.long),
+          latitude: searchLocation.lat,
+          longitude: searchLocation.long,
           latitudeDelta: 0.1922,
           longitudeDelta: 0.1421,
         }}
