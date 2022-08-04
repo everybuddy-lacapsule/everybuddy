@@ -7,18 +7,24 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
-import { Divider, Switch, Badge, Slider, Icon } from "@rneui/themed";
+import { Divider, Switch, Badge, Slider, Icon, Button } from "@rneui/themed";
 import { LinearGradient } from "expo-linear-gradient";
 import { ListItem } from "@rneui/base";
 import { ListItemAccordion } from "@rneui/base/dist/ListItem/ListItem.Accordion";
+import { FontAwesome } from "@expo/vector-icons";
+
+import { connect } from "react-redux";
+import {IPLOCAL} from "@env"
+
 
 //* RIGHT DRAWER CONTENT
-export default function CustomRightDrawerContent(props) {
+function CustomRightDrawerContent(props) {
   let colors = ["#FF1744", "#F94A56", "#7C4DFF"];
 
   // Etats du slider radius
   const [km, setKm] = useState(0);
-  const [batch, setBatch] = useState(1);
+  const [batch, setBatch] = useState('');
+  const [location, setLocation] = useState('');
 
   // Etats pour dérouler et afficher les différentes catégories
   const [expandedCapsule, setExpandedCapsule] = useState(false);
@@ -51,6 +57,9 @@ export default function CustomRightDrawerContent(props) {
     filters.radius = km
   },[km])
   useEffect(() => {
+    filters.location = location
+  },[location])
+  useEffect(() => {
     filters.nbBatch = batch
   },[batch])
 
@@ -66,9 +75,28 @@ function addFilters(filter, value) {
     }
   }
   setFilters(filtersCopy)
-
 };
-console.log('filters:',filters)
+
+async function loadSearchResults() {
+    var searchResults = await fetch(
+      `http://172.16.190.139:3000/search`,
+      {method: "post",
+      headers:{'Content-Type': 'application/json'},
+      body: JSON.stringify(filters),
+      }
+    );
+    searchResults = await searchResults.json();
+    console.log('searchResults', searchResults)
+
+    props.search({
+      // search :true is used to display the radius circle after first search, even with no results
+      search: true,
+      searchResults: searchResults.users,
+      searchLocation: searchResults.location,
+    });
+
+}
+
   const campusDatasList1 = ["Paris", "Lyon", "Marseille"];
   const campusDatasList2 = ["Toulouse", "Bordeaux", "Monaco"];
   const cursusDatasList = ["FullStack", "DevOps", "Code for business"];
@@ -127,6 +155,25 @@ console.log('filters:',filters)
     >
       <DrawerContentScrollView {...props}>
         <View style={{ alignItems: 'center' }}>
+        <View style={styles.headerTitle}>
+      <TextInput
+        style={styles.searchBar}
+        placeholder="Type in city"
+        placeholderTextColor="rgba(255, 255, 255, 0.5)"
+        onChangeText={(value) => setLocation(value)}
+        onSubmitEditing={({ nativeEvent: { text, eventCount, target } }) =>
+          loadSearchResults()
+        }
+      >
+       
+        </TextInput>
+        <FontAwesome
+          style={styles.searchButton}
+          name="search"
+          size={16}
+          color="white"
+        />
+    </View>
         <View style={[styles.contentView]}>
           <Slider
             value={km}
@@ -144,16 +191,16 @@ console.log('filters:',filters)
             thumbProps={{
               children: (
                 <Icon
-                  name="map-pin"
+                  name="circle"
                   type="font-awesome"
-                  size={15}
-                  reverse
-                  containerStyle={{ bottom: 20, right: 20 }}
+                  size={20}
+                  // reverse
+                  // containerStyle={{ bottom: 15, right: 20 }}
                 />
               ),
             }}
           />
-          <Text style={{ paddingTop: 20, color: "#FFFFFF" }}>
+          <Text style={{ color: "#FFFFFF" }}>
             Km: {displayValue}
           </Text>
         </View>
@@ -545,7 +592,9 @@ console.log('filters:',filters)
           </ListItemAccordion>
         </View>
       </DrawerContentScrollView>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity
+      style={styles.button}
+      onPress={()=>{loadSearchResults(); props.navigation.toggleDrawer()}}>
         <Text style={{ fontSize: 20, color: "#7C4DFF" }}>Rechercher</Text>
       </TouchableOpacity>
     </LinearGradient>
@@ -568,7 +617,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     padding: 5,
     textAlign: "center",
-    color: 'white',
+    color: 'white'
   },
   DDitem: {
     flex: 1,
@@ -596,7 +645,6 @@ const styles = StyleSheet.create({
     margin: 15,
   },
   contentView: {
-    padding: 20,
     width: "80%",
     justifyContent: "center",
     alignItems: "stretch",
@@ -617,4 +665,33 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   text: { color: "rgba(255, 255, 255, 0.7)" },
+  searchBar: {
+    height: "100%",
+    width: "80%",
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    color: "white",
+    borderRadius: 50,
+    paddingLeft: 15,
+    paddingRight: 15,
+  },
+  headerTitle: {
+    flexDirection: "row",
+    paddingVertical: 20,
+
+  },
+  searchButton:{
+    left: -25,
+    top: 5,
+  }
+  
 });
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    search: function (results) {
+      dispatch({ type: "search", results: results });
+    },
+  };
+};
+
+export default connect(null, mapDispatchToProps)(CustomRightDrawerContent);

@@ -10,13 +10,15 @@ import { FontAwesome } from "@expo/vector-icons";
 
 import { connect } from "react-redux";
 
+import {IPLOCAL} from "@env"
+
 function HeaderSearchBar(props) {
   const [location, setLocation] = useState("");
 
   async function loadSearchResults() {
     if (location) {
       var searchResults = await fetch(
-        `http://172.16.190.139:3000/searchByLocation?location=${location}`
+        `http://${IPLOCAL}:3000/searchByLocation?location=${location}`
       );
       searchResults = await searchResults.json();
 

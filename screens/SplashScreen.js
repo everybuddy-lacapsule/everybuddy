@@ -9,6 +9,8 @@ import {
 import { Overlay, Button, Icon, Input } from "@rneui/themed";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connect } from "react-redux";
+import {IPLOCAL} from "@env"
+
 
 function SplashScreen(props) {
   useEffect(() => {
@@ -16,7 +18,7 @@ function SplashScreen(props) {
       console.log(userID)
       if (userID !== null) {
         var datas = await fetch(
-          `http://172.16.190.139:3000/users/getUserDatas?userID=${userID}`
+          `http://${IPLOCAL}:3000/users/getUserDatas?userID=${userID}`
         );
         datas = await datas.json();
         props.setUserDatas(datas.userDatas);
