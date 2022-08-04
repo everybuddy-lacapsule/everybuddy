@@ -22,7 +22,7 @@ function Discussion({ discussion, currentUser, navigation }) {
 
     const getAnotherMember = async () => {
       const response = await fetch(
-        `http://192.168.0.149:3000/users/getUserDatas?userID=${anotherMemberID}`
+        `http://172.16.190.12:3000/users/getUserDatas?userID=${anotherMemberID}`
       );
       const dataJSON = await response.json();
       console.log(dataJSON);

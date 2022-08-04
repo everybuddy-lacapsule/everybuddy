@@ -5,6 +5,7 @@ import {
   Text,
   View,
   StyleSheet,
+  TextInput,
   TouchableOpacity,
   Platform,
 } from "react-native";
@@ -12,6 +13,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
 import InsetShadow from "react-native-inset-shadow";
+import { connect } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 /*----Web socket----*/
 import socketIOClient from "socket.io-client";
