@@ -4,8 +4,10 @@ import { ListItem, Avatar } from "@rneui/themed";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
+import { connect } from "react-redux";
 
-function Discussion({ discussionID, discussion, currentUser, navigation }) {
+
+function Discussion({ discussionID, discussion, currentUser, navigation, getDiscussionID }) {
   var buddyIcon = "person-add";
   var buddyIconColor = "#0E0E66";
   var buddyIconStyle = { paddingRight: 2 };
@@ -32,20 +34,28 @@ function Discussion({ discussionID, discussion, currentUser, navigation }) {
     getAnotherMember();
   }, [discussion, currentUser._id]);
 
-  useEffect(async () => {
-    const response = await fetch(
-      `http://172.16.188.131:3000/messages/${discussionID}/lastMessage`
+  useEffect(() => {
+    const displayLastMessage = async ()=> {
+    const response =  await fetch(
+      `http://172.16.190.12:3000/messages/${discussionID}/lastMessage`
     );
+
     const dataJSON = await response.json();
-    console.log(dataJSON);
+    console.log('resLastMess',dataJSON);
     setLastMessage(dataJSON.content);
-  }, []);
+  }
+  displayLastMessage();
+}, []);
+
+console.log(discussionID)
 
   return (
     <ListItem
       bottomDivider
       onPress={() => {
         navigation.navigate("Chat");
+        getDiscussionID(discussionID);
+
       }}
     >
       <Avatar rounded size={90} source={{ uri: anotherMember.avatar }} />
@@ -63,4 +73,12 @@ var styles = StyleSheet.create({
   },
 });
 
-export default Discussion;
+const mapDispatchToProps = (ditpatch) => {
+  return {
+    getDiscussionID: function (ID) {
+      ditpatch({ type: "getDiscussionID", discussionID: ID });
+    },
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Discussion);

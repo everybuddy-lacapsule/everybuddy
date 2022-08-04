@@ -3,7 +3,7 @@ import { ListItem, Avatar } from "@rneui/base";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { connect } from "react-redux";
-import DiscussionComponent from "../components/DiscussionComponent";
+import Discussion from "../components/DiscussionComponent";
 
 //import socketIOClient from "socket.io-client";
 import { useEffect, useState } from "react";
@@ -32,8 +32,8 @@ function MessengerScreen(props) {
   return (
     <View>
       <ScrollView>
-        {discussions.map((discussion) => (
-          <DiscussionComponent discussionID = {discussion._id} discussion={discussion} currentUser={props.userDatas} navigation={props.navigation}/>
+        {discussions.map((discussion, i) => (
+          <Discussion key={i} discussionID = {discussion._id} discussion={discussion} currentUser={props.userDatas} navigation={props.navigation}/>
         ))}
       </ScrollView>
     </View>
@@ -50,12 +50,5 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (ditpatch) => {
-  return {
-    discussionID: function (discussionID) {
-      dispatch({ type: "getDiscussionID", discussionID: discussionID });
-    },
-  };
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(MessengerScreen);
+export default connect(mapStateToProps, null)(MessengerScreen);

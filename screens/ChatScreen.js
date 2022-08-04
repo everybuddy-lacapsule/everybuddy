@@ -18,6 +18,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 /*----Web socket----*/
 import socketIOClient from "socket.io-client";
+import { discussionID } from "../reducers/discussionID";
 var socket = socketIOClient("http://172.16.190.12:3000");
 
 function ChatScreen(props) {
@@ -37,6 +38,8 @@ function ChatScreen(props) {
 	useEffect(() => {
 		socket.on("sendMessageToAll", (message) => {
 			console.log('message ==>',message);
+			console.log('discussionID ==>', props.discussionID)
+
 		});
 		return () => socket.off("sendMessageToAll"); // for delete all: // socket.off()
 	}, [message]);
@@ -45,11 +48,10 @@ function ChatScreen(props) {
 		const sendMessage =  async()=> await fetch('http://172.16.190.12:3000/messages/addMessage', {
 			method: "POST",
         	headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        	body: `message=${message}&discussionID=${discussionID}&userID=${props.userDatas._id}`,
+        	body: `message=${message}&discussionID=${props.discussionID}&userID=${props.userDatas._id}`,
 			})
-		
 	}
-
+	
 	return (
 		<InsetShadow
 			style={{ flex: 1, elevation: 10, shadowRadius: 10, shadowOpacity: 1 }}
