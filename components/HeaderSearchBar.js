@@ -1,37 +1,35 @@
 import React, { useState, useRef } from "react";
-import { TouchableOpacity, StyleSheet, View, TextInput, Keyboard } from "react-native";
+import {
+  TouchableOpacity,
+  StyleSheet,
+  View,
+  TextInput,
+  Keyboard,
+} from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 
 import { connect } from "react-redux";
 
 function HeaderSearchBar(props) {
   const [location, setLocation] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  var searchRef = useRef(null);
 
   async function loadSearchResults() {
     if (location) {
       var searchResults = await fetch(
-        `http:/172.16.190.138:3000/searchByLocation?location=${location}`
+        `http:/172.16.190.137:3000/searchByLocation?location=${location}`
       );
-
       searchResults = await searchResults.json();
-      setSearchResults(searchResults);
 
       props.search({
+        // search :true is used to display the radius circle after first search, even with no results
         search: true,
         searchResults: searchResults.users,
         searchLocation: searchResults.location,
       });
-      Keyboard.dismiss()
+      Keyboard.dismiss();
     }
   }
-  /*
-  console.log({
-      searchResults: searchResults.users,
-      searchLocation: searchResults.searchLocation,
-    })
-*/
+
   return (
     <View style={styles.headerTitle}>
       <TextInput
@@ -39,7 +37,9 @@ function HeaderSearchBar(props) {
         placeholder="Type in city"
         placeholderTextColor="rgba(255, 255, 255, 0.5)"
         onChangeText={(value) => setLocation(value)}
-        onSubmitEditing={({ nativeEvent: { text, eventCount, target }}) =>loadSearchResults()}
+        onSubmitEditing={({ nativeEvent: { text, eventCount, target } }) =>
+          loadSearchResults()
+        }
       />
       <TouchableOpacity
         style={styles.searchButtonBackground}
