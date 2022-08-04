@@ -44,8 +44,8 @@ function ChatScreen(props) {
 		return () => socket.off("sendMessageToAll"); // for delete all: // socket.off()
 	}, [message]);
 
-	function sendMessageToDB (message){
-		const sendMessage =  async()=> await fetch('http://172.16.190.12:3000/messages/addMessage', {
+	async function sendMessageToDB(message){
+		const sendMessage = await fetch('http://172.16.190.12:3000/messages/addMessage', {
 			method: "POST",
         	headers: { "Content-Type": "application/x-www-form-urlencoded" },
         	body: `message=${message}&discussionID=${props.discussionID}&userID=${props.userDatas._id}`,
