@@ -135,8 +135,6 @@ export default function CustomRightDrawerContent(props) {
     displayValue = "Monde";
   }
 
-  console.log(tagsList);
-
   return (
     <LinearGradient
       colors={colors}
@@ -145,37 +143,37 @@ export default function CustomRightDrawerContent(props) {
       end={{ x: 1, y: 0.3 }}
     >
       <DrawerContentScrollView {...props}>
-        <View style={{ alignItems: 'center' }}>
-        <View style={[styles.contentView]}>
-          <Slider
-            value={value}
-            onValueChange={setValue}
-            maximumValue={300}
-            minimumValue={0}
-            step={5}
-            allowTouchTrack
-            trackStyle={{ height: 5, backgroundColor: "transparent" }}
-            thumbStyle={{
-              height: 20,
-              width: 20,
-              backgroundColor: "transparent",
-            }}
-            thumbProps={{
-              children: (
-                <Icon
-                  name="map-pin"
-                  type="font-awesome"
-                  size={15}
-                  reverse
-                  containerStyle={{ bottom: 20, right: 20 }}
-                />
-              ),
-            }}
-          />
-          <Text style={{ paddingTop: 20, color: "#FFFFFF" }}>
-            Km: {displayValue}
-          </Text>
-        </View>
+        <View style={{ alignItems: "center" }}>
+          <View style={[styles.contentView]}>
+            <Slider
+              value={value}
+              onValueChange={setValue}
+              maximumValue={300}
+              minimumValue={0}
+              step={5}
+              allowTouchTrack
+              trackStyle={{ height: 5, backgroundColor: "transparent" }}
+              thumbStyle={{
+                height: 20,
+                width: 20,
+                backgroundColor: "transparent",
+              }}
+              thumbProps={{
+                children: (
+                  <Icon
+                    name="map-pin"
+                    type="font-awesome"
+                    size={15}
+                    reverse
+                    containerStyle={{ bottom: 20, right: 20 }}
+                  />
+                ),
+              }}
+            />
+            <Text style={{ paddingTop: 20, color: "#FFFFFF" }}>
+              Km: {displayValue}
+            </Text>
+          </View>
         </View>
 
         {/* //! 1ST SEGMENT */}
@@ -288,7 +286,9 @@ export default function CustomRightDrawerContent(props) {
                 }}
               >
                 <View style={[styles.DDitem, { flexDirection: "row" }]}>
-                  <Text style={styles.text}>Campus</Text>
+                  <Text style={[styles.text, { fontWeight: "bold" }]}>
+                    Campus
+                  </Text>
                 </View>
                 <View style={{ flexDirection: "row" }}>
                   <View
@@ -362,7 +362,9 @@ export default function CustomRightDrawerContent(props) {
                 </View>
                 <Divider style={styles.divider} />
                 <View style={[styles.DDitem, { flexDirection: "row" }]}>
-                  <Text style={styles.text}>Cursus</Text>
+                  <Text style={[styles.text, { fontWeight: "bold" }]}>
+                    Cursus
+                  </Text>
                 </View>
                 <View style={{ flexDirection: "column" }}>
                   {cursusDatasList.map(function (cursus, i) {
@@ -483,7 +485,7 @@ export default function CustomRightDrawerContent(props) {
               style={{ flex: 1, color: "#ffffff", flexDirection: "column" }}
             >
               <View style={[styles.DDitem, { flexDirection: "row" }]}>
-                <Text style={styles.text}>Poste</Text>
+                <Text style={[styles.text, { fontWeight: "bold" }]}>Poste</Text>
               </View>
 
               {workDatasList.map(function (work, i) {
@@ -523,7 +525,7 @@ export default function CustomRightDrawerContent(props) {
             <Divider style={styles.divider} />
 
             <View style={[styles.DDitem, { flexDirection: "row" }]}>
-              <Text style={styles.text}>Statut</Text>
+              <Text style={[styles.text, { fontWeight: "bold" }]}>Statut</Text>
             </View>
 
             {workTypeDatasList.map(function (workType, i) {
@@ -613,7 +615,7 @@ const styles = StyleSheet.create({
   },
   contentView: {
     padding: 20,
-    width: "80%",
+    width: "90%",
     justifyContent: "center",
     alignItems: "stretch",
   },
