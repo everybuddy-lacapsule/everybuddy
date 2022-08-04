@@ -25,7 +25,7 @@ function Discussion({ discussionID, discussion, currentUser, navigation, getDisc
 
     const getAnotherMember = async () => {
       const response = await fetch(
-        `http://172.16.190.12:3000/users/getUserDatas?userID=${anotherMemberID}`
+        `http://192.168.27.171:3000/users/getUserDatas?userID=${anotherMemberID}`
       );
       const dataJSON = await response.json();
       //console.log(dataJSON);
@@ -37,7 +37,7 @@ function Discussion({ discussionID, discussion, currentUser, navigation, getDisc
   useEffect(() => {
     const displayLastMessage = async ()=> {
     const response =  await fetch(
-      `http://172.16.190.12:3000/messages/${discussionID}/lastMessage`
+      `http://192.168.27.171:3000/messages/${discussionID}/lastMessage`
     );
 
     const dataJSON = await response.json();

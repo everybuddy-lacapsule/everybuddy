@@ -45,7 +45,7 @@ function ChatScreen(props) {
 	}, [message]);
 
 	async function sendMessageToDB(message){
-		const sendMessage = await fetch('http://172.16.190.12:3000/messages/addMessage', {
+		const sendMessage = await fetch('http://192.168.27.171:3000/messages/addMessage', {
 			method: "POST",
         	headers: { "Content-Type": "application/x-www-form-urlencoded" },
         	body: `message=${message}&discussionID=${props.discussionID}&userID=${props.userDatas._id}`,
