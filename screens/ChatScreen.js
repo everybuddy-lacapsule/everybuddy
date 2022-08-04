@@ -18,7 +18,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 /*----Web socket----*/
 import socketIOClient from "socket.io-client";
-var socket = socketIOClient("http://172.16.190.12:3000");
+var socket = socketIOClient("http://172.16.188.131:3000");
 
 function ChatScreen(props) {
   const colors = ["#7C4DFF", "#F94A56", "#FF1744"];
@@ -107,7 +107,7 @@ function ChatScreen(props) {
 						placeholderTextColor="rgba(255, 255, 255, 0.5)"
 						onChangeText={(value) => {
 							setMessage(value);
-							console.log(value);
+							//console.log(value);
 						}}
 						onSubmitEditing={({ nativeEvent: { text, eventCount, target } }) =>
 						socket.emit("sendMessage", message)
@@ -230,6 +230,7 @@ var styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     userDatas: state.userDatas,
+	discussionID: state.discussionID
   };
 };
 

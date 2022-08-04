@@ -5,7 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
 
-function Discussion({ discussion, currentUser, navigation }) {
+function Discussion({ discussionID, discussion, currentUser, navigation }) {
   var buddyIcon = "person-add";
   var buddyIconColor = "#0E0E66";
   var buddyIconStyle = { paddingRight: 2 };
@@ -14,22 +14,32 @@ function Discussion({ discussion, currentUser, navigation }) {
   buddyIconStyle = { paddingRight: 0 };
 
   const [anotherMember, setAnotherMember] = useState({});
+  const [lastMessage, setLastMessage] = useState("");
 
   useEffect(() => {
     const anotherMemberID = discussion.memberIDs.find(
-      id => id !== currentUser._id
+      (id) => id !== currentUser._id
     );
 
     const getAnotherMember = async () => {
       const response = await fetch(
-        `http://172.16.190.12:3000/users/getUserDatas?userID=${anotherMemberID}`
+        `http://172.16.188.131:3000/users/getUserDatas?userID=${anotherMemberID}`
       );
       const dataJSON = await response.json();
-      console.log(dataJSON);
+      //console.log(dataJSON);
       setAnotherMember(dataJSON.userDatas);
     };
     getAnotherMember();
   }, [discussion, currentUser._id]);
+
+  useEffect(async () => {
+    const response = await fetch(
+      `http://172.16.188.131:3000/messages/${discussionID}/lastMessage`
+    );
+    const dataJSON = await response.json();
+    console.log(dataJSON);
+    setLastMessage(dataJSON.content);
+  }, []);
 
   return (
     <ListItem
@@ -38,24 +48,11 @@ function Discussion({ discussion, currentUser, navigation }) {
         navigation.navigate("Chat");
       }}
     >
-      <Avatar rounded size={90} source={{uri: anotherMember.avatar}} />
+      <Avatar rounded size={90} source={{ uri: anotherMember.avatar }} />
       <ListItem.Content>
-        <ListItem.Title>{anotherMember.name}</ListItem.Title>
-        <ListItem.Subtitle>{anotherMember.work?.work}</ListItem.Subtitle>
-        <ListItem.Subtitle style={styles.listItemText}>
-          {anotherMember.capsule?.nbBatch}
-        </ListItem.Subtitle>
-        <ListItem.Subtitle style={styles.listItemText}>
-          {anotherMember.work?.company}
-        </ListItem.Subtitle>
-        <ListItem.Subtitle style={styles.listItemText}>
-          {anotherMember.work?.typeWork}
-        </ListItem.Subtitle>
+        <ListItem.Title>{anotherMember.firstName} {anotherMember.name}</ListItem.Title>
+        <ListItem.Subtitle>{lastMessage}</ListItem.Subtitle>
       </ListItem.Content>
-      <View style={buddyIconStyle}>
-        <Ionicons name={buddyIcon} size={32} color={buddyIconColor} />
-      </View>
-      <FontAwesome name="paper-plane" size={32} color="#0E0E66" />
     </ListItem>
   );
 }
