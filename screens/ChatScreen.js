@@ -6,21 +6,31 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { TextInput } from "react-native-gesture-handler";
 import { FontAwesome } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 /*----Web socket----*/
 import socketIOClient from "socket.io-client";
 var socket = socketIOClient("http://172.16.188.131:3000");
 
-export default function ChatScreen() {
+function ChatScreen(props) {
   const colors = ["#7C4DFF", "#F94A56", "#FF1744"];
   const colorz = ["#FF1744", "#F94A56", "#7C4DFF"];
 
   const [message, setMessage] = useState("");
+  console.log(props.userDatas._id);
+
+  useEffect(() => {
+    AsyncStorage.getItem("userID", function (error, id) {
+      console.log("idLocalStorage" + id);
+    });
+  }, []);
 
   useEffect(() => {
     socket.on("sendMessageToAll", (message) => {
@@ -28,6 +38,8 @@ export default function ChatScreen() {
     });
     return () => socket.off("sendMessageToAll"); // for delete all: // socket.off()
   }, [message]);
+
+  console.log("test" + message);
 
   return (
     <View style={{ flex: 1 }}>
@@ -76,8 +88,12 @@ export default function ChatScreen() {
           </LinearGradient>
         </View>
       </ScrollView>
+
       <KeyboardAvoidingView
         style={styles.textInput}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        enabled={true}
+        keyboardVerticalOffset={Platform.select({ ios: 100, android: 500 })}
       >
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <TextInput
@@ -88,7 +104,7 @@ export default function ChatScreen() {
               setMessage(value);
               console.log(value);
             }}
-            value={{ message }}
+            value={message}
 
             //onSubmitEditing={({ nativeEvent: { text, eventCount, target } }) =>
             //loadSearchResults()
@@ -96,7 +112,9 @@ export default function ChatScreen() {
           />
           <TouchableOpacity
             style={styles.searchButtonBackground}
-            onPress={() => socket.emit("sendMessage", message)}
+            onPress={() => {
+              socket.emit("sendMessage", { message: message }), setMessage("");
+            }}
           >
             <View style={styles.searchButton}>
               <FontAwesome name="send" size={16} color="white" />
@@ -197,3 +215,11 @@ var styles = StyleSheet.create({
     fontSize: 10,
   },
 });
+
+const mapStateToProps = (state) => {
+  return {
+    userDatas: state.userDatas,
+  };
+};
+
+export default connect(mapStateToProps, null)(ChatScreen);

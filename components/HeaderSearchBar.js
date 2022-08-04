@@ -1,5 +1,11 @@
 import React, { useState, useRef } from "react";
-import { TouchableOpacity, StyleSheet, View, TextInput, Keyboard } from "react-native";
+import {
+  TouchableOpacity,
+  StyleSheet,
+  View,
+  TextInput,
+  Keyboard,
+} from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 
 import { connect } from "react-redux";
@@ -12,7 +18,7 @@ function HeaderSearchBar(props) {
   async function loadSearchResults() {
     if (location) {
       var searchResults = await fetch(
-        `http:/172.16.188.131:3000/searchByLocation?location=${location}`
+        `http://192.168.0.149:3000/searchByLocation?location=${location}`
       );
 
       searchResults = await searchResults.json();
@@ -23,7 +29,7 @@ function HeaderSearchBar(props) {
         searchResults: searchResults.users,
         searchLocation: searchResults.location,
       });
-      Keyboard.dismiss()
+      Keyboard.dismiss();
     }
   }
   /*
@@ -39,18 +45,17 @@ function HeaderSearchBar(props) {
         placeholder="Type in city"
         placeholderTextColor="rgba(255, 255, 255, 0.5)"
         onChangeText={(value) => setLocation(value)}
-        onSubmitEditing={({ nativeEvent: { text, eventCount, target }}) =>loadSearchResults()}
+        onSubmitEditing={({ nativeEvent: { text, eventCount, target } }) =>
+          loadSearchResults()
+        }
       />
       <TouchableOpacity
         style={styles.searchButtonBackground}
         onPress={() => loadSearchResults()}
       >
-        <FontAwesome
-          style={styles.searchButton}
-          name="search"
-          size={16}
-          color="white"
-        />
+        <View style={styles.searchButton}>
+          <FontAwesome name="search" size={16} color="white" />
+        </View>
       </TouchableOpacity>
     </View>
   );
