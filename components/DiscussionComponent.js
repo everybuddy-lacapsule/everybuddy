@@ -34,6 +34,7 @@ function Discussion({ discussionID, discussion, currentUser, navigation, getDisc
     getAnotherMember();
   }, [discussion, currentUser._id]);
 
+
   useEffect(() => {
     const displayLastMessage = async ()=> {
     const response =  await fetch(
@@ -47,14 +48,14 @@ function Discussion({ discussionID, discussion, currentUser, navigation, getDisc
   displayLastMessage();
 }, []);
 
-console.log(discussionID)
+console.log()
 
   return (
     <ListItem
       bottomDivider
       onPress={() => {
         navigation.navigate("Chat");
-        getDiscussionID(discussionID);
+        getDiscussionID({discussionID:discussionID, anotherMember:anotherMember});
 
       }}
     >
@@ -75,8 +76,8 @@ var styles = StyleSheet.create({
 
 const mapDispatchToProps = (ditpatch) => {
   return {
-    getDiscussionID: function (ID) {
-      ditpatch({ type: "getDiscussionID", discussionID: ID });
+    getDiscussionID: function (discussionInfos) {
+      ditpatch({ type: "getDiscussionID", discussionInfos: discussionInfos });
     },
   };
 };
