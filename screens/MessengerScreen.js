@@ -33,7 +33,7 @@ function MessengerScreen(props) {
     <View>
       <ScrollView>
         {discussions.map((discussion) => (
-          <DiscussionComponent discussion={discussion} currentUser={props.userDatas} navigation={props.navigation}/>
+          <DiscussionComponent discussionID={discussion._id} currentUser={props.userDatas} navigation={props.navigation}/>
         ))}
       </ScrollView>
     </View>

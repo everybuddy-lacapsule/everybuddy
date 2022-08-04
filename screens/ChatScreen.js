@@ -25,26 +25,36 @@ function ChatScreen(props) {
   const colorz = ["#FF1744", "#F94A56", "#7C4DFF"];
 
   const [message, setMessage] = useState("");
-  console.log(props.userDatas._id);
 
   useEffect(() => {
     AsyncStorage.getItem("userID", function (error, id) {
-      console.log("idLocalStorage" + id);
+      console.log("LocalStorage User Id ==>",id);
+	  console.log('Store User Id ==>',props.userDatas._id);
+
     });
   }, []);
 
 	useEffect(() => {
 		socket.on("sendMessageToAll", (message) => {
-			console.log(message);
+			console.log('message ==>',message);
 		});
 		return () => socket.off("sendMessageToAll"); // for delete all: // socket.off()
 	}, [message]);
+
+	function sendMessageToDB (message){
+		const sendMessage =  async()=> await fetch('http://172.16.190.12:3000/messages/addMessage', {
+			method: "POST",
+        	headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        	body: `message=${message}&discussionID=${discussionID}&userID=${props.userDatas._id}`,
+			})
+		
+	}
 
 	return (
 		<InsetShadow
 			style={{ flex: 1, elevation: 10, shadowRadius: 10, shadowOpacity: 1 }}
 		>
-			<ScrollView style={{ flex: 1 }}>
+			<ScrollView style={{ flex: 1, flexDirection:"column-reverse" }}>
 				<View style={styles.leftMessage}>
 					<Image
 						style={styles.img}
@@ -99,15 +109,13 @@ function ChatScreen(props) {
 							setMessage(value);
 							console.log(value);
 						}}
-						// value={{ message }}
-
-						//onSubmitEditing={({ nativeEvent: { text, eventCount, target } }) =>
-						//loadSearchResults()
-						//}
+						onSubmitEditing={({ nativeEvent: { text, eventCount, target } }) =>
+						socket.emit("sendMessage", message)
+						}
 					/>
 					<TouchableOpacity
 						style={styles.searchButtonBackground}
-						onPress={() => socket.emit("sendMessage", message)}
+						onPress={() => {socket.emit("sendMessage", message); sendMessageToDB(message)}}
 					>
 						<View style={styles.searchButton}>
 							<FontAwesome name="send" size={16} color="white" />
