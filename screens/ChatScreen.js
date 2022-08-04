@@ -43,16 +43,18 @@ function ChatScreen(props) {
     return () => socket.off("sendMessageToAll"); // for delete all: // socket.off()
   }, [message]);
 
-  async function sendMessageToDB(message) {
-    const sendMessage = await fetch(
-      "http://172.16.188.131:3000/messages/addMessage",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `message=${message}&discussionID=${props.discussionInfos.discussionID}&userID=${props.userDatas._id}`,
-      }
-    );
-  }
+  if (props.discussionInfos.discussionID) {
+    async function sendMessageToDB(message) {
+      const sendMessage = await fetch(
+        "http://172.16.188.131:3000/messages/addMessage",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: `message=${message}&discussionID=${props.discussionInfos.discussionID}&userID=${props.userDatas._id}`,
+        }
+      );
+    }
+  };
 
   // GET all messages of discussion from DB when ChatScreen is loaded
   async function sendMessageToDB(message) {
