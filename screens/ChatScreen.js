@@ -55,6 +55,16 @@ function ChatScreen(props) {
   }
 
   // GET all messages of discussion from DB when ChatScreen is loaded
+  async function sendMessageToDB(message) {
+    const sendMessage = await fetch(
+      "http://172.16.190.12:3000/messages/addMessage",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `message=${message}&discussionID=${props.discussionID}&userID=${props.userDatas._id}`,
+      }
+    );
+  }
 
   const getMessagesFromDB = async () => {
     const messagesFromDB = await fetch(
@@ -62,7 +72,7 @@ function ChatScreen(props) {
     );
     let messagesFromDBJSON = await messagesFromDB.json();
     setAllMessages(messagesFromDBJSON);
-   //console.log(messagesFromDBJSON);
+    //console.log(messagesFromDBJSON);
   };
   getMessagesFromDB();
 
