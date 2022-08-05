@@ -32,13 +32,6 @@ function HeaderSearchBar(props) {
   },[location])
 
   async function loadSearchResults() {
-<<<<<<< HEAD
-    if (location) {
-      var searchResults = await fetch(
-        `http:/192.168.1.175:3000/searchByLocation?location=${location}`
-      );
-      searchResults = await searchResults.json();
-=======
     var searchResults = await fetch(
       `${urlLocal}/search`,
       {method: "post",
@@ -48,7 +41,6 @@ function HeaderSearchBar(props) {
     );
     searchResults = await searchResults.json();
     console.log('searchResults', searchResults)
->>>>>>> advancedSearchFront
 
     props.search({
       // search :true is used to display the radius circle after first search, even with no results

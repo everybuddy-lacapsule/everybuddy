@@ -30,12 +30,8 @@ function LoginScreen(props) {
   }, [props.userEmail]);
 
   var handleSubmitSignIn = async () => {
-<<<<<<< HEAD
-    var res = await fetch("http://192.168.1.175:3000/users/sign-in", {
-=======
     var urlLocal = 'http://'+IPLOCAL+ ':3000'
     var res = await fetch(`${urlLocal}/users/sign-in`, {
->>>>>>> advancedSearchFront
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `email=${signinEmail}&pwd=${signinPwd}`,

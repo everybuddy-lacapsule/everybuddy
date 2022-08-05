@@ -15,24 +15,6 @@ function MapScreen(props) {
   // Radius default, unit = meter
   const [buddyList, setBuddyList] = useState([]);
 
-<<<<<<< HEAD
-    /*--------------------Generate circle radius when search is true (reducer searchResult)-------------*/
-    let circle;
-    if (props.searchResults.search) {
-      circle = (
-        <Circle
-          center={{
-            longitude: props.searchResults.searchLocation.long,
-            latitude: props.searchResults.searchLocation.lat,
-          }}
-          strokeWidth={1}
-          strokeColor={"#1a66ff"}
-          fillColor={"rgba(230,238,255,0.5)"}
-          radius={radius}
-        />
-      );
-    }
-=======
   /*--------------------Generate circle radius when search is true (reducer searchResult)-------------*/
   let circle;
   let latDelta = 0.1922
@@ -53,7 +35,6 @@ function MapScreen(props) {
       />
     );
   }
->>>>>>> advancedSearchFront
 
   /*--------------------Automate apparence of list Redux-------------*/
   const searchResultsList = props.searchResults.searchResults.map((user, i) => {
@@ -79,10 +60,6 @@ function MapScreen(props) {
     }
   }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> advancedSearchFront
   //*BOTTOM DRAWER
   const windowHeight = Dimensions.get("window").height;
   function bottomDrawer(searchResults) {
@@ -146,17 +123,10 @@ function MapScreen(props) {
         provider="google"
         style={styles.map}
         region={{
-<<<<<<< HEAD
-          latitude: props.searchResults.searchLocation.lat,
-          longitude: props.searchResults.searchLocation.long,
-          latitudeDelta: 0.1922,
-          longitudeDelta: 0.1421,
-=======
           latitude: Number(props.searchResults.searchLocation.lat),
           longitude: Number(props.searchResults.searchLocation.long),
           latitudeDelta: latDelta,
           longitudeDelta:longDelta,
->>>>>>> advancedSearchFront
         }}
         mapType="mutedStandard"
         userInterfaceStyle="dark"
