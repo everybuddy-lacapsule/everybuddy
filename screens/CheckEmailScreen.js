@@ -40,7 +40,7 @@ function CheckEmailScreen(props) {
 
   return (
     <ImageBackground
-      source={require("../assets/logo.jpg")}
+      source={require("../assets/background.png")}
       style={styles.container}
     >
       <View style={styles.container}>

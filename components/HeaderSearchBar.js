@@ -82,12 +82,9 @@ function HeaderSearchBar(props) {
         style={styles.searchButtonBackground}
         onPress={() => loadSearchResults()}
       >
-        <FontAwesome
-          style={styles.searchButton}
-          name="search"
-          size={16}
-          color="white"
-        />
+        <View style={styles.searchButton}>
+          <FontAwesome name="search" size={16} color="white" />
+        </View>
       </TouchableOpacity>
     </View>
   );

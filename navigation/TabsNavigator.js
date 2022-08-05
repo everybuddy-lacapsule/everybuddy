@@ -4,7 +4,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
 
 import MapScreen from "../screens/MapScreen";
 import NewsScreen from "../screens/NewsScreen";
@@ -12,11 +11,12 @@ import MessengerScreen from "../screens/MessengerScreen";
 import BuddiesScreen from "../screens/BuddiesScreen";
 import MyProfileScreen from "../screens/MyProfileScreen";
 import HeaderSearchBar from "../components/HeaderSearchBar";
+import ChatScreen from "../screens/ChatScreen";
 
 import { connect } from "react-redux";
 
 const Tab = createBottomTabNavigator();
-const hiddenTabs = ["Buddies", "MyProfile"];
+const hiddenTabs = ["Buddies", "MyProfile", "Chat"];
 
 const TabsNavigator = function (props) {
 	
@@ -66,7 +66,7 @@ const TabsNavigator = function (props) {
 			tabBarOptions={{
 				showLabel: false,
 				style: {
-					height: 40,
+					height: 55,
 					position: "absolute",
 					bottom: 0,
 					left: 0,
@@ -101,6 +101,13 @@ const TabsNavigator = function (props) {
 			<Tab.Screen
 				name="Buddies"
 				component={BuddiesScreen}
+				options={{
+					headerRight: () => <View style={styles.right}></View>,
+				}}
+			/>
+			<Tab.Screen
+				name="Chat"
+				component={ChatScreen}
 				options={{
 					headerRight: () => <View style={styles.right}></View>,
 				}}

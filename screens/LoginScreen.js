@@ -37,6 +37,7 @@ function LoginScreen(props) {
       body: `email=${signinEmail}&pwd=${signinPwd}`,
     });
     res = await res.json();
+    //console.log(res.userDatas);
     if (res.isLogin) {
       AsyncStorage.setItem("userID", res.userDatas._id);
       props.setUserDatas(res.userDatas);
@@ -49,7 +50,7 @@ function LoginScreen(props) {
 
   return (
     <ImageBackground
-      source={require("../assets/logo.jpg")}
+      source={require("../assets/background.png")}
       style={styles.container}
     >
       <View style={styles.container}>
