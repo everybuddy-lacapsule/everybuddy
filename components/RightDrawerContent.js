@@ -624,25 +624,6 @@ async function loadSearchResults() {
         </View>
       </DrawerContentScrollView>
       <View style={{ flexDirection: "row" }}>
-<<<<<<< HEAD
-        <TouchableOpacity
-          style={[styles.button, {width: "70%"}]}
-          onPress={()=>{loadSearchResults(); props.navigation.toggleDrawer()}}>
-           <Text style={{ fontSize: 20, color: "#7C4DFF" }}>Rechercher</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.button, {width: "15%"}]}
-          onPress={()=>{resetFilters()}}>
-                <Icon
-                  name="trash-o"
-                  type="font-awesome"
-                  color='#7C4DFF'
-                  size={20}
-                />
-        </TouchableOpacity>
-      </View>
-
-=======
     <TouchableOpacity
       style={[styles.button, {width: "70%"}]}
       onPress={()=>{loadSearchResults(); props.navigation.toggleDrawer()}}>
