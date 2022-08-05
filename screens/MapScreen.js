@@ -1,38 +1,38 @@
 import { Text, View, StyleSheet, Dimensions, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import MapView, { Marker, Circle } from "react-native-maps";
-import * as Location from "expo-location";
 import { ListItem, Avatar } from "@rneui/base";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import BottomDrawer from "react-native-bottom-drawer-view";
 import { connect } from "react-redux";
-import { DrawerToggleButton } from "@react-navigation/drawer";
 
 function MapScreen(props) {
-  console.log(props.userDatas);
 
-  const [resultLink, setResultLink] = useState("list");
+  const [resultLink, setResultLink] = useState("liste");
   // Radius default, unit = meter
-  const [radius, setRadius] = useState(5000);
   const [buddyList, setBuddyList] = useState([]);
 
-    /*--------------------Generate circle radius when search is true (reducer searchResult)-------------*/
-    let circle;
-    if (props.searchResults.search) {
-      circle = (
-        <Circle
-          center={{
-            longitude: props.searchResults.searchLocation.long,
-            latitude: props.searchResults.searchLocation.lat,
-          }}
-          strokeWidth={1}
-          strokeColor={"#1a66ff"}
-          fillColor={"rgba(230,238,255,0.5)"}
-          radius={radius}
-        />
-      );
-    }
+  /*--------------------Generate circle radius when search is true (reducer searchResult)-------------*/
+  let circle;
+  let latDelta = 0.1922
+  let longDelta = 0.1421
+  if (props.searchResults.search) {
+    latDelta = 0.03231*props.searchResults.searchLocation.radius
+    longDelta =  0.01421*props.searchResults.searchLocation.radius
+    circle = (
+      <Circle
+        center={{
+          longitude: props.searchResults.searchLocation.long,
+          latitude: props.searchResults.searchLocation.lat,
+        }}
+        strokeWidth={1}
+        strokeColor={"#1a66ff"}
+        fillColor={"rgba(230,238,255,0.5)"}
+        radius={props.searchResults.searchLocation.radius*1000}
+      />
+    );
+  }
 
   /*--------------------Automate apparence of list Redux-------------*/
   const searchResultsList = props.searchResults.searchResults.map((user, i) => {
@@ -58,7 +58,6 @@ function MapScreen(props) {
     }
   }
 
-
   //*BOTTOM DRAWER
   const windowHeight = Dimensions.get("window").height;
   function bottomDrawer(searchResults) {
@@ -66,7 +65,7 @@ function MapScreen(props) {
       <View>
         <Text style={styles.listHeader}>
           {searchResults.length} resultats {""}
-          <Text style={styles.link}>show {resultLink}</Text>
+          <Text style={styles.link}>voir {resultLink}</Text>
         </Text>
         <ScrollView>
           {searchResults.map((r, i) => {
@@ -122,10 +121,10 @@ function MapScreen(props) {
         provider="google"
         style={styles.map}
         region={{
-          latitude: props.searchResults.searchLocation.lat,
-          longitude: props.searchResults.searchLocation.long,
-          latitudeDelta: 0.1922,
-          longitudeDelta: 0.1421,
+          latitude: Number(props.searchResults.searchLocation.lat),
+          longitude: Number(props.searchResults.searchLocation.long),
+          latitudeDelta: latDelta,
+          longitudeDelta:longDelta,
         }}
         mapType="mutedStandard"
         userInterfaceStyle="dark"
