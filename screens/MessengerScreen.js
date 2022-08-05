@@ -5,19 +5,22 @@ import { FontAwesome } from "@expo/vector-icons";
 import { connect } from "react-redux";
 import Discussion from "../components/DiscussionComponent";
 
+import {IPLOCAL} from "@env"
+
 //import socketIOClient from "socket.io-client";
 import { useEffect, useState } from "react";
 
-//var socket = socketIOClient("http://172.16.188.131:3000");
 
 function MessengerScreen(props) {
+  var urlLocal = 'http://'+IPLOCAL+ ':3000'
+
 
   const [discussions, setDiscussions] = useState([]);
 
   useEffect(() => {
     const getDiscussions = async () => {
       try{
-        const response = await fetch(`http://172.16.190.6:3000/discussions/${props.userDatas._id}`);
+        const response = await fetch(`${urlLocal}/discussions/${props.userDatas._id}`);
         let userDiscussions = await response.json();
         setDiscussions(userDiscussions);
       }

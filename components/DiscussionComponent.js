@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 
 
 function Discussion({ discussionID, discussion, currentUser, navigation, getDiscussionID }) {
+  var urlLocal = 'http://'+IPLOCAL+ ':3000'
   var buddyIcon = "person-add";
   var buddyIconColor = "#0E0E66";
   var buddyIconStyle = { paddingRight: 2 };
@@ -25,7 +26,7 @@ function Discussion({ discussionID, discussion, currentUser, navigation, getDisc
 
     const getAnotherMember = async () => {
       const response = await fetch(
-        `http://172.16.190.6:3000/users/getUserDatas?userID=${anotherMemberID}`
+        `${urlLocal}/users/getUserDatas?userID=${anotherMemberID}`
       );
       const dataJSON = await response.json();
       //console.log(dataJSON);
@@ -38,7 +39,7 @@ function Discussion({ discussionID, discussion, currentUser, navigation, getDisc
   useEffect(() => {
     const displayLastMessage = async ()=> {
     const response =  await fetch(
-      `http://172.16.190.6:3000/messages/${discussionID}/lastMessage`
+      `${urlLocal}/messages/${discussionID}/lastMessage`
     );
 
     const dataJSON = await response.json();

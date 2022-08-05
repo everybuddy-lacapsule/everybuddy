@@ -16,10 +16,15 @@ import InsetShadow from "react-native-inset-shadow";
 import { connect } from "react-redux";
 import { Input } from "@rneui/themed";
 
+import {IPLOCAL} from "@env"
+
+
 /*----Web socket----*/
 import socketIOClient from "socket.io-client";
 
 function ChatScreen(props) {
+  var urlLocal = 'http://'+IPLOCAL+ ':3000'
+
   const socket = useRef();
   const scrollRef = useRef();
 
@@ -31,7 +36,7 @@ function ChatScreen(props) {
 
   useEffect(() => {
     // init socket.current value with extraHeader which contain a room id (=> discussionID)
-    socket.current = socketIOClient("http://172.16.190.6:3000", {
+    socket.current = socketIOClient(urlLocal, {
       extraHeaders: {
         roomID: props.discussionInfos.discussionID,
       },
@@ -42,7 +47,7 @@ function ChatScreen(props) {
   useEffect(() => {
     const getMessagesFromDB = async () => {
       const messagesFromDB = await fetch(
-        `http://172.16.190.6:3000/messages/${props.discussionInfos.discussionID}`
+        `${urlLocal}/messages/${props.discussionInfos.discussionID}`
       );
       let messagesFromDBJSON = await messagesFromDB.json();
       setAllMessages(messagesFromDBJSON);
@@ -89,7 +94,7 @@ function ChatScreen(props) {
     try {
       /* SEND message to DB */
       const messageDB = await fetch(
-        "http://192.168.0.149:3000/messages/addMessage",
+        `${urlLocal}/messages/addMessage`,
         {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
