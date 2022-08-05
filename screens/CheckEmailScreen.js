@@ -14,11 +14,7 @@ function CheckEmailScreen(props) {
 
   //------------------ FETCH récupère en BDD ------------------------------------
   var handleCheckEmail = async () => {
-<<<<<<< HEAD
-    var res = await fetch("http://192.168.1.23:3000/users/check-email", {
-=======
-    var res = await fetch("http://192.168.0.149:3000/users/check-email", {
->>>>>>> 52bd232b72a8e7b6c13c296181fd724a08862caa
+    var res = await fetch("http://172.16.190.6:3000/users/check-email", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `email=${signinEmail}`,
@@ -36,7 +32,7 @@ function CheckEmailScreen(props) {
 
   return (
     <ImageBackground
-      source={require("../assets/logo.jpg")}
+      source={require("../assets/background.png")}
       style={styles.container}
     >
       <View style={styles.container}>

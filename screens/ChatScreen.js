@@ -31,7 +31,7 @@ function ChatScreen(props) {
 
   useEffect(() => {
     // init socket.current value with extraHeader which contain a room id (=> discussionID)
-    socket.current = socketIOClient("http://192.168.0.149:3000", {
+    socket.current = socketIOClient("http://172.16.190.6:3000", {
       extraHeaders: {
         roomID: props.discussionInfos.discussionID,
       },
@@ -42,7 +42,7 @@ function ChatScreen(props) {
   useEffect(() => {
     const getMessagesFromDB = async () => {
       const messagesFromDB = await fetch(
-        `http://192.168.0.149:3000/messages/${props.discussionInfos.discussionID}`
+        `http://172.16.190.6:3000/messages/${props.discussionInfos.discussionID}`
       );
       let messagesFromDBJSON = await messagesFromDB.json();
       setAllMessages(messagesFromDBJSON);

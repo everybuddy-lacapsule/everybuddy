@@ -16,11 +16,7 @@ function SplashScreen(props) {
     AsyncStorage.getItem("userID", async function (error, userID) {
       if (userID !== null) {
         var datas = await fetch(
-<<<<<<< HEAD
-          `http://192.168.1.23:3000/users/getUserDatas?userID=${userID}`
-=======
-          `http://192.168.0.149:3000/users/getUserDatas?userID=${userID}`
->>>>>>> 52bd232b72a8e7b6c13c296181fd724a08862caa
+          `http://172.16.190.6:3000/users/getUserDatas?userID=${userID}`
         );
         datas = await datas.json();
         //console.log(datas);
@@ -38,22 +34,19 @@ function SplashScreen(props) {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <Text>EVERBUTTY</Text>
-      </View>
-      <TouchableOpacity style={styles.button} onPress={() => handleStart()}>
-        <Text style={styles.confirm}>Confirmer</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
+    <ImageBackground style={styles.container}
+    source={require("../assets/splash.png")}
+    >
+      <View style={{ flex:1, flexDirection: 'column', justifyContent:'flex-end' }}>
+      <Text style={[styles.confirm, {marginBottom:50}]}
         onPress={() => {
           AsyncStorage.clear(), props.setUserDatas(null);
-        }}
-      >
-        <Text style={styles.confirm}>Clear local storage</Text>
+        }}>Clear local storage</Text>
+      <TouchableOpacity style={styles.button} onPress={() => handleStart()}>
+        <Text style={styles.confirm}>Commencer</Text>
       </TouchableOpacity>
-    </View>
+      </View>
+    </ImageBackground>
   );
 }
 
