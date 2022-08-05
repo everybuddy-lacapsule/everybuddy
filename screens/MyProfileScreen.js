@@ -1,12 +1,199 @@
 import React, { useEffect, useState } from "react";
-import {View, ImageBackground, StyleSheet, Text, TouchableOpacity, Button, ScrollView, SafeAreaView} from "react-native";
-import { Badge, Colors, Divider, SocialIcon, hollowWhite } from "@rneui/themed";
+import {View, ImageBackground, StyleSheet, Text, TouchableOpacity, Button, ScrollView, Linking} from "react-native";
+import { Badge, Colors, Divider, SocialIcon, hollowWhite, onPress } from "@rneui/themed";
 import { ListItem, Avatar } from "@rneui/base";
+import {connect} from 'react-redux';
 
 
 
 function MyProfileScreen(props) {
-//MapStateToProps récupérer user dans le redux
+
+  // var isEdited= false
+  // var myProfile
+  // if (isEdited === false) {
+//      myProfile = return (
+      
+//       <View style={styles.content}>
+//       <View style={styles.avatar}>
+//         <Avatar
+//           rounded
+//           size={142}
+//           source={{uri : props.userData.avatar}}
+//         />
+
+//       </View>
+//       <View style={styles.view1}>
+//         {/* Nom Prénom */}
+//         <Text style={styles.name}>
+//           {props.userData.firstName} {props.userData.name}
+//         </Text>
+//         {/* Cursus */}
+//         <Text style={styles.text1}>
+//           Batch {props.userData.capsule.nbBatch} {props.userData.capsule.campus}
+//           </Text>
+//           {/* Job + Entreprise */}
+//         <Text style={styles.text1}>
+//         {props.userData.work.work} @ {props.userData.work.company}
+//           </Text>
+//           {/* Statut : OpenToWork/ Just Curious / Partner / Hiring */}
+//         <Text style={styles.badge1}>
+//           {props.userData.status}
+//           </Text>
+//       </View>
+//       </View>
+//       <View style={styles.view1}>
+//         {/* Localisation actuelle */}
+//         <Text style={styles.text2}>
+//           {props.userData.address.city} {props.userData.address.country}
+//           </Text>
+//       </View>
+//       <View style={styles.tags}>
+//         {/* Tags et compétences */}
+//         {
+//         props.userData.tags.map((tag, i) => {
+//           return (
+//       <Text style={styles.badge2} key={i}>
+//         {tag}
+//         </Text>
+//           )
+//         })
+//       }
+
+// </View>
+
+// <ScrollView 
+// contentContainerStyle={styles.view2}
+// scrollbar
+// >
+
+// <Text style={styles.title}>
+// RECHERCHE ACTUELLE
+// </Text>
+// <Text style={styles.text2}>
+// {props.userData.searchCurrent}
+// </Text>
+//   <Text style={styles.title}>
+// PRÉSENTATION
+//   </Text>
+//   <Text style={styles.text2}>
+//   {props.userData.presentation}  
+//   </Text>
+
+// </ScrollView>
+
+// <Divider
+// 					color={hollowWhite}
+// 					style={{ width: " 90%", marginLeft: "5%" }}
+// 				/>
+
+// <View style={styles.icon}>
+//   {/* ICONES RESEAUX SOCIAUX */}
+//   {/* ------------- TROUVER COMMENT RECUPERER LES LIENS DE LA BDD ! ---------- */}
+// <SocialIcon
+//   onPress={() => {Linking.openURL('props.userData.linkRs.Github')}}
+//   type='github'
+// />
+// <SocialIcon
+// onPress={() => {Linking.openURL('https://www.linkedin.com/')}}
+//   type='linkedin'
+// />
+
+
+// </View >
+
+//      )
+  // } else {
+  //  myProfile = return (  -------------- AVEC DES INPUTS MODIFIABLES A LA PLACE DES CHAMPS QUE L'ON VEUT CHANGER ---------------
+//     <View style={styles.content}>
+//     <View style={styles.avatar}>
+//       <Avatar
+//         rounded
+//         size={142}
+//         source={{uri : props.userData.avatar}}
+//       />
+
+//     </View>
+//     <View style={styles.view1}>
+//       {/* Nom Prénom */}
+//       <Text style={styles.name}>
+//         {props.userData.firstName} {props.userData.name}
+//       </Text>
+//       {/* Cursus */}
+//       <Text style={styles.text1}>
+//         Batch {props.userData.capsule.nbBatch} {props.userData.capsule.campus}
+//         </Text>
+//         {/* Job + Entreprise */}
+//       <Text style={styles.text1}>
+//       {props.userData.work.work} @ {props.userData.work.company}
+//         </Text>
+//         {/* Statut : OpenToWork/ Just Curious / Partner / Hiring */}
+//       <Text style={styles.badge1}>
+//         {props.userData.status}
+//         </Text>
+//     </View>
+//     </View>
+//     <View style={styles.view1}>
+//       {/* Localisation actuelle */}
+//       <Text style={styles.text2}>
+//         {props.userData.address.city} {props.userData.address.country}
+//         </Text>
+//     </View>
+//     <View style={styles.tags}>
+//       {/* Tags et compétences */}
+//       {
+//       props.userData.tags.map((tag, i) => {
+//         return (
+//     <Text style={styles.badge2} key={i}>
+//       {tag}
+//       </Text>
+//         )
+//       })
+//     }
+
+// </View>
+
+// <ScrollView 
+// contentContainerStyle={styles.view2}
+// scrollbar
+// >
+
+// <Text style={styles.title}>
+// RECHERCHE ACTUELLE
+// </Text>
+// <Text style={styles.text2}>
+// {props.userData.searchCurrent}
+// </Text>
+// <Text style={styles.title}>
+// PRÉSENTATION
+// </Text>
+// <Text style={styles.text2}>
+// {props.userData.presentation}  
+// </Text>
+
+// </ScrollView>
+
+// <Divider
+//         color={hollowWhite}
+//         style={{ width: " 90%", marginLeft: "5%" }}
+//       />
+
+// <View style={styles.icon}>
+// {/* ICONES RESEAUX SOCIAUX */}
+// {/* ------------- TROUVER COMMENT RECUPERER LES LIENS DE LA BDD ! ---------- */}
+// <SocialIcon
+// onPress={() => {Linking.openURL('https://www.youtube.com/watch?v=dQw4w9WgXcQ')}}
+// type='github'
+// />
+// <SocialIcon
+// onPress={() => {Linking.openURL('https://www.linkedin.com/')}}
+// type='linkedin'
+// />
+
+
+// </View >
+
+  //   )
+  // }
 
   return (
     <View
@@ -18,28 +205,46 @@ function MyProfileScreen(props) {
         <Avatar
           rounded
           size={142}
-          source={{ uri: "https://place-hold.it/300" }}
+          source={{uri : props.userData.avatar}}
         />
-      </View>
-      <View style={styles.view1}>
-        <Text style={styles.name}>LucAlban SerraSil</Text>
-        <Text style={styles.text1}>Batch 55 Lyon</Text>
-        <Text style={styles.text1}>Dev Web @ SiamoisCorp</Text>
 
-        <Text style={styles.badge1}>#OPENTOWORK</Text>
+      </View>
+      <View style={styles.view1}>
+        {/* Nom Prénom */}
+        <Text style={styles.name}>
+          {props.userData.firstName} {props.userData.name}
+        </Text>
+        {/* Cursus */}
+        <Text style={styles.text1}>
+          Batch {props.userData.capsule.nbBatch} {props.userData.capsule.campus}
+          </Text>
+          {/* Job + Entreprise */}
+        <Text style={styles.text1}>
+        {props.userData.work.work} @ {props.userData.work.company}
+          </Text>
+          {/* Statut : OpenToWork/ Just Curious / Partner / Hiring */}
+        <Text style={styles.badge1}>
+          {props.userData.status}
+          </Text>
       </View>
       </View>
       <View style={styles.view1}>
-        <Text style={styles.text2}>Lyon, Auvergne Rhône-Alpes, France</Text>
+        {/* Localisation actuelle */}
+        <Text style={styles.text2}>
+          {props.userData.address.city} {props.userData.address.country}
+          </Text>
       </View>
       <View style={styles.tags}>
-
-      <Text style={styles.badge2}>FullStack</Text>
-      <Text style={styles.badge2}>Bière</Text>
-      <Text style={styles.badge2}>Bonne Ambiance</Text>
-      <Text style={styles.badge2}>Plus d'idées</Text>
-      <Text style={styles.badge2}>Remplissage</Text>
-      <Text style={styles.badge2}>FullStack</Text>
+        {/* Tags et compétences */}
+        {
+        props.userData.tags.map((tag, i) => {
+          return (
+      <Text style={styles.badge2} key={i}>
+        {tag}
+        </Text>
+          )
+        })
+      }
 
 </View>
 
@@ -47,30 +252,40 @@ function MyProfileScreen(props) {
 contentContainerStyle={styles.view2}
 scrollbar
 >
+
+<Text style={styles.title}>
+RECHERCHE ACTUELLE
+</Text>
+<Text style={styles.text2}>
+{props.userData.searchCurrent}
+</Text>
   <Text style={styles.title}>
 PRÉSENTATION
   </Text>
   <Text style={styles.text2}>
-  Vous savez, moi je ne crois pas qu'il y ait de bonne ou de mauvaise situation. Moi, si je devais résumer ma vie aujourd'hui avec vous, je dirais que c'est d'abord des rencontres. Des gens qui m'ont tendu la main, peut-être à un moment où je ne pouvais pas, où j'étais seul chez moi. Et c'est assez curieux de se dire que les hasards, les rencontres, forgent une destinée... Parce que quand on a le goût de la chose, quand on a le goût de la chose bien faite, le beau geste, parfois on ne trouve pas l'interlocuteur en face je dirais, le miroir qui vous aide à avancer. Alors ça n'est pas mon cas, comme je disais là, puisque moi au contraire, j'ai pu : et je dis merci à la vie, je lui dis merci, je chante la vie, je danse la vie... je ne suis qu'amour ! Et finalement, quand beaucoup de gens aujourd'hui me disent « Mais comment fais-tu pour avoir cette humanité ? », et bien je leur réponds très simplement, je leur dis que c'est ce goût de l'amour ce goût donc qui m'a poussé aujourd'hui à entreprendre une construction mécanique, mais demain qui sait ? Peut-être simplement à me mettre au service de la communauté, à faire le don, le don de soi...  </Text>
+  {props.userData.presentation}  
+  </Text>
 
-  <Text style={styles.title}>
-RECHERCHE ACTUELLE
-</Text>
-<Text style={styles.text2}>
-  Je cherche un travail où on gagne de l'argent pour manger. Si possible sur la planète Terre mais je suis véhiculé.
-</Text>
 </ScrollView>
+
 <Divider
 					color={hollowWhite}
 					style={{ width: " 90%", marginLeft: "5%" }}
 				/>
+
 <View style={styles.icon}>
+  {/* ICONES RESEAUX SOCIAUX */}
+  {/* ------------- TROUVER COMMENT RECUPERER LES LIENS DE LA BDD ! ---------- */}
 <SocialIcon
+  onPress={() => {Linking.openURL('https://www.youtube.com/watch?v=dQw4w9WgXcQ')}}
   type='github'
 />
 <SocialIcon
+onPress={() => {Linking.openURL('https://www.linkedin.com/')}}
   type='linkedin'
 />
+
+
 </View >
 
     </View>
@@ -78,7 +293,7 @@ RECHERCHE ACTUELLE
 }
 
 function mapStateToProps(state) {
-  return { urlPhoto : state.photo }
+  return { userData : state.userDatas }
  }  
 
  export default connect(mapStateToProps, null)(MyProfileScreen);

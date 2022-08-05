@@ -16,7 +16,7 @@ function SplashScreen(props) {
     AsyncStorage.getItem("userID", async function (error, userID) {
       if (userID !== null) {
         var datas = await fetch(
-          `http://172.16.189.139:3000/users/getUserDatas?userID=${userID}`
+          `http://192.168.1.175:3000/users/getUserDatas?userID=${userID}`
         );
         datas = await datas.json();
         props.setUserDatas(datas.userDatas);
