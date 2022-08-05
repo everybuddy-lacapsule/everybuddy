@@ -36,8 +36,6 @@ function CustomRightDrawerContent(props) {
   const [toggledTags, setToggledTags] = useState();
   const [toggledJobs, setToggledJobs] = useState();
 
- 
- 
   // Etat avec toutes les datas
   const [filters, setFilters] = useState({
     nbBatch: '', // Number
@@ -75,6 +73,21 @@ function addFilters(filter, value) {
   }
   setFilters(filtersCopy)
 };
+
+function resetFilters() {
+  setFilters
+    ({
+      nbBatch: '', // Number
+      location: '', // String 
+      radius: '', // Number
+      campus: [], // Array
+      cursus: [], // Array
+      status: [], // Array
+      tags: [], // Array
+      work: [], // Array
+      workType: [], // Array
+    });
+}
 
 async function loadSearchResults() {
   var urlLocal = 'http://'+IPLOCAL+ ':3000'
@@ -201,8 +214,6 @@ async function loadSearchResults() {
                   name="circle"
                   type="font-awesome"
                   size={20}
-                  // reverse
-                  // containerStyle={{ bottom: 15, right: 20 }}
                 />
               ),
             }}
@@ -599,11 +610,24 @@ async function loadSearchResults() {
           </ListItemAccordion>
         </View>
       </DrawerContentScrollView>
-      <TouchableOpacity
-      style={styles.button}
-      onPress={()=>{loadSearchResults(); props.navigation.toggleDrawer()}}>
-        <Text style={{ fontSize: 20, color: "#7C4DFF" }}>Rechercher</Text>
-      </TouchableOpacity>
+      <View style={{ flexDirection: "row" }}>
+        <TouchableOpacity
+          style={[styles.button, {width: "70%"}]}
+          onPress={()=>{loadSearchResults(); props.navigation.toggleDrawer()}}>
+           <Text style={{ fontSize: 20, color: "#7C4DFF" }}>Rechercher</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, {width: "15%"}]}
+          onPress={()=>{resetFilters()}}>
+                <Icon
+                  name="trash-o"
+                  type="font-awesome"
+                  color='#7C4DFF'
+                  size={20}
+                />
+        </TouchableOpacity>
+      </View>
+
     </LinearGradient>
   );
 }
@@ -646,9 +670,9 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     alignItems: "center",
     justifyContent: "center",
-    width: "90%",
     height: 55,
     borderRadius: 5,
+    marginRight: 0,
     margin: 15,
   },
   contentView: {
