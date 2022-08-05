@@ -20,11 +20,7 @@ function SplashScreen(props) {
       console.log(userID)
       if (userID !== null) {
         var datas = await fetch(
-<<<<<<< HEAD
-          `http://192.168.1.175:3000/users/getUserDatas?userID=${userID}`
-=======
           `${urlLocal}/users/getUserDatas?userID=${userID}`
->>>>>>> advancedSearchFront
         );
         datas = await datas.json();
         props.setUserDatas(datas.userDatas);
