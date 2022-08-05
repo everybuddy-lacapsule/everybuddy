@@ -14,16 +14,17 @@ import { ListItemAccordion } from "@rneui/base/dist/ListItem/ListItem.Accordion"
 import { FontAwesome } from "@expo/vector-icons";
 
 import { connect } from "react-redux";
-import { IPLOCAL } from "@env";
+import {IPLOCAL} from "@env"
+
 
 //* RIGHT DRAWER CONTENT
 function CustomRightDrawerContent(props) {
   let colors = ["#FF1744", "#F94A56", "#7C4DFF"];
 
   // Etats du slider radius
-  const [km, setKm] = useState(0);
-  const [batch, setBatch] = useState("");
-  const [location, setLocation] = useState("");
+  const [km, setKm] = useState(10);
+  const [batch, setBatch] = useState('');
+  const [location, setLocation] = useState('');
 
   // Etats pour dérouler et afficher les différentes catégories
   const [expandedCapsule, setExpandedCapsule] = useState(false);
@@ -35,13 +36,13 @@ function CustomRightDrawerContent(props) {
   const [toggledTags, setToggledTags] = useState();
   const [toggledJobs, setToggledJobs] = useState();
 
-  // Etats à renvoyer au back pour Recherche avancée
-
+ 
+ 
   // Etat avec toutes les datas
   const [filters, setFilters] = useState({
-    nbBatch: "", // Number
-    location: "", // String
-    radius: "", // Number
+    nbBatch: '', // Number
+    location: '', // String 
+    radius: '', // Number
     campus: [], // Array
     cursus: [], // Array
     status: [], // Array
@@ -50,39 +51,43 @@ function CustomRightDrawerContent(props) {
     workType: [], // Array
   });
 
-  // Allow the KM slider to set Filters.radius depending on his value state
+// Allow the KM slider to set Filters.radius depending on his value state
   useEffect(() => {
-    filters.radius = km;
-  }, [km]);
+    filters.radius = km
+  },[km])
   useEffect(() => {
-    filters.location = location;
-  }, [location]);
+    filters.location = location
+  },[location])
   useEffect(() => {
-    filters.nbBatch = batch;
-  }, [batch]);
+    filters.nbBatch = batch
+  },[batch])
 
-  function addFilters(filter, value) {
-    let filtersCopy = { ...filters };
-    if (filter === "nbBatch" || filter === "location" || filter === "radius") {
-      filtersCopy[filter] = value;
+function addFilters(filter, value) {
+  let filtersCopy = {...filters}
+  if (filter === 'nbBatch' || filter === 'location' || filter === 'radius'){
+    filtersCopy[filter] = value
+  }else{
+    if (!filtersCopy[filter].find((e) => e === value)) {
+      filtersCopy[filter] = [... filtersCopy[filter], value]
     } else {
-      if (!filtersCopy[filter].find((e) => e === value)) {
-        filtersCopy[filter] = [...filtersCopy[filter], value];
-      } else {
-        filtersCopy[filter] = filtersCopy[filter].filter((e) => e !== value);
-      }
+      filtersCopy[filter] = filtersCopy[filter].filter((e) => e !== value);
     }
-    setFilters(filtersCopy);
   }
+  setFilters(filtersCopy)
+};
 
-  async function loadSearchResults() {
-    var searchResults = await fetch(`http://${IPLOCAL}:3000/search`, {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
+async function loadSearchResults() {
+  var urlLocal = 'http://'+IPLOCAL+ ':3000'
+
+    var searchResults = await fetch(
+      `${urlLocal}/search`,
+      {method: "post",
+      headers:{'Content-Type': 'application/json'},
       body: JSON.stringify(filters),
-    });
+      }
+    );
     searchResults = await searchResults.json();
-    console.log("searchResults", searchResults);
+    console.log('searchResults', searchResults)
 
     props.search({
       // search :true is used to display the radius circle after first search, even with no results
@@ -90,7 +95,8 @@ function CustomRightDrawerContent(props) {
       searchResults: searchResults.users,
       searchLocation: searchResults.location,
     });
-  }
+
+}
 
   const campusDatasList1 = ["Paris", "Lyon", "Marseille"];
   const campusDatasList2 = ["Toulouse", "Bordeaux", "Monaco"];
@@ -134,10 +140,17 @@ function CustomRightDrawerContent(props) {
     "En recherche",
   ];
 
+
   var displayValue = km;
   if (km === 100) {
-    displayValue = "France";
+    displayValue = "France entière";
   }
+  useEffect(() => {
+    if (props.searchResults.searchLocation.locationRequest){
+      setLocation(props.searchResults.searchLocation.locationRequest)
+    }
+  },[props.searchResults.searchLocation.locationRequest])
+  
 
   return (
     <LinearGradient
@@ -147,52 +160,57 @@ function CustomRightDrawerContent(props) {
       end={{ x: 1, y: 0.3 }}
     >
       <DrawerContentScrollView {...props}>
-        <View style={{ alignItems: "center" }}>
-          <View style={styles.headerTitle}>
-            <TextInput
-              style={styles.searchBar}
-              placeholder="Type in city"
-              placeholderTextColor="rgba(255, 255, 255, 0.5)"
-              onChangeText={(value) => setLocation(value)}
-              onSubmitEditing={({
-                nativeEvent: { text, eventCount, target },
-              }) => loadSearchResults()}
-            ></TextInput>
-            <FontAwesome
-              style={styles.searchButton}
-              name="search"
-              size={16}
-              color="white"
-            />
-          </View>
-          <View style={[styles.contentView]}>
-            <Slider
-              value={km}
-              onValueChange={setKm}
-              maximumValue={100}
-              minimumValue={0}
-              step={5}
-              allowTouchTrack
-              trackStyle={{ height: 5, backgroundColor: "transparent" }}
-              thumbStyle={{
-                height: 20,
-                width: 20,
-                backgroundColor: "transparent",
-              }}
-              thumbProps={{
-                children: (
-                  <Icon
-                    name="circle"
-                    type="font-awesome"
-                    size={20}
-                    // reverse
-                    // containerStyle={{ bottom: 15, right: 20 }}
-                  />
-                ),
-              }}
-            />
-            <Text style={{ color: "#FFFFFF" }}>Km: {displayValue}</Text>
-          </View>
+        <View style={{ alignItems: 'center' }}>
+        <View style={styles.headerTitle}>
+      <TextInput
+      value = {location}
+        style={styles.searchBar}
+        placeholder="Type in city"
+        placeholderTextColor="rgba(255, 255, 255, 0.5)"
+        onChangeText={(value) => setLocation(value)}
+        onSubmitEditing={({ nativeEvent: { text, eventCount, target } }) =>
+          loadSearchResults()
+        }
+      >
+       
+        </TextInput>
+        <FontAwesome
+          style={styles.searchButton}
+          name="search"
+          size={16}
+          color="white"
+        />
+    </View>
+        <View style={[styles.contentView]}>
+          <Slider
+            value={km}
+            onValueChange={setKm}
+            maximumValue={100}
+            minimumValue={10}
+            step={5}
+            allowTouchTrack
+            trackStyle={{ height: 5, backgroundColor: "transparent" }}
+            thumbStyle={{
+              height: 20,
+              width: 20,
+              backgroundColor: "transparent",
+            }}
+            thumbProps={{
+              children: (
+                <Icon
+                  name="circle"
+                  type="font-awesome"
+                  size={20}
+                  // reverse
+                  // containerStyle={{ bottom: 15, right: 20 }}
+                />
+              ),
+            }}
+          />
+          <Text style={{ color: "#FFFFFF" }}>
+            Km: {displayValue}
+          </Text>
+        </View>
         </View>
 
         {/* //! 1ST SEGMENT */}
@@ -247,7 +265,7 @@ function CustomRightDrawerContent(props) {
                         style={{ alignSelf: "flex-end" }}
                         value={checked}
                         color="#fff"
-                        onValueChange={() => addFilters("status", status)}
+                        onValueChange={() => addFilters('status',status)}
                       />
                     </View>
                   </View>
@@ -295,6 +313,7 @@ function CustomRightDrawerContent(props) {
                   placeholder="#_ _"
                   onChangeText={(value) => setBatch(value)}
                   placeholderTextColor="rgba(255, 255, 255, 0.5)"
+                  
                 />
               </View>
               <Divider style={styles.divider} />
@@ -337,7 +356,7 @@ function CustomRightDrawerContent(props) {
                             style={{ alignSelf: "flex-end" }}
                             value={checked}
                             color="#fff"
-                            onValueChange={() => addFilters("campus", campus)}
+                            onValueChange={() => addFilters('campus',campus)}
                           />
                         </View>
                       );
@@ -371,7 +390,7 @@ function CustomRightDrawerContent(props) {
                             style={{ alignSelf: "flex-end" }}
                             value={checked}
                             color="#fff"
-                            onValueChange={() => addFilters("campus", campus)}
+                            onValueChange={() => addFilters('campus',campus)}
                           />
                         </View>
                       );
@@ -404,7 +423,7 @@ function CustomRightDrawerContent(props) {
                           style={{ alignSelf: "flex-end" }}
                           value={checked}
                           color="#fff"
-                          onValueChange={() => addFilters("cursus", cursus)}
+                          onValueChange={() => addFilters('cursus',cursus)}
                         />
                       </View>
                     );
@@ -459,7 +478,7 @@ function CustomRightDrawerContent(props) {
                   <Badge
                     key={i}
                     value={tag}
-                    onPress={() => addFilters("tags", tag)}
+                    onPress={() => addFilters('tags',tag)}
                     containerStyle={{ margin: 5 }}
                     status={status}
                     textStyle={{ color: color, fontSize: 13 }}
@@ -531,7 +550,7 @@ function CustomRightDrawerContent(props) {
                         style={{ alignSelf: "flex-end" }}
                         value={checked}
                         color="#fff"
-                        onValueChange={() => addFilters("work", work)}
+                        onValueChange={() => addFilters('work',work)}
                       />
                     </View>
                   </View>
@@ -571,7 +590,7 @@ function CustomRightDrawerContent(props) {
                       style={{ alignSelf: "flex-end" }}
                       value={checked}
                       color="#fff"
-                      onValueChange={() => addFilters("workType", workType)}
+                      onValueChange={() => addFilters('workType',workType)}
                     />
                   </View>
                 </View>
@@ -581,12 +600,8 @@ function CustomRightDrawerContent(props) {
         </View>
       </DrawerContentScrollView>
       <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          loadSearchResults();
-          props.navigation.toggleDrawer();
-        }}
-      >
+      style={styles.button}
+      onPress={()=>{loadSearchResults(); props.navigation.toggleDrawer()}}>
         <Text style={{ fontSize: 20, color: "#7C4DFF" }}>Rechercher</Text>
       </TouchableOpacity>
     </LinearGradient>
@@ -609,7 +624,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     padding: 5,
     textAlign: "center",
-    color: "white",
+    color: 'white'
   },
   DDitem: {
     flex: 1,
@@ -669,13 +684,21 @@ const styles = StyleSheet.create({
   headerTitle: {
     flexDirection: "row",
     paddingVertical: 20,
+
   },
-  searchButton: {
+  searchButton:{
     left: -25,
     top: 5,
-  },
+  }
+  
 });
 
+const mapStateToProps = (state) => {
+  return {
+    searchResults: state.searchResults,
+    userDatas: state.userDatas,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     search: function (results) {
@@ -684,4 +707,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(CustomRightDrawerContent);
+export default connect(mapStateToProps, mapDispatchToProps)(CustomRightDrawerContent);
