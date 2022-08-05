@@ -15,7 +15,7 @@ import { FontAwesome } from "@expo/vector-icons";
 
 import { connect } from "react-redux";
 import {IPLOCAL} from "@env"
-var urlLocal = 'http://'+IPLOCAL+ ':3000'
+var urlLocal = 'http://'+IPLOCAL+':3000'
 
 
 //* RIGHT DRAWER CONTENT
@@ -624,23 +624,23 @@ async function loadSearchResults() {
         </View>
       </DrawerContentScrollView>
       <View style={{ flexDirection: "row" }}>
-    <TouchableOpacity
-      style={[styles.button, {width: "70%"}]}
-      onPress={()=>{loadSearchResults(); props.navigation.toggleDrawer()}}>
-       <Text style={{ fontSize: 20, color: "#7C4DFF" }}>Rechercher</Text>
-    </TouchableOpacity>
-    <TouchableOpacity
-      style={[styles.button, {width: "15%"}]}
-      onPress={()=>{resetFilters()}}>
-            <Icon
-              name="trash-o"
-              type="font-awesome"
-              color='#7C4DFF'
-              size={20}
-            />
-    </TouchableOpacity>
-  </View>
->>>>>>> 3e2991bec5c636fe49361a5d4a1542b5f8016ae6
+        <TouchableOpacity
+          style={[styles.button, {width: "70%"}]}
+          onPress={()=>{loadSearchResults(); props.navigation.toggleDrawer()}}>
+           <Text style={{ fontSize: 20, color: "#7C4DFF" }}>Rechercher</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, {width: "15%"}]}
+          onPress={()=>{resetFilters()}}>
+                <Icon
+                  name="trash-o"
+                  type="font-awesome"
+                  color='#7C4DFF'
+                  size={20}
+                />
+        </TouchableOpacity>
+      </View>
+
     </LinearGradient>
   );
 }
