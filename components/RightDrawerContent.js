@@ -22,7 +22,7 @@ function CustomRightDrawerContent(props) {
   let colors = ["#FF1744", "#F94A56", "#7C4DFF"];
 
   // Etats du slider radius
-  const [km, setKm] = useState(0);
+  const [km, setKm] = useState(10);
   const [batch, setBatch] = useState('');
   const [location, setLocation] = useState('');
 
@@ -36,7 +36,6 @@ function CustomRightDrawerContent(props) {
   const [toggledTags, setToggledTags] = useState();
   const [toggledJobs, setToggledJobs] = useState();
 
-  // Etats à renvoyer au back pour Recherche avancée
  
  
   // Etat avec toutes les datas
@@ -79,7 +78,7 @@ function addFilters(filter, value) {
 
 async function loadSearchResults() {
     var searchResults = await fetch(
-      `http://172.16.190.139:3000/search`,
+      `http://${IPLOCAL}:3000/search`,
       {method: "post",
       headers:{'Content-Type': 'application/json'},
       body: JSON.stringify(filters),
@@ -141,10 +140,15 @@ async function loadSearchResults() {
 
 
   var displayValue = km;
-  if (km === 300) {
-    displayValue = "Monde";
+  if (km === 100) {
+    displayValue = "France entière";
   }
-
+  useEffect(() => {
+    if (props.searchResults.searchLocation.locationRequest){
+      setLocation(props.searchResults.searchLocation.locationRequest)
+    }
+  },[props.searchResults.searchLocation.locationRequest])
+  
 
   return (
     <LinearGradient
@@ -157,6 +161,7 @@ async function loadSearchResults() {
         <View style={{ alignItems: 'center' }}>
         <View style={styles.headerTitle}>
       <TextInput
+      value = {location}
         style={styles.searchBar}
         placeholder="Type in city"
         placeholderTextColor="rgba(255, 255, 255, 0.5)"
@@ -178,8 +183,8 @@ async function loadSearchResults() {
           <Slider
             value={km}
             onValueChange={setKm}
-            maximumValue={300}
-            minimumValue={0}
+            maximumValue={100}
+            minimumValue={10}
             step={5}
             allowTouchTrack
             trackStyle={{ height: 5, backgroundColor: "transparent" }}
@@ -686,6 +691,12 @@ const styles = StyleSheet.create({
   
 });
 
+const mapStateToProps = (state) => {
+  return {
+    searchResults: state.searchResults,
+    userDatas: state.userDatas,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     search: function (results) {
@@ -694,4 +705,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(CustomRightDrawerContent);
+export default connect(mapStateToProps, mapDispatchToProps)(CustomRightDrawerContent);
