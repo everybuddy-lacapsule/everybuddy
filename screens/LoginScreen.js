@@ -28,7 +28,7 @@ function LoginScreen(props) {
   }, [props.userEmail]);
 
   var handleSubmitSignIn = async () => {
-    var res = await fetch("http://192.168.27.171:3000/users/sign-in", {
+    var res = await fetch("http://192.168.1.23:3000/users/sign-in", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `email=${signinEmail}&pwd=${signinPwd}`,
@@ -47,7 +47,7 @@ function LoginScreen(props) {
 
   return (
     <ImageBackground
-      source={require("../assets/logo.jpg")}
+      source={require("../assets/background.png")}
       style={styles.container}
     >
       <View style={styles.container}>
