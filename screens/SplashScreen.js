@@ -6,15 +6,14 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import { Overlay, Button, Icon, Input } from "@rneui/themed";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connect } from "react-redux";
+
 import {IPLOCAL} from "@env"
+var urlLocal = 'http://'+IPLOCAL+ ':3000'
 
 
 function SplashScreen(props) {
-  var urlLocal = 'http://'+IPLOCAL+ ':3000'
-
   useEffect(() => {
     AsyncStorage.getItem("userID", async function (error, userID) {
       console.log(userID)

@@ -1,18 +1,16 @@
-import { Button, StyleSheet, View, ScrollView, Text } from "react-native";
-import { ListItem, Avatar } from "@rneui/base";
-import { Ionicons } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
+import {StyleSheet, View, ScrollView} from "react-native";
+
 import { connect } from "react-redux";
 import Discussion from "../components/DiscussionComponent";
 
 import {IPLOCAL} from "@env"
+const urlLocal = 'http://'+IPLOCAL+ ':3000'
 
 //import socketIOClient from "socket.io-client";
 import { useEffect, useState } from "react";
 
 
 function MessengerScreen(props) {
-  var urlLocal = 'http://'+IPLOCAL+ ':3000'
 
 
   const [discussions, setDiscussions] = useState([]);

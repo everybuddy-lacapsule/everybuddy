@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { TouchableOpacity, StyleSheet, View, TextInput } from "react-native";
+import React from "react";
+import { TouchableOpacity, StyleSheet, View} from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
@@ -13,7 +13,6 @@ import MyProfileScreen from "../screens/MyProfileScreen";
 import HeaderSearchBar from "../components/HeaderSearchBar";
 import ChatScreen from "../screens/ChatScreen";
 
-import { connect } from "react-redux";
 
 const Tab = createBottomTabNavigator();
 const hiddenTabs = ["Buddies", "MyProfile", "Chat"];

@@ -1,20 +1,13 @@
-import { Button, StyleSheet, View, ScrollView, Text } from "react-native";
-//import { ListItem } from "@rneui/base";
+import {StyleSheet } from "react-native";
 import { ListItem, Avatar } from "@rneui/themed";
-import { Ionicons } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
+
 import { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
+import {IPLOCAL} from "@env"
+var urlLocal = 'http://'+IPLOCAL+ ':3000'
 
 function Discussion({ discussionID, discussion, currentUser, navigation, getDiscussionID }) {
-  var urlLocal = 'http://'+IPLOCAL+ ':3000'
-  var buddyIcon = "person-add";
-  var buddyIconColor = "#0E0E66";
-  var buddyIconStyle = { paddingRight: 2 };
-  buddyIcon = "person";
-  buddyIconColor = "#E74C3C";
-  buddyIconStyle = { paddingRight: 0 };
 
   const [anotherMember, setAnotherMember] = useState({});
   const [lastMessage, setLastMessage] = useState("");
@@ -29,7 +22,6 @@ function Discussion({ discussionID, discussion, currentUser, navigation, getDisc
         `${urlLocal}/users/getUserDatas?userID=${anotherMemberID}`
       );
       const dataJSON = await response.json();
-      //console.log(dataJSON);
       setAnotherMember(dataJSON.userDatas);
     };
     getAnotherMember();
@@ -43,7 +35,6 @@ function Discussion({ discussionID, discussion, currentUser, navigation, getDisc
     );
 
     const dataJSON = await response.json();
-   // console.log('resLastMess',dataJSON);
     setLastMessage(dataJSON.content);
   }
   displayLastMessage();

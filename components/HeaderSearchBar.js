@@ -4,17 +4,16 @@ import {
   StyleSheet,
   View,
   TextInput,
-  Keyboard,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 
 import { connect } from "react-redux";
 
 import {IPLOCAL} from "@env"
+var urlLocal = 'http://'+IPLOCAL+':3000'
 
 
 function HeaderSearchBar(props) {
-  var urlLocal = 'http://'+IPLOCAL+ ':3000'
   const [location, setLocation] = useState("");
   const [filters, setFilters] = useState({
     nbBatch: '', // Number
@@ -40,7 +39,6 @@ function HeaderSearchBar(props) {
       }
     );
     searchResults = await searchResults.json();
-    console.log('searchResults', searchResults)
 
     props.search({
       // search :true is used to display the radius circle after first search, even with no results

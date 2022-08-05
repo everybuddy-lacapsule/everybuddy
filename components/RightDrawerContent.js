@@ -15,6 +15,7 @@ import { FontAwesome } from "@expo/vector-icons";
 
 import { connect } from "react-redux";
 import {IPLOCAL} from "@env"
+var urlLocal = 'http://'+IPLOCAL+ ':3000'
 
 
 //* RIGHT DRAWER CONTENT
@@ -75,9 +76,22 @@ function addFilters(filter, value) {
   }
   setFilters(filtersCopy)
 };
+function resetFilters() {
+  setFilters
+    ({
+      nbBatch: '', // Number
+      location: '', // String 
+      radius: '', // Number
+      campus: [], // Array
+      cursus: [], // Array
+      status: [], // Array
+      tags: [], // Array
+      work: [], // Array
+      workType: [], // Array
+    });
+}
 
 async function loadSearchResults() {
-  var urlLocal = 'http://'+IPLOCAL+ ':3000'
 
     var searchResults = await fetch(
       `${urlLocal}/search`,
@@ -87,7 +101,6 @@ async function loadSearchResults() {
       }
     );
     searchResults = await searchResults.json();
-    console.log('searchResults', searchResults)
 
     props.search({
       // search :true is used to display the radius circle after first search, even with no results
@@ -141,8 +154,8 @@ async function loadSearchResults() {
   ];
 
 
-  var displayValue = km;
-  if (km === 100) {
+  var displayValue = filters.radius;
+  if (filters.radius === 100) {
     displayValue = "France entière";
   }
   useEffect(() => {
@@ -183,7 +196,7 @@ async function loadSearchResults() {
     </View>
         <View style={[styles.contentView]}>
           <Slider
-            value={km}
+            value={filters.radius}
             onValueChange={setKm}
             maximumValue={100}
             minimumValue={10}
@@ -201,8 +214,6 @@ async function loadSearchResults() {
                   name="circle"
                   type="font-awesome"
                   size={20}
-                  // reverse
-                  // containerStyle={{ bottom: 15, right: 20 }}
                 />
               ),
             }}
@@ -599,11 +610,23 @@ async function loadSearchResults() {
           </ListItemAccordion>
         </View>
       </DrawerContentScrollView>
-      <TouchableOpacity
-      style={styles.button}
+      <View style={{ flexDirection: "row" }}>
+    <TouchableOpacity
+      style={[styles.button, {width: "70%"}]}
       onPress={()=>{loadSearchResults(); props.navigation.toggleDrawer()}}>
-        <Text style={{ fontSize: 20, color: "#7C4DFF" }}>Rechercher</Text>
-      </TouchableOpacity>
+       <Text style={{ fontSize: 20, color: "#7C4DFF" }}>Rechercher</Text>
+    </TouchableOpacity>
+    <TouchableOpacity
+      style={[styles.button, {width: "15%"}]}
+      onPress={()=>{resetFilters()}}>
+            <Icon
+              name="trash-o"
+              type="font-awesome"
+              color='#7C4DFF'
+              size={20}
+            />
+    </TouchableOpacity>
+  </View>
     </LinearGradient>
   );
 }
@@ -650,6 +673,7 @@ const styles = StyleSheet.create({
     height: 55,
     borderRadius: 5,
     margin: 15,
+    marginRight: 0
   },
   contentView: {
     width: "80%",

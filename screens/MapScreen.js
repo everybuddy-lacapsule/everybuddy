@@ -1,13 +1,11 @@
 import { Text, View, StyleSheet, Dimensions, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import MapView, { Marker, Circle } from "react-native-maps";
-import * as Location from "expo-location";
 import { ListItem, Avatar } from "@rneui/base";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import BottomDrawer from "react-native-bottom-drawer-view";
 import { connect } from "react-redux";
-import { DrawerToggleButton } from "@react-navigation/drawer";
 
 function MapScreen(props) {
 

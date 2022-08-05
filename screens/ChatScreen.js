@@ -14,16 +14,15 @@ import { FontAwesome } from "@expo/vector-icons";
 import { useState, useEffect, useRef } from "react";
 import InsetShadow from "react-native-inset-shadow";
 import { connect } from "react-redux";
-import { Input } from "@rneui/themed";
 
 import {IPLOCAL} from "@env"
+var urlLocal = 'http://'+IPLOCAL+ ':3000'
 
 
 /*----Web socket----*/
 import socketIOClient from "socket.io-client";
 
 function ChatScreen(props) {
-  var urlLocal = 'http://'+IPLOCAL+ ':3000'
 
   const socket = useRef();
   const scrollRef = useRef();
