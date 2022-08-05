@@ -12,7 +12,9 @@ import { connect } from "react-redux";
 
 import {IPLOCAL} from "@env"
 
+
 function HeaderSearchBar(props) {
+  var urlLocal = 'http://'+IPLOCAL+ ':3000'
   const [location, setLocation] = useState("");
   const [filters, setFilters] = useState({
     nbBatch: '', // Number
@@ -31,7 +33,7 @@ function HeaderSearchBar(props) {
 
   async function loadSearchResults() {
     var searchResults = await fetch(
-      `http://${IPLOCAL}:3000/search`,
+      `${urlLocal}/search`,
       {method: "post",
       headers:{'Content-Type': 'application/json'},
       body: JSON.stringify(filters),

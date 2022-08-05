@@ -22,7 +22,8 @@ function CheckEmailScreen(props) {
 
   //------------------ FETCH récupère en BDD ------------------------------------
   var handleCheckEmail = async () => {
-    var res = await fetch(`http://${IPLOCAL}:3000/users/check-email`, {
+    var urlLocal = 'http://'+IPLOCAL+ ':3000'
+    var res = await fetch(`${urlLocal}/users/check-email`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `email=${signinEmail}`,

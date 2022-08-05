@@ -13,12 +13,14 @@ import {IPLOCAL} from "@env"
 
 
 function SplashScreen(props) {
+  var urlLocal = 'http://'+IPLOCAL+ ':3000'
+
   useEffect(() => {
     AsyncStorage.getItem("userID", async function (error, userID) {
       console.log(userID)
       if (userID !== null) {
         var datas = await fetch(
-          `http://${IPLOCAL}:3000/users/getUserDatas?userID=${userID}`
+          `${urlLocal}/users/getUserDatas?userID=${userID}`
         );
         datas = await datas.json();
         props.setUserDatas(datas.userDatas);

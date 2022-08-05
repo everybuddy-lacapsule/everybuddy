@@ -77,8 +77,10 @@ function addFilters(filter, value) {
 };
 
 async function loadSearchResults() {
+  var urlLocal = 'http://'+IPLOCAL+ ':3000'
+
     var searchResults = await fetch(
-      `http://${IPLOCAL}:3000/search`,
+      `${urlLocal}/search`,
       {method: "post",
       headers:{'Content-Type': 'application/json'},
       body: JSON.stringify(filters),
