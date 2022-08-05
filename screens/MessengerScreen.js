@@ -1,28 +1,26 @@
-import {StyleSheet, View, ScrollView} from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 
 import { connect } from "react-redux";
 import Discussion from "../components/DiscussionComponent";
 
-import {IPLOCAL} from "@env"
-const urlLocal = 'http://'+IPLOCAL+ ':3000'
+import { IPLOCAL } from "@env";
+const urlLocal = "http://" + IPLOCAL + ":3000";
 
 //import socketIOClient from "socket.io-client";
 import { useEffect, useState } from "react";
 
-
 function MessengerScreen(props) {
-
-
   const [discussions, setDiscussions] = useState([]);
 
   useEffect(() => {
     const getDiscussions = async () => {
-      try{
-        const response = await fetch(`${urlLocal}/discussions/${props.userDatas._id}`);
+      try {
+        const response = await fetch(
+          `${urlLocal}/discussions/${props.userDatas._id}`
+        );
         let userDiscussions = await response.json();
         setDiscussions(userDiscussions);
-      }
-      catch(error){
+      } catch (error) {
         console.log(error);
       }
     };
@@ -34,22 +32,25 @@ function MessengerScreen(props) {
     <View>
       <ScrollView>
         {discussions.map((discussion, i) => (
-          <Discussion key={i} discussionID = {discussion._id} discussion={discussion} currentUser={props.userDatas} navigation={props.navigation}/>
+          <Discussion
+            key={i}
+            discussionID={discussion._id}
+            discussion={discussion}
+            currentUser={props.userDatas}
+            navigation={props.navigation}
+          />
         ))}
       </ScrollView>
     </View>
   );
 }
 
-var styles = StyleSheet.create({
-  
-});
+var styles = StyleSheet.create({});
 
 const mapStateToProps = (state) => {
   return {
     userDatas: state.userDatas,
   };
 };
-
 
 export default connect(mapStateToProps, null)(MessengerScreen);

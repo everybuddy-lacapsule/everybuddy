@@ -8,18 +8,37 @@ import BottomDrawer from "react-native-bottom-drawer-view";
 import { connect } from "react-redux";
 
 function MapScreen(props) {
-
   const [resultLink, setResultLink] = useState("liste");
   // Radius default, unit = meter
   const [buddyList, setBuddyList] = useState([]);
+  const [discussions, setDiscussions] = useState([]);
+
+  /* GET alls discussions of user => verifie if they have discussion */
+  useEffect(() => {
+    const getDiscussions = async () => {
+      try {
+        const response = await fetch(
+          `${urlLocal}/discussions/${props.userDatas._id}`
+        );
+        let userDiscussions = await response.json();
+        console.log("Avant", userDiscussions);
+        setDiscussions(userDiscussions);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getDiscussions();
+  }, []);
+
+  console.log(discussions);
 
   /*--------------------Generate circle radius when search is true (reducer searchResult)-------------*/
   let circle;
-  let latDelta = 0.1922
-  let longDelta = 0.1421
+  let latDelta = 0.1922;
+  let longDelta = 0.1421;
   if (props.searchResults.search) {
-    latDelta = 0.03231*props.searchResults.searchLocation.radius
-    longDelta =  0.01421*props.searchResults.searchLocation.radius
+    latDelta = 0.03231 * props.searchResults.searchLocation.radius;
+    longDelta = 0.01421 * props.searchResults.searchLocation.radius;
     circle = (
       <Circle
         center={{
@@ -29,7 +48,7 @@ function MapScreen(props) {
         strokeWidth={1}
         strokeColor={"#1a66ff"}
         fillColor={"rgba(230,238,255,0.5)"}
-        radius={props.searchResults.searchLocation.radius*1000}
+        radius={props.searchResults.searchLocation.radius * 1000}
       />
     );
   }
@@ -49,6 +68,18 @@ function MapScreen(props) {
       />
     );
   });
+
+  /*
+  const sendMessage = () => {
+
+
+    if(discussionID){
+
+    } else {
+
+    }
+  }
+*/
 
   function addBuddy(buddy) {
     if (!buddyList.find((o) => o._id === buddy._id)) {
@@ -79,7 +110,15 @@ function MapScreen(props) {
             }
 
             return (
-              <ListItem key={i} bottomDivider>
+              <ListItem
+                key={i}
+                bottomDivider
+                /*
+                onPress={() => {
+                  getAlumniIDSearch(r_id);
+                }}
+                */
+              >
                 <Avatar rounded size={90} source={{ uri: r.avatar }} />
                 <ListItem.Content>
                   <ListItem.Title>
@@ -106,7 +145,12 @@ function MapScreen(props) {
                     }}
                   />
                 </View>
-                <FontAwesome name="paper-plane" size={32} color="#0E0E66" />
+                <FontAwesome
+                  name="paper-plane"
+                  size={32}
+                  color="#0E0E66"
+                  onPress={() => sendMessage()}
+                />
               </ListItem>
             );
           })}
@@ -124,7 +168,7 @@ function MapScreen(props) {
           latitude: Number(props.searchResults.searchLocation.lat),
           longitude: Number(props.searchResults.searchLocation.long),
           latitudeDelta: latDelta,
-          longitudeDelta:longDelta,
+          longitudeDelta: longDelta,
         }}
         mapType="mutedStandard"
         userInterfaceStyle="dark"
@@ -190,7 +234,15 @@ const mapStateToProps = (state) => {
     userDatas: state.userDatas,
   };
 };
-
+/*
+function mapDispatchToProps(dispatch) {
+  return {
+    getAlumniIDSearch: function (id) {
+      dispatch({ type: "getAlumniIDSearch", id });
+    },
+  };
+}
+*/
 export default connect(mapStateToProps, null)(MapScreen);
 // export default {
 //   MapScreen: connect(mapStateToProps)(MapScreen),
