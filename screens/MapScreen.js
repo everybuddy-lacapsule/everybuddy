@@ -79,8 +79,11 @@ function MapScreen(props) {
             }
 
             return (
-              <ListItem key={i} bottomDivider>
-                <Avatar rounded size={90} source={{ uri: r.avatar }} />
+              <ListItem
+                key={i}
+                onPress={() => {{props.getAlumniIDSearch(r._id); props.navigation.navigate("ProfileScreen")}}}
+                bottomDivider>
+                <Avatar rounded size={90} source={{ uri: r.avatar }}/>
                 <ListItem.Content>
                   <ListItem.Title>
                     {r.firstName} {r.name}{" "}
@@ -191,7 +194,15 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(MapScreen);
+function mapDispatchToProps(dispatch) {
+  return {
+    getAlumniIDSearch: function (id) {
+      dispatch({ type: "getAlumniIDSearch", id});
+    },
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MapScreen);
 // export default {
 //   MapScreen: connect(mapStateToProps)(MapScreen),
 //   bottomDrawer: connect(mapStateToProps)(bottomDrawer)

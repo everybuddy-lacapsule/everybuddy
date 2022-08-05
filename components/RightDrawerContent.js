@@ -74,20 +74,6 @@ function addFilters(filter, value) {
   }
   setFilters(filtersCopy)
 };
-function resetFilters() {
-  setFilters
-    ({
-      nbBatch: '', // Number
-      location: '', // String 
-      radius: '', // Number
-      campus: [], // Array
-      cursus: [], // Array
-      status: [], // Array
-      tags: [], // Array
-      work: [], // Array
-      workType: [], // Array
-    });
-}
 
 function resetFilters() {
   setFilters

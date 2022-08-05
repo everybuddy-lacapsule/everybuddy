@@ -8,10 +8,12 @@ import userDatas from "./reducers/userDatas";
 import userEmail from "./reducers/userEmail";
 import {searchResults} from "./reducers/searchResults";
 import {discussionInfos} from "./reducers/discussionInfos";
+import alumniIDSearch from "./reducers/alumniIDSearch";
+
 
 LogBox.ignoreAllLogs();
 
-const store = createStore(combineReducers({ userDatas, userEmail, searchResults, discussionInfos }));
+const store = createStore(combineReducers({ userDatas, userEmail, searchResults, discussionInfos, alumniIDSearch }));
 
 // APP ----------------------------------------------------------------
 export default function App() {
