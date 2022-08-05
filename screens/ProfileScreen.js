@@ -4,15 +4,17 @@ import { Badge, Colors, Divider, SocialIcon, hollowWhite, onPress } from "@rneui
 import { ListItem, Avatar } from "@rneui/base";
 import {connect} from 'react-redux';
 
-// --------------- COPIE DE MYPROFILESCREEN : FAIRE UN FETCH A LA PLACE DU MAPSTATETOPROPS ----------------
+// --------------- COPIE DE MYPROFILESCREEN ----------------
 
 function ProfileScreen(props) {
 
   return (
+    // {  props.searchResults.searchResults.map((user, i) => {
+    //   return (
     <View
       style={styles.container}
+      key={i}
     >
-
       <View style={styles.content}>
       <View style={styles.avatar}>
         <Avatar
@@ -101,12 +103,17 @@ onPress={() => {Linking.openURL('https://www.linkedin.com/')}}
 </View >
 
     </View>
+    // )}
+    // )}
   );
 }
 
-function mapStateToProps(state) {
-  return { userData : state.userDatas }
- }  
+const mapStateToProps = (state) => {
+  return {
+    searchResults: state.searchResults,
+    userData: state.userDatas,
+  };
+};
 
  export default connect(mapStateToProps, null)(ProfileScreen);
 
