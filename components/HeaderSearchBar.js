@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TouchableOpacity,
   StyleSheet,
@@ -10,25 +10,70 @@ import { FontAwesome } from "@expo/vector-icons";
 
 import { connect } from "react-redux";
 
+import {IPLOCAL} from "@env"
+
+
 function HeaderSearchBar(props) {
+  var urlLocal = 'http://'+IPLOCAL+ ':3000'
   const [location, setLocation] = useState("");
+  const [filters, setFilters] = useState({
+    nbBatch: '', // Number
+    location: '', // String 
+    radius: 10, // Number
+    campus: [], // Array
+    cursus: [], // Array
+    status: [], // Array
+    tags: [], // Array
+    work: [], // Array
+    workType: [], // Array
+  });
+  useEffect(() => {
+    filters.location = location
+  },[location])
 
   async function loadSearchResults() {
+<<<<<<< HEAD
     if (location) {
       var searchResults = await fetch(
         `http:/192.168.1.175:3000/searchByLocation?location=${location}`
       );
       searchResults = await searchResults.json();
+=======
+    var searchResults = await fetch(
+      `${urlLocal}/search`,
+      {method: "post",
+      headers:{'Content-Type': 'application/json'},
+      body: JSON.stringify(filters),
+      }
+    );
+    searchResults = await searchResults.json();
+    console.log('searchResults', searchResults)
+>>>>>>> advancedSearchFront
 
-      props.search({
-        // search :true is used to display the radius circle after first search, even with no results
-        search: true,
-        searchResults: searchResults.users,
-        searchLocation: searchResults.location,
-      });
-      Keyboard.dismiss();
-    }
-  }
+    props.search({
+      // search :true is used to display the radius circle after first search, even with no results
+      search: true,
+      searchResults: searchResults.users,
+      searchLocation: searchResults.location,
+    });
+
+}
+  // async function loadSearchResults() {
+  //   if (location) {
+  //     var searchResults = await fetch(
+  //       `http://${IPLOCAL}:3000/searchByLocation?location=${location}&radius=10`
+  //     );
+  //     searchResults = await searchResults.json();
+
+  //     props.search({
+  //       // search :true is used to display the radius circle after first search, even with no results
+  //       search: true,
+  //       searchResults: searchResults.users,
+  //       searchLocation: searchResults.location,
+  //     });
+  //     Keyboard.dismiss();
+  //   }
+  // }
 
   return (
     <View style={styles.headerTitle}>

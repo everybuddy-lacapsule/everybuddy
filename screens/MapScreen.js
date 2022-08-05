@@ -10,13 +10,12 @@ import { connect } from "react-redux";
 import { DrawerToggleButton } from "@react-navigation/drawer";
 
 function MapScreen(props) {
-  console.log(props.userDatas);
 
   const [resultLink, setResultLink] = useState("list");
   // Radius default, unit = meter
-  const [radius, setRadius] = useState(5000);
   const [buddyList, setBuddyList] = useState([]);
 
+<<<<<<< HEAD
     /*--------------------Generate circle radius when search is true (reducer searchResult)-------------*/
     let circle;
     if (props.searchResults.search) {
@@ -33,6 +32,28 @@ function MapScreen(props) {
         />
       );
     }
+=======
+  /*--------------------Generate circle radius when search is true (reducer searchResult)-------------*/
+  let circle;
+  let latDelta = 0.1922
+  let longDelta = 0.1421
+  if (props.searchResults.search) {
+    latDelta = 0.03231*props.searchResults.searchLocation.radius
+    longDelta =  0.01421*props.searchResults.searchLocation.radius
+    circle = (
+      <Circle
+        center={{
+          longitude: props.searchResults.searchLocation.long,
+          latitude: props.searchResults.searchLocation.lat,
+        }}
+        strokeWidth={1}
+        strokeColor={"#1a66ff"}
+        fillColor={"rgba(230,238,255,0.5)"}
+        radius={props.searchResults.searchLocation.radius*1000}
+      />
+    );
+  }
+>>>>>>> advancedSearchFront
 
   /*--------------------Automate apparence of list Redux-------------*/
   const searchResultsList = props.searchResults.searchResults.map((user, i) => {
@@ -58,7 +79,10 @@ function MapScreen(props) {
     }
   }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> advancedSearchFront
   //*BOTTOM DRAWER
   const windowHeight = Dimensions.get("window").height;
   function bottomDrawer(searchResults) {
@@ -122,10 +146,17 @@ function MapScreen(props) {
         provider="google"
         style={styles.map}
         region={{
+<<<<<<< HEAD
           latitude: props.searchResults.searchLocation.lat,
           longitude: props.searchResults.searchLocation.long,
           latitudeDelta: 0.1922,
           longitudeDelta: 0.1421,
+=======
+          latitude: Number(props.searchResults.searchLocation.lat),
+          longitude: Number(props.searchResults.searchLocation.long),
+          latitudeDelta: latDelta,
+          longitudeDelta:longDelta,
+>>>>>>> advancedSearchFront
         }}
         mapType="mutedStandard"
         userInterfaceStyle="dark"

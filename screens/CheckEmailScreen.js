@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import { Overlay, Button, Icon, Input } from "@rneui/themed";
 
+import {IPLOCAL} from "@env"
+
 function CheckEmailScreen(props) {
   const [visible, setVisible] = useState(false);
   const [signinEmail, setSigninEmail] = useState("");
@@ -20,13 +22,17 @@ function CheckEmailScreen(props) {
 
   //------------------ FETCH récupère en BDD ------------------------------------
   var handleCheckEmail = async () => {
+<<<<<<< HEAD
     var res = await fetch("http://192.168.1.175:3000/users/check-email", {
+=======
+    var urlLocal = 'http://'+IPLOCAL+ ':3000'
+    var res = await fetch(`${urlLocal}/users/check-email`, {
+>>>>>>> advancedSearchFront
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `email=${signinEmail}`,
     });
     res = await res.json();
-    console.log("res", res);
     if (res.emailExists) {
       props.navigation.navigate("LoginScreen");
       props.getEmail(res.userEmail);

@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import { Overlay, Button, Input } from "@rneui/themed";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {IPLOCAL} from "@env"
+
 
 function LoginScreen(props) {
   const [visible, setVisible] = useState(false);
@@ -28,7 +30,12 @@ function LoginScreen(props) {
   }, [props.userEmail]);
 
   var handleSubmitSignIn = async () => {
+<<<<<<< HEAD
     var res = await fetch("http://192.168.1.175:3000/users/sign-in", {
+=======
+    var urlLocal = 'http://'+IPLOCAL+ ':3000'
+    var res = await fetch(`${urlLocal}/users/sign-in`, {
+>>>>>>> advancedSearchFront
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `email=${signinEmail}&pwd=${signinPwd}`,

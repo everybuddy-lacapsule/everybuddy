@@ -9,14 +9,22 @@ import {
 import { Overlay, Button, Icon, Input } from "@rneui/themed";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connect } from "react-redux";
-console.log(process.env);
+import {IPLOCAL} from "@env"
+
 
 function SplashScreen(props) {
+  var urlLocal = 'http://'+IPLOCAL+ ':3000'
+
   useEffect(() => {
     AsyncStorage.getItem("userID", async function (error, userID) {
+      console.log(userID)
       if (userID !== null) {
         var datas = await fetch(
+<<<<<<< HEAD
           `http://192.168.1.175:3000/users/getUserDatas?userID=${userID}`
+=======
+          `${urlLocal}/users/getUserDatas?userID=${userID}`
+>>>>>>> advancedSearchFront
         );
         datas = await datas.json();
         props.setUserDatas(datas.userDatas);
