@@ -1,10 +1,11 @@
-import React  from "react";
+import React, { useEffect} from "react";
 import { StyleSheet } from "react-native";
 import {
 	createDrawerNavigator,
 	DrawerContentScrollView,
 	DrawerItemList,
 	DrawerItem,
+	useDrawerStatus
 } from "@react-navigation/drawer";
 import { Divider} from "@rneui/themed";
 import TabsNavigator from "./TabsNavigator";
@@ -61,6 +62,16 @@ function CustomLeftDrawerContent(props) {
 }
 //* LEFT DRAWER
 const LeftDrawerScreen = () => {
+	const isDrawerVisible =  useDrawerStatus();
+
+	useEffect(() => {
+	  if (isDrawerVisible=='open') {
+		console.log('open')
+		;
+	  } else{
+		console.log('close');
+	  }
+	}, [isDrawerVisible]);
 	return (
 		<Drawer.Navigator
 			screenOptions={{
@@ -91,6 +102,7 @@ const LeftDrawerScreen = () => {
 //*RIGHT DRAWER Wrapping LEFT DRAWER
 const RightDrawer = createDrawerNavigator();
 const RightDrawerScreen = () => {
+
 	return (
 		<RightDrawer.Navigator
 			id="RightDrawer"

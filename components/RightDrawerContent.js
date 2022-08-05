@@ -219,7 +219,7 @@ async function loadSearchResults() {
             }}
           />
           <Text style={{ color: "#FFFFFF" }}>
-            Km: {displayValue}
+            Distance: {displayValue} km
           </Text>
         </View>
         </View>
@@ -721,6 +721,7 @@ const mapStateToProps = (state) => {
   return {
     searchResults: state.searchResults,
     userDatas: state.userDatas,
+    drawerStatus : state.drawerStatus,
   };
 };
 const mapDispatchToProps = (dispatch) => {

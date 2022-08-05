@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { TouchableOpacity, StyleSheet, View} from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -12,13 +12,14 @@ import BuddiesScreen from "../screens/BuddiesScreen";
 import MyProfileScreen from "../screens/MyProfileScreen";
 import HeaderSearchBar from "../components/HeaderSearchBar";
 import ChatScreen from "../screens/ChatScreen";
+import { useDrawerStatus } from "@react-navigation/drawer";
+
 
 
 const Tab = createBottomTabNavigator();
 const hiddenTabs = ["Buddies", "MyProfile", "Chat"];
 
-const TabsNavigator = function (props) {
-	
+const TabsNavigator = function (props) {	
 	return (
 		<Tab.Navigator
 			screenOptions={({ route }) => ({
@@ -26,7 +27,7 @@ const TabsNavigator = function (props) {
 					<TouchableOpacity
 						style={styles.right}
 						onPress={() =>
-							props.navigation.getParent("RightDrawer").toggleDrawer()
+							{props.navigation.getParent("RightDrawer").toggleDrawer() }
 						}
 					>
 						<Ionicons name="options" size={24} color="white" />
