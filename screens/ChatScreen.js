@@ -1,174 +1,203 @@
 import {
-	Image,
-	KeyboardAvoidingView,
-	ScrollView,
-	Text,
-	View,
-	StyleSheet,
-	TextInput,
-	TouchableOpacity,
-	Platform,
+  Image,
+  KeyboardAvoidingView,
+  ScrollView,
+  Text,
+  View,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome } from "@expo/vector-icons";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import InsetShadow from "react-native-inset-shadow";
 import { connect } from "react-redux";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Input } from "@rneui/themed";
 
 /*----Web socket----*/
 import socketIOClient from "socket.io-client";
-//import { discussionInfos } from "../reducers/discussionInfos";
-var socket = socketIOClient("http://192.168.1.23:3000");
 
 function ChatScreen(props) {
-	const colors = ["#7C4DFF", "#F94A56", "#FF1744"];
-	const colorz = ["#FF1744", "#F94A56", "#7C4DFF"];
+  const socket = useRef();
+  const scrollRef = useRef();
+
+  const colors = ["#7C4DFF", "#F94A56", "#FF1744"];
+  const colorz = ["#FF1744", "#F94A56", "#7C4DFF"];
 
 	const [message, setMessage] = useState("");
 	const [allMessages, setAllMessages] = useState([]);
 
-	useEffect(() => {
-		AsyncStorage.getItem("userID", function (error, id) {
-			console.log("LocalStorage User Id ==>", id);
-			//console.log("Store User Id ==>", props.userDatas._id);
-			// GET all messages of discussion from DB when ChatScreen is loaded
-			getMessagesFromDB();
-		});
-	}, []);
+  useEffect(() => {
+    // init socket.current value with extraHeader which contain a room id (=> discussionID)
+    socket.current = socketIOClient("http://192.168.0.149:3000", {
+      extraHeaders: {
+        roomID: props.discussionInfos.discussionID,
+      },
+    });
+  }, []);
 
-	useEffect(() => {
-		socket.on("sendMessageToAll", (message) => {
-			//console.log("message ==>", message);
-			//console.log("discussionID ==>", props.discussionID);
-		});
-		return () => socket.off("sendMessageToAll"); // for delete all: // socket.off()
-	}, [message]);
+  /*GET all messages ONCE TIME from Database when ChatScreen is loaded*/
+  useEffect(() => {
+    const getMessagesFromDB = async () => {
+      const messagesFromDB = await fetch(
+        `http://192.168.0.149:3000/messages/${props.discussionInfos.discussionID}`
+      );
+      let messagesFromDBJSON = await messagesFromDB.json();
+      setAllMessages(messagesFromDBJSON);
+      //console.log("discussionId", props.discussionInfos.discussionID);
+    };
+    getMessagesFromDB();
 
-	const getMessagesFromDB = async () => {
-		var messagesFromDB = await fetch(
-			`http://192.168.1.23:3000/messages/${props.discussionInfos.discussionID}`
-		);
-		let messagesFromDBJSON = await messagesFromDB.json();
-		setAllMessages(messagesFromDBJSON);
-		//console.log(messagesFromDBJSON);
-		return messagesFromDBJSON;
-	};
+    // Fire the scroller to scroll to the end of ScrollView
+    scrollRef.current.scrollToEnd({
+      animated: true,
+    });
+    // observation on the discussionID for execute the effect
+  }, [props.discussionInfos.discussionID]);
 
-	
-	
-		async function sendMessageToDB(message) {
-			const sendMessage = await fetch(
-				"http://192.168.1.23:3000/messages/addMessage",
-				{
-					method: "POST",
-					headers: { "Content-Type": "application/x-www-form-urlencoded" },
-					body: `message=${message}&discussionID=${props.discussionInfos.discussionID}&userID=${props.userDatas._id}`,
-				}
-			);
-	}
+  useEffect(() => {
+    console.log("s'inscrire au forfait mobile quand le component est généré");
+    // si forfait augmente, on change l'opérateur
+    socket.current.on("sendMessageServer", (message) => {
+      if (message.senderID !== props.userDatas._id) {
+        console.log('another member');
+        setAllMessages([...allMessages, message]);
+      }
+    });
+    // Fire the scroller to scroll to the end of ScrollView
+    scrollRef.current.scrollToEnd({
+      animated: true,
+    });
 
+    // clear the socket before the next execution of the effect
+    // on résilie l'ancien opérateur
+    return () => {
+      socket.current.off("sendMessageServer");
+      console.log("se désabonner");
+    }; // for delete all: // socket.off()
+  }, [allMessages]); // observer le prix du forfait
 
-	const allMessagesDisplayed = allMessages.map((m, i) => {
-		if (m.senderID === props.userDatas._id) {
-			return (
-				<View key={`${i}-${m.senderID}`} style={styles.rightMessage}>
-					<Image
-						style={styles.rightImg}
-						rounded
-						source={{ uri : props.userDatas.avatar}}
-					/>
+  /* Send socket to  */
+  const handleGetMessage = async () => {
+    const currentMessage = {
+      discussionID: props.discussionInfos.discussionID,
+      senderID: props.userDatas._id,
+      content: message,
+    };
+    try {
+      /* SEND message to DB */
+      const messageDB = await fetch(
+        "http://192.168.0.149:3000/messages/addMessage",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: `message=${currentMessage.content}&discussionID=${currentMessage.discussionID}&userID=${currentMessage.senderID}`,
+        }
+      );
+      const messageDBJson = await messageDB.json();
+      
+      socket.current.emit("sendMessage", messageDBJson);
+      setMessage("");
+      setAllMessages([...allMessages, messageDBJson]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-					<LinearGradient
-						colors={colorz}
-						style={styles.rightMessageBox}
-						start={{ x: -1, y: 0 }}
-						end={{ x: 1, y: 0.3 }}
-					>
-						<View style={{ alignSelf: "flex-start", width: "100%" }}>
-							<Text style={styles.rightMessageSender}>
-							{props.userDatas.firstName} {props.userDatas.name.toUpperCase()}
-							</Text>
-							<Text style={{ textAlign: "right", color: "white" }}>
-								{m.content}
-							</Text>
-						</View>
-					</LinearGradient>
-				</View>
-			);
-		} else {
-			return (
-				<View key={`${i}-${m.senderID}`} style={styles.leftMessage}>
-					<Image
-						style={styles.img}
-						rounded
-						source={{ uri : props.discussionInfos.anotherMember.avatar}}
-					/>
+  /*Map to display all messages from DB (messages loaded ONCE TIME when ChatScreen is loaded) */
+  const allMessagesDisplayed = allMessages.map((m, i) => {
+    if (m.senderID === props.userDatas._id) {
+      return (
+        <View key={`${i}-${m.senderID}`} style={styles.rightMessage}>
+          <Image
+            style={styles.rightImg}
+            rounded
+            source={{ uri: props.userDatas.avatar }}
+          />
 
-					<LinearGradient
-						colors={colors}
-						style={styles.messageBox}
-						start={{ x: 0.3, y: 0.4 }}
-						end={{ x: 2, y: 0.7 }}
-					>
-						<View style={{ alignSelf: "flex-start", width: "100%" }}>
-							<Text style={styles.messageSender}>
-							{props.discussionInfos.anotherMember.firstName}{" "}
-								{props.discussionInfos.anotherMember.name.toUpperCase()}
-							</Text>
-							<Text style={{ textAlign: "left", color: "white" }}>
-								{m.content}
-							</Text>
-						</View>
-					</LinearGradient>
-				</View>
-				
-			);
-		}
-	});
-	return (
-		<InsetShadow
-			style={{ flex: 1, elevation: 10, shadowRadius: 10, shadowOpacity: 1 }}
-		>
-			<ScrollView style={{ flex: 1, flexDirection: "column-reverse" }}>
-				{allMessagesDisplayed}
-			</ScrollView>
-			<KeyboardAvoidingView style={styles.textInput}>
-				<View style={{ flexDirection: "row", alignItems: "center" }}>
-					<TextInput
-						style={styles.searchBar}
-						placeholder="Type in city"
-						placeholderTextColor="rgba(255, 255, 255, 0.5)"
-						onChangeText={(value) => {
-							setMessage(value);
-							//console.log(value);
-						}}
-						onSubmitEditing={({
-							nativeEvent: { text, eventCount, target },
-						}) => {
-							socket.emit("sendMessage", message);
-							sendMessageToDB(message);
-							getMessagesFromDB();
+          <LinearGradient
+            colors={colorz}
+            style={styles.rightMessageBox}
+            start={{ x: -1, y: 0 }}
+            end={{ x: 1, y: 0.3 }}
+          >
+            <View style={{ alignSelf: "flex-start", width: "100%" }}>
+              <Text style={styles.rightMessageSender}>
+                {props.userDatas.firstName} {props.userDatas.name.toUpperCase()}
+              </Text>
+              <Text style={{ textAlign: "right", color: "white" }}>
+                {m.content}
+              </Text>
+            </View>
+          </LinearGradient>
+        </View>
+      );
+    } else {
+      return (
+        <View key={`${i}-${m.senderID}`} style={styles.leftMessage}>
+          <Image
+            style={styles.img}
+            rounded
+            source={{ uri: props.discussionInfos.anotherMember.avatar }}
+          />
 
-						}}
-					/>
-					<TouchableOpacity
-						style={styles.searchButtonBackground}
-						onPress={() => {
-							socket.emit("sendMessage", message);
-							sendMessageToDB(message);
-							getMessagesFromDB();
+          <LinearGradient
+            colors={colors}
+            style={styles.messageBox}
+            start={{ x: 0.3, y: 0.4 }}
+            end={{ x: 2, y: 0.7 }}
+          >
+            <View style={{ alignSelf: "flex-start", width: "100%" }}>
+              <Text style={styles.messageSender}>
+                {props.discussionInfos.anotherMember.firstName}{" "}
+                {props.discussionInfos.anotherMember.name.toUpperCase()}
+              </Text>
+              <Text style={{ textAlign: "left", color: "white" }}>
+                {m.content}
+              </Text>
+            </View>
+          </LinearGradient>
+        </View>
+      );
+    }
+  });
 
-						}}
-					>
-						<View style={styles.searchButton}>
-							<FontAwesome name="send" size={16} color="white" />
-						</View>
-					</TouchableOpacity>
-				</View>
-			</KeyboardAvoidingView>
-		</InsetShadow>
-	);
+  return (
+    <SafeAreaView>
+      <InsetShadow
+        style={{ flex: 1, elevation: 10, shadowRadius: 10, shadowOpacity: 1 }}
+      >
+        <ScrollView ref={scrollRef}>{allMessagesDisplayed}</ScrollView>
+        <KeyboardAvoidingView
+          style={styles.textInput}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <TextInput
+              style={styles.searchBar}
+              placeholder="Type a message"
+              placeholderTextColor="rgba(255, 255, 255, 0.5)"
+              value={message}
+              onChangeText={(value) => setMessage(value)}
+              onSubmitEditing={({
+                nativeEvent: { text, eventCount, target },
+              }) => handleGetMessage()}
+            />
+            <TouchableOpacity
+              style={styles.searchButtonBackground}
+              onPress={handleGetMessage}
+            >
+              <View style={styles.searchButton}>
+                <FontAwesome name="send" size={16} color="white" />
+              </View>
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
+      </InsetShadow>
+    </SafeAreaView>
+  );
 }
 
 var styles = StyleSheet.create({

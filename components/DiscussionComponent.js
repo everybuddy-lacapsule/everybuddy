@@ -25,7 +25,7 @@ function Discussion({ discussionID, discussion, currentUser, navigation, getDisc
 
     const getAnotherMember = async () => {
       const response = await fetch(
-        `http://192.168.1.23:3000/users/getUserDatas?userID=${anotherMemberID}`
+        `http://192.168.0.149:3000/users/getUserDatas?userID=${anotherMemberID}`
       );
       const dataJSON = await response.json();
       //console.log(dataJSON);
@@ -38,17 +38,15 @@ function Discussion({ discussionID, discussion, currentUser, navigation, getDisc
   useEffect(() => {
     const displayLastMessage = async ()=> {
     const response =  await fetch(
-      `http://192.168.1.23:3000/messages/${discussionID}/lastMessage`
+      `http://192.168.0.149:3000/messages/${discussionID}/lastMessage`
     );
 
     const dataJSON = await response.json();
-    console.log('resLastMess',dataJSON);
+   // console.log('resLastMess',dataJSON);
     setLastMessage(dataJSON.content);
   }
   displayLastMessage();
 }, []);
-
-console.log()
 
   return (
     <ListItem
@@ -56,7 +54,6 @@ console.log()
       onPress={() => {
         navigation.navigate("Chat");
         getDiscussionID({discussionID:discussionID, anotherMember:anotherMember});
-
       }}
     >
       <Avatar rounded size={90} source={{ uri: anotherMember.avatar }} />

@@ -28,7 +28,7 @@ function MessengerScreen(props) {
     getDiscussions();
   }, [props.userDatas._id]);
 
-  console.log("userDiscussions is", discussions);
+  //console.log("userDiscussions is", discussions);
   return (
     <View>
       <ScrollView>
