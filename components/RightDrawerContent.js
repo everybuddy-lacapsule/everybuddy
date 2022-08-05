@@ -76,7 +76,7 @@ function CustomRightDrawerContent(props) {
   }
 
   async function loadSearchResults() {
-    var searchResults = await fetch(`http://172.16.190.139:3000/search`, {
+    var searchResults = await fetch(`http://${IPLOCAL}:3000/search`, {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(filters),
@@ -135,8 +135,8 @@ function CustomRightDrawerContent(props) {
   ];
 
   var displayValue = km;
-  if (km === 300) {
-    displayValue = "Monde";
+  if (km === 100) {
+    displayValue = "France";
   }
 
   return (
@@ -169,7 +169,7 @@ function CustomRightDrawerContent(props) {
             <Slider
               value={km}
               onValueChange={setKm}
-              maximumValue={300}
+              maximumValue={100}
               minimumValue={0}
               step={5}
               allowTouchTrack

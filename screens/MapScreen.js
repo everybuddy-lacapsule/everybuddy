@@ -13,14 +13,12 @@ function MapScreen(props) {
 
   const [resultLink, setResultLink] = useState("list");
   // Radius default, unit = meter
-  const [radius, setRadius] = useState(5000);
   const [buddyList, setBuddyList] = useState([]);
 
   /*--------------------Generate circle radius when search is true (reducer searchResult)-------------*/
   let circle;
   let latDelta = 0.1922
   let longDelta = 0.1421
-  console.log('RADIUS-----',props.searchResults.searchLocation.radius)
   if (props.searchResults.search) {
     latDelta = 0.03231*props.searchResults.searchLocation.radius
     longDelta =  0.01421*props.searchResults.searchLocation.radius
@@ -61,8 +59,6 @@ function MapScreen(props) {
       setBuddyList(buddyList.filter((o) => o._id !== buddy._id));
     }
   }
-
-  //useEffect(() => {},[buddyList]);
 
   //*BOTTOM DRAWER
   const windowHeight = Dimensions.get("window").height;
