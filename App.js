@@ -6,13 +6,12 @@ import { Provider } from "react-redux";
 import { createStore, combineReducers } from "redux";
 import userDatas from "./reducers/userDatas";
 import userEmail from "./reducers/userEmail";
-import { searchResults } from "./reducers/searchResults";
+import {searchResults} from "./reducers/searchResults";
+import {discussionInfos} from "./reducers/discussionInfos";
 
 LogBox.ignoreAllLogs();
 
-const store = createStore(
-  combineReducers({ userDatas, userEmail, searchResults })
-);
+const store = createStore(combineReducers({ userDatas, userEmail, searchResults, discussionInfos }));
 
 // APP ----------------------------------------------------------------
 export default function App() {

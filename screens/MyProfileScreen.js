@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import {View, ImageBackground, StyleSheet, Text, TouchableOpacity, Button, ScrollView, Linking} from "react-native";
-import { Badge, Colors, Divider, SocialIcon, hollowWhite, onPress } from "@rneui/themed";
-import { ListItem, Avatar } from "@rneui/base";
+import React from "react";
+import {View, StyleSheet, Text, ScrollView, Linking} from "react-native";
+import { Divider, SocialIcon, hollowWhite,  } from "@rneui/themed";
+import { Avatar } from "@rneui/base";
 import {connect} from 'react-redux';
 
 

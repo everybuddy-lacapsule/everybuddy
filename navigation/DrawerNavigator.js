@@ -1,21 +1,17 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, TextInput } from "react-native";
+import React  from "react";
+import { StyleSheet } from "react-native";
 import {
 	createDrawerNavigator,
 	DrawerContentScrollView,
 	DrawerItemList,
 	DrawerItem,
 } from "@react-navigation/drawer";
-import { Divider, Switch } from "@rneui/themed";
+import { Divider} from "@rneui/themed";
 import TabsNavigator from "./TabsNavigator";
 import CustomRightDrawerContent from "../components/RightDrawerContent";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { connect } from "react-redux";
-
-import { ListItem } from "@rneui/base";
-import { ListItemAccordion } from "@rneui/base/dist/ListItem/ListItem.Accordion";
 
 const Drawer = createDrawerNavigator();
 

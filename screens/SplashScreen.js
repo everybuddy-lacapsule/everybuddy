@@ -6,15 +6,14 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import { Overlay, Button, Icon, Input } from "@rneui/themed";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connect } from "react-redux";
+
 import {IPLOCAL} from "@env"
+var urlLocal = 'http://'+IPLOCAL+ ':3000'
 
 
 function SplashScreen(props) {
-  var urlLocal = 'http://'+IPLOCAL+ ':3000'
-
   useEffect(() => {
     AsyncStorage.getItem("userID", async function (error, userID) {
       console.log(userID)
@@ -37,22 +36,19 @@ function SplashScreen(props) {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <Text>EVERBUTTY</Text>
-      </View>
-      <TouchableOpacity style={styles.button} onPress={() => handleStart()}>
-        <Text style={styles.confirm}>Confirmer</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
+    <ImageBackground style={styles.container}
+    source={require("../assets/splash.png")}
+    >
+      <View style={{ flex:1, flexDirection: 'column', justifyContent:'flex-end' }}>
+      <Text style={[styles.confirm, {marginBottom:50}]}
         onPress={() => {
           AsyncStorage.clear(), props.setUserDatas(null);
-        }}
-      >
-        <Text style={styles.confirm}>Clear local storage</Text>
+        }}>Clear local storage</Text>
+      <TouchableOpacity style={styles.button} onPress={() => handleStart()}>
+        <Text style={styles.confirm}>Commencer</Text>
       </TouchableOpacity>
-    </View>
+      </View>
+    </ImageBackground>
   );
 }
 

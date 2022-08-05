@@ -15,7 +15,8 @@ const StackNavigator = function () {
 			screenOptions={{
 				headerStyle: styles.headers,
 				headerTintColor: "#fff",
-				headerTitleStyle: { alignSelf: "flex-start" },
+				headerTitleStyle: { alignSelf: "center" },
+
 			}}
 		>
 			<Stack.Screen
@@ -63,7 +64,7 @@ const StackNavigator = function () {
 const styles = StyleSheet.create({
 	headers: {
 		backgroundColor: "#0E0E66",
-		height: 85,
+		height: 55,
 	},
 });
 

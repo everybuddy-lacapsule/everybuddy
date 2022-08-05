@@ -1,17 +1,15 @@
 import { Text, View, StyleSheet, Dimensions, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import MapView, { Marker, Circle } from "react-native-maps";
-import * as Location from "expo-location";
 import { ListItem, Avatar } from "@rneui/base";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import BottomDrawer from "react-native-bottom-drawer-view";
 import { connect } from "react-redux";
-import { DrawerToggleButton } from "@react-navigation/drawer";
 
 function MapScreen(props) {
 
-  const [resultLink, setResultLink] = useState("list");
+  const [resultLink, setResultLink] = useState("liste");
   // Radius default, unit = meter
   const [buddyList, setBuddyList] = useState([]);
 
@@ -67,7 +65,7 @@ function MapScreen(props) {
       <View>
         <Text style={styles.listHeader}>
           {searchResults.length} resultats {""}
-          <Text style={styles.link}>show {resultLink}</Text>
+          <Text style={styles.link}>voir {resultLink}</Text>
         </Text>
         <ScrollView>
           {searchResults.map((r, i) => {

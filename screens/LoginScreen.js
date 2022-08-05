@@ -10,6 +10,7 @@ import {
 import { Overlay, Button, Input } from "@rneui/themed";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {IPLOCAL} from "@env"
+const urlLocal = 'http://'+IPLOCAL+ ':3000'
 
 
 function LoginScreen(props) {
@@ -30,13 +31,15 @@ function LoginScreen(props) {
   }, [props.userEmail]);
 
   var handleSubmitSignIn = async () => {
-    var urlLocal = 'http://'+IPLOCAL+ ':3000'
-    var res = await fetch(`${urlLocal}/users/sign-in`, {
+    // var res = await fetch(`${urlLocal}/users/sign-in`, {
+      var res = await fetch(`${urlLocal}/users/sign-in`, {
+
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `email=${signinEmail}&pwd=${signinPwd}`,
     });
     res = await res.json();
+    //console.log(res.userDatas);
     if (res.isLogin) {
       AsyncStorage.setItem("userID", res.userDatas._id);
       props.setUserDatas(res.userDatas);
@@ -49,7 +52,7 @@ function LoginScreen(props) {
 
   return (
     <ImageBackground
-      source={require("../assets/logo.jpg")}
+      source={require("../assets/background.png")}
       style={styles.container}
     >
       <View style={styles.container}>
