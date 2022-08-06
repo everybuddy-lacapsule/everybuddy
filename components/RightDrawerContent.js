@@ -86,9 +86,12 @@ function CustomRightDrawerContent(props) {
       workType: [], // Array
     });
   }
+  console.log(filters)
   async function loadSearchResults() {
     // sans ce commentaire, ca marche pas !!! Si tu delte je te nique tes morts
-    var searchResults = await fetch(`${urlLocal}/search`, {
+    var searchResults = await fetch(
+      `${urlLocal}/search`, 
+      {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(filters),
@@ -105,7 +108,7 @@ function CustomRightDrawerContent(props) {
 
   const campusDatasList1 = ["Paris", "Lyon", "Marseille"];
   const campusDatasList2 = ["Toulouse", "Bordeaux", "Monaco"];
-  const cursusDatasList = ["FullStack", "DevOps", "Code for business"];
+  const cursusDatasList = ["Fullstack", "DevOps", "Code for business"];
   const statusDatasList = [
     "#OPEN TO WORK",
     "#HIRING",
@@ -115,7 +118,7 @@ function CustomRightDrawerContent(props) {
   const tagsDatasList = [
     "Frontend",
     "Backend",
-    "FullStack",
+    "Fullstack",
     "JavaScript",
     "AngularJS",
     "ReactJS",

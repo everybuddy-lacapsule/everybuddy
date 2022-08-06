@@ -16,7 +16,7 @@ import InsetShadow from "react-native-inset-shadow";
 import { connect } from "react-redux";
 
 import {IPLOCAL} from "@env"
-var urlLocal = 'http://'+IPLOCAL+ ':3000'
+var urlLocal = 'http://'+IPLOCAL+':3000'
 
 
 /*----Web socket----*/

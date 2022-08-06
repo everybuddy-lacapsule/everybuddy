@@ -33,6 +33,7 @@ function HeaderSearchBar(props) {
   async function loadSearchResults() {
     var searchResults = await fetch(
       `${urlLocal}/search`,
+      // "http://192.168.33.59:3000/search",
       {method: "post",
       headers:{'Content-Type': 'application/json'},
       body: JSON.stringify(filters),

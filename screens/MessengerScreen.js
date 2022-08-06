@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import Discussion from "../components/DiscussionComponent";
 
 import {IPLOCAL} from "@env"
-const urlLocal = 'http://'+IPLOCAL+ ':3000'
+const urlLocal = 'http://'+IPLOCAL+':3000'
 
 //import socketIOClient from "socket.io-client";
 import { useEffect, useState } from "react";
