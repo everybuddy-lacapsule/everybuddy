@@ -15,8 +15,7 @@ import { useState, useEffect, useRef } from "react";
 import InsetShadow from "react-native-inset-shadow";
 import { connect } from "react-redux";
 
-import {IPLOCAL} from "@env"
-var urlLocal = 'http://'+IPLOCAL+ ':3000'
+import {IPLOCAL} from "@env";
 
 
 /*----Web socket----*/
@@ -34,8 +33,9 @@ function ChatScreen(props) {
 	const [allMessages, setAllMessages] = useState([]);
 
   useEffect(() => {
+
     // init socket.current value with extraHeader which contain a room id (=> discussionID)
-    socket.current = socketIOClient(urlLocal, {
+    socket.current = socketIOClient(IPLOCAL, {
       extraHeaders: {
         roomID: props.discussionInfos.discussionID,
       },
@@ -46,11 +46,10 @@ function ChatScreen(props) {
   useEffect(() => {
     const getMessagesFromDB = async () => {
       const messagesFromDB = await fetch(
-        `${urlLocal}/messages/${props.discussionInfos.discussionID}`
+        `${IPLOCAL}/messages/${props.discussionInfos.discussionID}`
       );
       let messagesFromDBJSON = await messagesFromDB.json();
       setAllMessages(messagesFromDBJSON);
-      //console.log("discussionId", props.discussionInfos.discussionID);
     };
     getMessagesFromDB();
 
@@ -62,11 +61,9 @@ function ChatScreen(props) {
   }, [props.discussionInfos.discussionID]);
 
   useEffect(() => {
-    console.log("s'inscrire au forfait mobile quand le component est généré");
     // si forfait augmente, on change l'opérateur
     socket.current.on("sendMessageServer", (message) => {
       if (message.senderID !== props.userDatas._id) {
-        console.log('another member');
         setAllMessages([...allMessages, message]);
       }
     });
@@ -79,7 +76,6 @@ function ChatScreen(props) {
     // on résilie l'ancien opérateur
     return () => {
       socket.current.off("sendMessageServer");
-      console.log("se désabonner");
     }; // for delete all: // socket.off()
   }, [allMessages]); // observer le prix du forfait
 
@@ -93,7 +89,7 @@ function ChatScreen(props) {
     try {
       /* SEND message to DB */
       const messageDB = await fetch(
-        `${urlLocal}/messages/addMessage`,
+        `${IPLOCAL}/messages/addMessage`,
         {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },

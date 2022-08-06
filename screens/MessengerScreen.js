@@ -4,19 +4,20 @@ import { connect } from "react-redux";
 import Discussion from "../components/DiscussionComponent";
 
 import { IPLOCAL } from "@env";
-const urlLocal = "http://" + IPLOCAL + ":3000";
 
 //import socketIOClient from "socket.io-client";
 import { useEffect, useState } from "react";
 
 function MessengerScreen(props) {
+
   const [discussions, setDiscussions] = useState([]);
+  //const [ IpLocal, set ]
 
   useEffect(() => {
     const getDiscussions = async () => {
       try {
         const response = await fetch(
-          `${urlLocal}/discussions/${props.userDatas._id}`
+          `${IPLOCAL}/discussions/${props.userDatas._id}`
         );
         let userDiscussions = await response.json();
         setDiscussions(userDiscussions);
@@ -25,9 +26,8 @@ function MessengerScreen(props) {
       }
     };
     getDiscussions();
-  }, [props.userDatas._id]);
-
-  //console.log("userDiscussions is", discussions);
+  }, []);
+  
   return (
     <View>
       <ScrollView>

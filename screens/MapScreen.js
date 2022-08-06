@@ -1,4 +1,11 @@
-import { Text, View, StyleSheet, Dimensions, ScrollView } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+  LogBox,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import MapView, { Marker, Circle } from "react-native-maps";
 import { ListItem, Avatar } from "@rneui/base";
@@ -7,30 +14,31 @@ import { FontAwesome } from "@expo/vector-icons";
 import BottomDrawer from "react-native-bottom-drawer-view";
 import { connect } from "react-redux";
 
+import { IPLOCAL } from "@env";
+LogBox.ignoreAllLogs();
+//const urlLocal = "http://" + "192.168.0.149" + ":3000";
+
 function MapScreen(props) {
   const [resultLink, setResultLink] = useState("liste");
   // Radius default, unit = meter
   const [buddyList, setBuddyList] = useState([]);
   const [discussions, setDiscussions] = useState([]);
 
-  /* GET alls discussions of user => verifie if they have discussion */
-  useEffect(() => {
-    const getDiscussions = async () => {
+    const getDiscussion = async (anotherMember) => {
       try {
         const response = await fetch(
-          `${urlLocal}/discussions/${props.userDatas._id}`
+          `${IPLOCAL}/discussions`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `userID=${props.userDatas._id}&anotherMemberID=${props.userDatas._id}`,
+      }
         );
-        let userDiscussions = await response.json();
-        console.log("Avant", userDiscussions);
-        setDiscussions(userDiscussions);
+        let userDiscussion = await response.json();
+        setDiscussions(userDiscussion);
       } catch (error) {
         console.log(error);
       }
     };
-    getDiscussions();
-  }, []);
-
-  console.log(discussions);
 
   /*--------------------Generate circle radius when search is true (reducer searchResult)-------------*/
   let circle;
@@ -92,6 +100,7 @@ function MapScreen(props) {
   //*BOTTOM DRAWER
   const windowHeight = Dimensions.get("window").height;
   function bottomDrawer(searchResults) {
+    /* GET alls discussions of user => verifie if they have discussion */
     return (
       <View>
         <Text style={styles.listHeader}>

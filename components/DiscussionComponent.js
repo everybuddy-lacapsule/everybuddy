@@ -6,7 +6,6 @@ import { connect } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
 
 import { IPLOCAL } from "@env";
-var urlLocal = "http://" + IPLOCAL + ":3000";
 
 function Discussion({
   discussionID,
@@ -26,7 +25,7 @@ function Discussion({
 
     const getAnotherMember = async () => {
       const response = await fetch(
-        `${urlLocal}/users/getUserDatas?userID=${anotherMemberID}`
+        `${IPLOCAL}/users/getUserDatas?userID=${anotherMemberID}`
       );
       const dataJSON = await response.json();
       setAnotherMember(dataJSON.userDatas);
@@ -37,14 +36,14 @@ function Discussion({
   useEffect(() => {
     const displayLastMessage = async () => {
       const response = await fetch(
-        `${urlLocal}/messages/${discussionID}/lastMessage`
+        `${IPLOCAL}/messages/${discussionID}/lastMessage`
       );
 
       const dataJSON = await response.json();
       setLastMessage(dataJSON.content);
     };
     displayLastMessage();
-  }, [isFocused ? "focused" : "unfocused"]);
+  }, [isFocused]);
 
   return (
     <ListItem

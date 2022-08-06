@@ -14,8 +14,7 @@ import { ListItemAccordion } from "@rneui/base/dist/ListItem/ListItem.Accordion"
 import { FontAwesome } from "@expo/vector-icons";
 
 import { connect } from "react-redux";
-import {IPLOCAL} from "@env"
-var urlLocal = 'http://'+IPLOCAL+ ':3000'
+import {IPLOCAL} from "@env";
 
 
 //* RIGHT DRAWER CONTENT
@@ -94,7 +93,7 @@ function resetFilters() {
 async function loadSearchResults() {
 
     var searchResults = await fetch(
-      `${urlLocal}/search`,
+      `${IPLOCAL}/search`,
       {method: "post",
       headers:{'Content-Type': 'application/json'},
       body: JSON.stringify(filters),
