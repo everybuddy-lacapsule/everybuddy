@@ -1,103 +1,12 @@
-import React, { useEffect} from "react";
 import { StyleSheet } from "react-native";
 import {
 	createDrawerNavigator,
-	DrawerContentScrollView,
-	DrawerItemList,
-	DrawerItem,
-	useDrawerStatus
 } from "@react-navigation/drawer";
 import { Divider} from "@rneui/themed";
-import TabsNavigator from "./TabsNavigator";
+import LeftDrawerScreen from "./leftDrawer"
 import CustomRightDrawerContent from "../components/RightDrawerContent";
-import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-const Drawer = createDrawerNavigator();
-
-//*LEFT DRAWER CONTENT
-function CustomLeftDrawerContent(props) {
-	const colors = ["#7C4DFF", "#F94A56", "#FF1744"];
-	const hollowWhite = "rgba(255, 255, 255, 0.5)";
-
-	return (
-		<LinearGradient
-			colors={colors}
-			style={{ flex: 1 }}
-			start={{ x: 0.3, y: 0.4 }}
-			end={{ x: 2, y: 0.7 }}
-		>
-			<DrawerContentScrollView {...props}>
-				<DrawerItemList {...props} />
-				<DrawerItem
-					label="Buddies"
-					inactiveTintColor={hollowWhite}
-					activeTintColor="white"
-					onPress={() => props.navigation.navigate("Buddies")}
-				></DrawerItem>
-				<DrawerItem
-					label="My Profile"
-					inactiveTintColor={hollowWhite}
-					activeTintColor="white"
-					onPress={() => props.navigation.navigate("MyProfile")}
-				></DrawerItem>
-				<Divider
-					color={hollowWhite}
-					style={{ width: " 90%", marginLeft: "5%" }}
-				/>
-				<DrawerItem
-					label="Paramètres"
-					inactiveTintColor={hollowWhite}
-				></DrawerItem>
-				<DrawerItem
-					label="Se déconnecter"
-					inactiveTintColor={hollowWhite}
-					activeTintColor="white"
-					onPress={() => {AsyncStorage.clear(), props.navigation.navigate("LoginScreen")}}
-				></DrawerItem>
-			</DrawerContentScrollView>
-		</LinearGradient>
-	);
-}
-//* LEFT DRAWER
-const LeftDrawerScreen = () => {
-	const isDrawerVisible =  useDrawerStatus();
-
-	useEffect(() => {
-	  if (isDrawerVisible=='open') {
-		console.log('open')
-		;
-	  } else{
-		console.log('close');
-	  }
-	}, [isDrawerVisible]);
-	return (
-		<Drawer.Navigator
-			screenOptions={{
-				headerStyle: {
-					backgroundColor: "#0E0E66",
-				},
-				headerTintColor: "#fff",
-				overlayColor: "transparent",
-				drawerType: "front",
-				drawerStyle: {
-					marginTop: 56,
-					marginBottom: 48.5,
-					width: " 80%",
-				},
-			}}
-			useLegacyImplementation
-			drawerContent={(props) => <CustomLeftDrawerContent {...props} />}
-		>
-			<Drawer.Screen
-				name="Map"
-				component={TabsNavigator}
-				options={{ drawerItemStyle: { display: "none" }, headerShown: false }}
-			/>
-		</Drawer.Navigator>
-	);
-};
 
 //*RIGHT DRAWER Wrapping LEFT DRAWER
 const RightDrawer = createDrawerNavigator();

@@ -86,7 +86,7 @@ function CustomRightDrawerContent(props) {
       workType: [], // Array
     });
   }
-  console.log(filters)
+  // console.log(filters)
   async function loadSearchResults() {
     // sans ce commentaire, ca marche pas !!! Si tu delte je te nique tes morts
     var searchResults = await fetch(

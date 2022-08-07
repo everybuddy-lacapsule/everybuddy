@@ -192,7 +192,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, null)(MapScreen);
-// export default {
-//   MapScreen: connect(mapStateToProps)(MapScreen),
-//   bottomDrawer: connect(mapStateToProps)(bottomDrawer)
-// }

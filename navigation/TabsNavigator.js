@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
+import { connect } from "react-redux";
 
 import MapScreen from "../screens/MapScreen";
 import NewsScreen from "../screens/NewsScreen";
@@ -88,7 +89,7 @@ const TabsNavigator = function (props) {
 					headerStyle: styles.headers,
 					headerTintColor: "#fff",
 					headerTitleAlign: "center",
-					headerTitle: (props) => <HeaderSearchBar {...props} />,
+					headerTitle: 	props.drawerStatus === 'open'? 'Recherche avancée' : (props) => <HeaderSearchBar {...props} />,
 				}}
 			/>
 			<Tab.Screen
@@ -195,4 +196,13 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default TabsNavigator;
+const mapStateToProps = (state) => {
+	return {
+	  searchResults: state.searchResults,
+	  userDatas: state.userDatas,
+	  drawerStatus : state.drawerStatus,
+	};
+  };
+  
+  export default connect(mapStateToProps, null)(TabsNavigator);
+
