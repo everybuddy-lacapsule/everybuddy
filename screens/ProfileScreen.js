@@ -1,64 +1,69 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {View, StyleSheet, Text, ScrollView, Linking} from "react-native";
 import { Divider, SocialIcon, hollowWhite} from "@rneui/themed";
 import { Avatar } from "@rneui/base";
 import {connect} from 'react-redux';
+import {IPLOCAL} from "@env"
+const urlLocal = 'http://'+IPLOCAL+':3000'
 
-// --------------- COPIE DE MYPROFILESCREEN : FAIRE UN FETCH A LA PLACE DU MAPSTATETOPROPS ----------------
+
+// --------------- COPIE DE MYPROFILESCREEN ----------------
 
 function ProfileScreen(props) {
+  const [alumniDatas, setAlumniDatas] = useState ({})
+
+  useEffect(() => {
+    const getAlumnisDatas = async () => {
+      const response = await fetch(`${urlLocal}/users/getUserDatas?userID=${props.alumniIDSearch}`
+      );
+      console.log('reponse', response)
+      const dataJSON = await response.json();
+      console.log('ça marche', dataJSON)
+      setAlumniDatas(dataJSON.userDatas);
+    };
+    getAlumnisDatas();
+  }, [props.alumniIDSearch]);
 
   return (
     <View
       style={styles.container}
     >
-
       <View style={styles.content}>
       <View style={styles.avatar}>
         <Avatar
           rounded
           size={142}
-          source={{uri : props.userData.avatar}}
+          source={{uri : alumniDatas.avatar}}
         />
 
       </View>
       <View style={styles.view1}>
         {/* Nom Prénom */}
         <Text style={styles.name}>
-          {props.userData.firstName} {props.userData.name}
+          {alumniDatas.firstName} {alumniDatas.name}
         </Text>
         {/* Cursus */}
         <Text style={styles.text1}>
-          Batch {props.userData.capsule.nbBatch} {props.userData.capsule.campus}
+          Batch {alumniDatas.capsule?.nbBatch} {alumniDatas.capsule?.campus}
           </Text>
           {/* Job + Entreprise */}
         <Text style={styles.text1}>
-        {props.userData.work.work} @ {props.userData.work.company}
+        {alumniDatas.work?.work} @ {alumniDatas.work?.company}
           </Text>
           {/* Statut : OpenToWork/ Just Curious / Partner / Hiring */}
         <Text style={styles.badge1}>
-          {props.userData.status}
+          {alumniDatas.status}
           </Text>
       </View>
       </View>
       <View style={styles.view1}>
         {/* Localisation actuelle */}
         <Text style={styles.text2}>
-          {props.userData.address.city} {props.userData.address.country}
+          {alumniDatas.address?.city} {alumniDatas.address?.country}
           </Text>
       </View>
       <View style={styles.tags}>
         {/* Tags et compétences */}
-        {
-        props.userData.tags.map((tag, i) => {
-          return (
-      <Text style={styles.badge2} key={i}>
-        {tag}
-        </Text>
-          )
-        })
-      }
-
 </View>
 
 <ScrollView 
@@ -70,13 +75,13 @@ scrollbar
 RECHERCHE ACTUELLE
 </Text>
 <Text style={styles.text2}>
-{props.userData.searchCurrent}
+{alumniDatas.searchCurrent}
 </Text>
   <Text style={styles.title}>
 PRÉSENTATION
   </Text>
   <Text style={styles.text2}>
-  {props.userData.presentation}  
+  {alumniDatas.presentation}  
   </Text>
 
 </ScrollView>
@@ -101,14 +106,10 @@ onPress={() => {Linking.openURL('https://www.linkedin.com/')}}
 </View >
 
     </View>
+    // )}
+    // )}
   );
 }
-
-function mapStateToProps(state) {
-  return { userData : state.userDatas }
- }  
-
- export default connect(mapStateToProps, null)(ProfileScreen);
 
 // --------- Style CSS --------------------
 var styles = StyleSheet.create({
@@ -194,11 +195,11 @@ var styles = StyleSheet.create({
   },
 });
 
-// Exemple de props pour badge
-              {/* <Badge 
-      value='Fullstack'
-      containerStyle={{ margin: 5 }}
-      status="light"
-      textStyle={{ color: '#0E0E66'}}
-      badgeStyle={{borderColor: '#0E0E66', borderWidth: 1.2}}
-      /> */}
+
+const mapStateToProps = (state) => {
+  return {
+    alumniIDSearch: state.alumniIDSearch,
+  };
+};
+
+ export default connect(mapStateToProps, null)(ProfileScreen);
