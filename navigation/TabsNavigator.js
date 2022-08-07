@@ -24,7 +24,17 @@ const TabsNavigator = function (props) {
 	return (
 		<Tab.Navigator
 			screenOptions={({ route }) => ({
-				headerRight: () => (
+				headerRight: () => ( props.drawerStatus== 'open' ? 
+				<View style={styles.right2}>
+				<TouchableOpacity
+				onPress={() =>
+					{props.navigation.getParent("RightDrawer").toggleDrawer() }
+				}
+			>
+				<Ionicons name="options" size={24} color="#0E0E66" />
+			</TouchableOpacity>
+			</View>
+			 :
 					<TouchableOpacity
 						style={styles.right}
 						onPress={() =>
@@ -193,6 +203,15 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		width: 64,
+	},
+	right2: {
+		alignSelf:'center',
+		justifyContent: "center",
+		alignItems: "center",
+		width: 34,
+		backgroundColor:'white',
+		borderRadius:5,
+		marginLeft: 25
 	},
 });
 
