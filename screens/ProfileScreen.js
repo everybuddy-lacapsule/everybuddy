@@ -4,7 +4,6 @@ import { Divider, SocialIcon, hollowWhite} from "@rneui/themed";
 import { Avatar } from "@rneui/base";
 import {connect} from 'react-redux';
 import {IPLOCAL} from "@env"
-import alumniIDSearch from "../reducers/alumniIDSearch";
 const urlLocal = 'http://'+IPLOCAL+':3000'
 
 
