@@ -16,7 +16,6 @@ import InsetShadow from "react-native-inset-shadow";
 import { connect } from "react-redux";
 
 import {IPLOCAL} from "@env"
-var urlLocal = 'http://'+IPLOCAL+':3000'
 
 
 /*----Web socket----*/
@@ -93,7 +92,7 @@ function ChatScreen(props) {
     try {
       /* SEND message to DB */
       const messageDB = await fetch(
-        `${urlLocal}/messages/addMessage`,
+        `$http://${IPLOCAL}:3000/messages/addMessage`,
         {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
