@@ -15,6 +15,7 @@ import MyProfileScreen from "../screens/MyProfileScreen";
 import HeaderSearchBar from "../components/HeaderSearchBar";
 import ChatScreen from "../screens/ChatScreen";
 import { useDrawerStatus } from "@react-navigation/drawer";
+import editionMode from "../reducers/editionMode";
 
 const Tab = createBottomTabNavigator();
 const hiddenTabs = ["Buddies", "MyProfile", "Chat", "ProfileScreen"];
@@ -24,13 +25,19 @@ const TabsNavigator = function (props) {
 	const [isLeftFocused, setIsLeftFocused] = useState("");
 	const [editing, setEditing] = useState(false);
 
+	useEffect(()=>{
+		props.editionMode(editing);
+
+	}, [])
+
 	useEffect(() => {
 		if (isLeftDrawerVisible == "open") {
 			setIsLeftFocused(isLeftDrawerVisible);
 		} else {
 			setIsLeftFocused(isLeftDrawerVisible);
-		}
+		};
 	}, [isLeftDrawerVisible]);
+
 
 	return (
 		<Tab.Navigator
@@ -178,7 +185,7 @@ const TabsNavigator = function (props) {
 						<TouchableOpacity
 							style={styles.right}
 							//* enable profile modification mode
-							onPress={() => {setEditing(!editing);console.log('toggle', editing);props.editionMode(editing)}}
+							onPress={() => {console.log('toggle', editing);props.editionMode(!props.editingMode)}}
 						>
 							<Ionicons name="pencil" size={25} color="white" />
 						</TouchableOpacity>
@@ -270,6 +277,7 @@ const mapStateToProps = (state) => {
 		searchResults: state.searchResults,
 		userDatas: state.userDatas,
 		drawerStatus: state.drawerStatus,
+		editingMode: state.editionMode
 	};
 };
 

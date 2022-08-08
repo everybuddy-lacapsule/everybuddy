@@ -6,12 +6,20 @@ import EditingProfileContent from "../components/EditingProfileContent";
 
 function MyProfileScreen(props) {
   const [editing, setEditing] = useState(false)
-
-  //* useEffect to toggle editing mode through store state
-	useEffect(() => {
-		if (props.editionMode == true) {
+  
+  useEffect(() => {
+		if (props.editionMode === true) {
 			setEditing(true);
 		} else {
+      setEditing(false);
+		}
+	}, []);
+  
+  //* useEffect to toggle editing mode through store state
+	useEffect(() => {
+		if (props.editionMode === true) {
+			setEditing(true);
+		} else if (props.editionMode === false) {
       setEditing(false);
 		}
 	}, [props.editionMode]);

@@ -18,7 +18,7 @@ function EditingProfileContent(props) {
 	const [presentation, setPresentation] = useState("");
 	console.log("caca", userData);
 	return (
-		<View style={styles.container}>
+		<ScrollView style={styles.container}>
 			<View style={styles.content}>
 				<View style={styles.avatar}>
 					<Avatar rounded size={142} source={{ uri: props.userData.avatar }} />
@@ -77,8 +77,7 @@ function EditingProfileContent(props) {
 				})}
 			</ScrollView>
 			</KeyboardAvoidingView>
-
-			<ScrollView contentContainerStyle={styles.view2} scrollbar>
+			<View style={styles.view2} scrollbar>
 				<Text style={styles.title}>RECHERCHE ACTUELLE</Text>
 				<TextInput
 					style={{ backgroundColor: 'white', borderRadius:5, textAlignVertical:'top', padding:10}}
@@ -99,30 +98,47 @@ function EditingProfileContent(props) {
 					onChangeText={(text) => setPresentation({ text })}
 					value={presentation}
 				/>
-			</ScrollView>
+			</View>
 
 			<Divider
 				color={hollowWhite}
-				style={{ width: " 90%", marginLeft: "5%" }}
+				style={{ width: " 90%", marginLeft: "5%", marginBottom:'3%' }}
 			/>
 
 			<View style={styles.icon}>
 				{/* ICONES RESEAUX SOCIAUX */}
 				{/* ------------- TROUVER COMMENT RECUPERER LES LIENS DE LA BDD ! ---------- */}
+				<View style={{ flexDirection:'row', marginHorizontal:20,width:'100%',}}>
 				<SocialIcon
+					iconSize={12}
 					onPress={() => {
 						Linking.openURL("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
 					}}
 					type="github"
 				/>
+				<TextInput
+					style={{backgroundColor: 'white', borderRadius:5, textAlignVertical:'top', padding:10}}
+					placeholder='https://github.com/...'
+					placeholderTextColor= "rgba(0, 0, 0, 0.5)"
+					onChangeText={(text) => setPresentation({ text })}
+					value={presentation}
+				/>
+				</View>
+				<View style={{ flexDirection:'row', marginHorizontal:20, width:'100%',}}>
 				<SocialIcon
-					onPress={() => {
-						Linking.openURL("https://www.linkedin.com/");
-					}}
+				iconSize={12}
 					type="linkedin"
 				/>
+					<TextInput
+					style={{backgroundColor: 'white', borderRadius:5, textAlignVertical:'top', padding:10, marginVertical:10}}
+					placeholder='https://www.linkedin.com/in/...'
+					placeholderTextColor= "rgba(0, 0, 0, 0.5)"
+					onChangeText={(text) => setPresentation({ text })}
+					value={presentation}
+				/>
+				</View>
 			</View>
-		</View>
+		</ScrollView>
 	);
 }
 
@@ -149,11 +165,12 @@ var styles = StyleSheet.create({
 		alignItems: "center",
 	},
 	icon: {
-		flexDirection: "row",
-		flexwrap: "wrap",
+		flexDirection: "column",
 		alignSelf: "center",
 		marginBottom: 10,
 		marginTop: 10,
+		marginHorizontal: 20,
+
 	},
 	name: {
 		fontWeight: "bold",
