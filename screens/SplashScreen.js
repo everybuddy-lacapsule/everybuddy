@@ -10,7 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connect } from "react-redux";
 
 import { IPLOCAL } from "@env";
-const urlLocal = "http://172.16.189.134:3000";
+const urlLocal = "http://172.16.188.131:3000";
 
 function SplashScreen(props) {
   useEffect(() => {

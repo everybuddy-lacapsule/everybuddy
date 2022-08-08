@@ -11,7 +11,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { connect } from "react-redux";
 
 import {IPLOCAL} from "@env"
-var urlLocal = 'http://172.16.189.134:3000'
+var urlLocal = 'http://172.16.188.131:3000'
 
 
 function HeaderSearchBar(props) {

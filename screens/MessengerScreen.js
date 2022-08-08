@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import Discussion from "../components/DiscussionComponent";
 
 import {IPLOCAL} from "@env"
-const urlLocal = 'http://172.16.189.134:3000';
+const urlLocal = 'http://172.16.188.131:3000';
 // change hook useIsFocused by option unmountOnBlur in the Messenger Screen in TabsNavigator
 //import { useIsFocused } from "@react-navigation/native";
 

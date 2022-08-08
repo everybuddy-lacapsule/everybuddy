@@ -15,7 +15,7 @@ import BottomDrawer from "react-native-bottom-drawer-view";
 import { connect } from "react-redux";
 import { IPLOCAL } from "@env";
 //const urlLocal = "http://" + IPLOCAL + ":3000";
-const urlLocal = 'http://172.16.189.134:3000';
+const urlLocal = 'http://172.16.188.131:3000';
 
 function MapScreen(props) {
   const [resultLink, setResultLink] = useState("liste");

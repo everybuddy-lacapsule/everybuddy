@@ -7,7 +7,7 @@ import { useIsFocused } from "@react-navigation/native";
 
 import {IPLOCAL} from "@env"
 //var urlLocal = 'http://'+IPLOCAL+ ':3000';
-const urlLocal = 'http://172.16.189.134:3000'
+const urlLocal = 'http://172.16.188.131:3000'
 
 function Discussion({ discussionID, discussion, currentUser, navigation, getDiscussionID }) {
   const isFocused = useIsFocused();
