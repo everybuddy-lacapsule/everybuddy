@@ -11,7 +11,6 @@ import { Divider, SocialIcon, hollowWhite, Overlay } from "@rneui/themed";
 import { Avatar } from "@rneui/base";
 import { connect } from "react-redux";
 import { IPLOCAL } from "@env";
-const urlLocal = "http://172.16.189.134:3000";
 
 function ProfileScreen(props) {
   const [alumniDatas, setAlumniDatas] = useState({});
@@ -26,7 +25,7 @@ function ProfileScreen(props) {
   useEffect(() => {
     const getAlumnisDatas = async () => {
       const response = await fetch(
-        `${urlLocal}/users/getUserDatas?userID=${props.alumniIDSearch}`
+        `${IPLOCAL}/users/getUserDatas?userID=${props.alumniIDSearch}`
       );
       //console.log("reponse", response);
       const dataJSON = await response.json();
@@ -34,7 +33,7 @@ function ProfileScreen(props) {
       setAlumniDatas(dataJSON.userDatas);
     };
     getAlumnisDatas();
-  }, []);
+  }, [props.alumniIDSearch]);
 
   console.log("TEEEESSSTT", alumniDatas);
 
@@ -44,7 +43,7 @@ function ProfileScreen(props) {
       const getDiscussion = async () => {
         /* --------------- FIND DISCUSSIONID IF EXIST/ ELSE CREATE A NEW DISCUSSION  ---------------- */
         const discussionIDRes = await fetch(
-          `${urlLocal}/discussions/createDiscussion`,
+          `${IPLOCAL}/discussions/createDiscussion`,
           {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -70,7 +69,7 @@ function ProfileScreen(props) {
           };
           try {
             // SEND message to DB
-            const saveMsgToDB = await fetch(`${urlLocal}/messages/addMessage`, {
+            const saveMsgToDB = await fetch(`${IPLOCAL}/messages/addMessage`, {
               method: "POST",
               headers: { "Content-Type": "application/x-www-form-urlencoded" },
               body: `message=${defautMsgToDB.content}&discussionID=${defautMsgToDB.discussionID}&userID=${defautMsgToDB.senderID}`,

@@ -96,7 +96,7 @@ function ChatScreen(props) {
     try {
       /* SEND message to DB */
       const messageDB = await fetch(
-        `${urlLocal}/messages/addMessage`,
+        `${IPLOCAL}/messages/addMessage`,
         {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
