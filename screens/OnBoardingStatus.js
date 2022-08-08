@@ -134,7 +134,7 @@ function OnBoardingStatus(props) {
   }
 
   useEffect(() => {
-    setUserDatas({...userDatasInput, location: location})
+    setUserDatas({ ...userDatasInput, location: location });
   }, [location]);
 
   //console.log(userDatasInput);
@@ -265,6 +265,12 @@ function OnBoardingStatus(props) {
         onPress={() => handleSubmitValid()}
       >
         <Text style={styles.confirm}>C'est parti !</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => props.navigation.navigate("LoginScreen")}
+      >
+        <Text style={styles.confirm}>Login</Text>
       </TouchableOpacity>
     </ScrollView>
   );
