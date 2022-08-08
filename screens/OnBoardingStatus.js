@@ -9,9 +9,14 @@ import {
 } from "react-native";
 import { CheckBox } from "@rneui/base";
 import { AntDesign } from "@expo/vector-icons";
+const IPLOCAL = "http://192.168.0.149:3000";
 
 function OnBoardingStatus(props) {
   const [page, setPage] = useState(1);
+  const [statusDatasList, setStatusDatasList] = useState([]);
+  const [workDatasList, setWorkDatasList] = useState([]);
+  const [workTypeDatasList, setWorkTypeDatasList] = useState([]);
+
   const [userDatasInput, setUserDatas] = useState({
     location: "", // String
     status: "", // Array
@@ -21,13 +26,51 @@ function OnBoardingStatus(props) {
     id: props.userDatas._id,
   });
 
+  const getDatasFromDB = async (typeDatas) => {
+    const datas = await fetch(`${IPLOCAL}/datas/${typeDatas}`);
+    const datasJSON = await datas.json();
+    return datasJSON;
+  };
+
+  /*--------------GET ALLS DATAS FROM DB => FILL Statuses/Works/TypeWorks List------------------*/
+  useEffect(() => {
+    /*------------------------Statuses---------------------*/
+    getDatasFromDB("statuses")
+      .then((response) => setStatusDatasList(response))
+      .catch((error) => console.log(error));
+
+    /*----------------------Works or jobs--------------------*/
+    getDatasFromDB("jobs")
+      .then((response) => setWorkDatasList(response))
+      .catch((error) => console.log(error));
+    // /*----------------------W orkType--------------------*/
+    getDatasFromDB("typeJobs")
+      .then((response) => setWorkTypeDatasList(response))
+      .catch((error) => console.log(error));
+  }, []);
+
+  /*--------------VALIDATION AND SAVE USER DATAS IN DB------------------*/
+  useEffect(() => {
+    const handleSubmitValid = async () => {
+      var res = await fetch(`${IPLOCAL}/users/userDatas`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: JSON.stringify(userDatasInput),
+      });
+      res = await res.json();
+      //console.log(res.userDatas);
+    };
+    handleSubmitValid();
+  }, [userDatasInput]);
+
+  /*
   const statusDatasList = [
     "#OPEN TO WORK",
     "#HIRING",
     "#PARTNER",
     "#JUST CURIOUS",
   ];
-
+  
   const workDatasList = [
     "Développeur",
     "Product Owner",
@@ -41,6 +84,7 @@ function OnBoardingStatus(props) {
     "Freelance",
     "En recherche",
   ];
+  */
 
   function addData(filter, value) {
     let userDatasInputCopy = { ...userDatasInput };
@@ -58,8 +102,8 @@ function OnBoardingStatus(props) {
   //     setUserDatas(userDatasCopy);
   //   }
 
-  console.log(userDatasInput);
-  console.log("numéro", page);
+  //console.log(userDatasInput);
+  //console.log("numéro", page);
 
   var status = (
     <View>

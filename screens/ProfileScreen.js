@@ -34,11 +34,6 @@ function ProfileScreen(props) {
     };
     getAlumnisDatas();
   }, [props.alumniIDSearch]);
-<<<<<<< HEAD
-=======
-
-  console.log("TEEEESSSTT", alumniDatas);
->>>>>>> 5abe134b7163172e07c4fb6fbd318951c5c9cd95
 
     /* ----------------------SEND MESSAGE AND SAVE TO DB---------------- */
     useEffect(() => {
