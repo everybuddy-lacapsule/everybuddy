@@ -17,6 +17,7 @@ const StackNavigator = function () {
 				headerStyle: styles.headers,
 				headerTintColor: "#fff",
 				headerTitleStyle: { alignSelf: "center" },
+
 			}}
 		>
 			<Stack.Screen
@@ -27,6 +28,7 @@ const StackNavigator = function () {
 					headerStyle: styles.headers,
 					headerTintColor: "#fff",
 					headerBackVisible: false,
+					headerShown: false,
 				}}
 			/>
 
@@ -35,6 +37,7 @@ const StackNavigator = function () {
 				component={CheckEmailScreen}
 				options={{
 					title: "S'identifier",
+					headerTitleAlign: 'center',
 					headerStyle: styles.headers,
 					headerTintColor: "#fff",
 					headerBackVisible: false,
@@ -46,6 +49,7 @@ const StackNavigator = function () {
 				component={LoginScreen}
 				options={{
 					title: "S'identifier",
+					headerTitleAlign: 'center',
 					headerStyle: styles.headers,
 					headerTintColor: "#fff",
 					headerBackVisible: false,

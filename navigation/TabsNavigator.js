@@ -24,11 +24,9 @@ const TabsNavigator = function (props) {
 
 	useEffect(() => {
 		if (isLeftDrawerVisible == "open") {
-			console.log("prout", isLeftDrawerVisible);
 			setIsLeftFocused(isLeftDrawerVisible);
 		} else {
 			setIsLeftFocused(isLeftDrawerVisible);
-			console.log("prout2", isLeftDrawerVisible);
 		}
 	}, [isLeftDrawerVisible]);
 
@@ -67,7 +65,7 @@ const TabsNavigator = function (props) {
 								props.navigation.toggleDrawer();
 							}}
 						>
-							<Ionicons name="menu" size={24} color="#0E0E66" />
+							<Feather name="menu" size={24} color="#0E0E66" />
 						</TouchableOpacity>
 					) : (
 						<TouchableOpacity
@@ -76,7 +74,7 @@ const TabsNavigator = function (props) {
 								props.navigation.toggleDrawer();
 							}}
 						>
-							<Ionicons name="menu" size={24} color="white" />
+							<Feather name="menu" size={24} color="white" />
 						</TouchableOpacity>
 					),
 				headerStyle: {
@@ -241,7 +239,9 @@ const styles = StyleSheet.create({
 	},
 	right2: {
 		backgroundColor: "white",
-		marginHorizontal: 20,
+		width:25,
+		textAlign:"right"  ,
+		marginHorizontal: 21,
 		borderRadius: 5,
 	},
 });

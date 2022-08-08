@@ -10,7 +10,7 @@ import {
 import { Overlay, Button, Input } from "@rneui/themed";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {IPLOCAL} from "@env"
-const urlLocal = 'http://'+IPLOCAL+':3000'
+const urlLocal = 'http://172.16.190.4:3000'
 
 
 function LoginScreen(props) {
@@ -31,7 +31,6 @@ function LoginScreen(props) {
   }, [props.userEmail]);
 
   var handleSubmitSignIn = async () => {
-    // var res = await fetch(`${urlLocal}/users/sign-in`, {
       var res = await fetch(`${urlLocal}/users/sign-in`, {
 
       method: "POST",
@@ -130,6 +129,8 @@ const styles = StyleSheet.create({
     marginBottom: 25,
     padding: 15,
     alignSelf: "center",
+    elevation: 4,
+
   },
   confirm: {
     fontSize: 20,

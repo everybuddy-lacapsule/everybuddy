@@ -10,7 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connect } from "react-redux";
 
 import {IPLOCAL} from "@env"
-var urlLocal = 'http://'+IPLOCAL+':3000'
+var urlLocal='http://172.16.190.4:3000'
 
 
 function SplashScreen(props) {
@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
     marginBottom: 25,
     padding: 15,
     alignSelf: "center",
+    elevation: 4,
   },
   confirm: {
     fontSize: 20,
