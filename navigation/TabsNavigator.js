@@ -22,6 +22,7 @@ const hiddenTabs = ["Buddies", "MyProfile", "Chat", "ProfileScreen"];
 const TabsNavigator = function (props) {
 	const isLeftDrawerVisible = useDrawerStatus();
 	const [isLeftFocused, setIsLeftFocused] = useState("");
+	const [editing, setEditing] = useState(false);
 
 	useEffect(() => {
 		if (isLeftDrawerVisible == "open") {
@@ -176,8 +177,8 @@ const TabsNavigator = function (props) {
 					headerRight: () => (
 						<TouchableOpacity
 							style={styles.right}
-							//TODO enable profile modification mode
-							//TODO onPress={() => }
+							//* enable profile modification mode
+							onPress={() => {setEditing(!editing);console.log('toggle', editing);props.editionMode(editing)}}
 						>
 							<Ionicons name="pencil" size={25} color="white" />
 						</TouchableOpacity>
@@ -276,6 +277,9 @@ function mapDispatchToProps(dispatch) {
 	return {
 		leftDrawerStatus: function (status) {
 			dispatch({ type: "leftDrawer status", leftDrawerStatus: status });
+		},
+		editionMode: function (status) {
+			dispatch({ type: "toggleEditionMode", editionMode: status });
 		},
 	};
 }

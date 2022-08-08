@@ -157,7 +157,7 @@ function ProfileScreen(props) {
         </Text>
       </View>
       <ScrollView 
-      style={{ marginHorizontal: 20, height:'50%'}}
+      style={{ marginHorizontal: 20, minHeight:'7%' }}
       contentContainerStyle={styles.tags}
       horizontal={true}>
         {/* Tags et compétences */}
