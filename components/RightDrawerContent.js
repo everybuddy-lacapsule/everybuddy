@@ -87,13 +87,8 @@ function resetFilters() {
       work: [], // Array
       workType: [], // Array
     });
-<<<<<<< HEAD
 }
 
-=======
-  }
-  // console.log(filters)
->>>>>>> 466cf2bdc6f26c81f43476c4056d2b677cf13fa4
   async function loadSearchResults() {
     // sans ce commentaire, ca marche pas !!! Si tu delte je te nique tes morts
     var searchResults = await fetch(

@@ -17,7 +17,7 @@ function MessengerScreen(props) {
   useEffect(() => {
     const getDiscussions = async () => {
       try{
-        const response = await fetch(`$http://${IPLOCAL}:3000/discussions/${props.userDatas._id}`);
+        const response = await fetch(`$http://172.16.189.134:3000/discussions/${props.userDatas._id}`);
         let userDiscussions = await response.json();
         setDiscussions(userDiscussions);
       }
