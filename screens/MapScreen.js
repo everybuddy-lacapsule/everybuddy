@@ -194,7 +194,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-<<<<<<< HEAD
 function mapDispatchToProps(dispatch) {
   return {
     getAlumniIDSearch: function (id) {
@@ -208,6 +207,3 @@ export default connect(mapStateToProps, mapDispatchToProps)(MapScreen);
 //   MapScreen: connect(mapStateToProps)(MapScreen),
 //   bottomDrawer: connect(mapStateToProps)(bottomDrawer)
 // }
-=======
-export default connect(mapStateToProps, null)(MapScreen);
->>>>>>> 466cf2bdc6f26c81f43476c4056d2b677cf13fa4
