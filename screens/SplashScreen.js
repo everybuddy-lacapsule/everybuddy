@@ -15,7 +15,7 @@ import {IPLOCAL} from "@env"
 function SplashScreen(props) {
   useEffect(() => {
     AsyncStorage.getItem("userID", async function (error, userID) {
-      console.log(userID)
+      console.log(userID);
       if (userID !== null) {
         var datas = await fetch(
           `${IPLOCAL}/users/getUserDatas?userID=${userID}`
@@ -35,17 +35,24 @@ function SplashScreen(props) {
   };
 
   return (
-    <ImageBackground style={styles.container}
-    source={require("../assets/splash.png")}
+    <ImageBackground
+      style={styles.container}
+      source={require("../assets/splash.png")}
     >
-      <View style={{ flex:1, flexDirection: 'column', justifyContent:'flex-end' }}>
-      <Text style={[styles.confirm, {marginBottom:50}]}
-        onPress={() => {
-          AsyncStorage.clear(), props.setUserDatas(null);
-        }}>Clear local storage</Text>
-      <TouchableOpacity style={styles.button} onPress={() => handleStart()}>
-        <Text style={styles.confirm}>Commencer</Text>
-      </TouchableOpacity>
+      <View
+        style={{ flex: 1, flexDirection: "column", justifyContent: "flex-end" }}
+      >
+        <Text
+          style={[styles.confirm, { marginBottom: 50 }]}
+          onPress={() => {
+            AsyncStorage.clear(), props.setUserDatas(null);
+          }}
+        >
+          Clear local storage
+        </Text>
+        <TouchableOpacity style={styles.button} onPress={() => handleStart()}>
+          <Text style={styles.confirm}>Commencer</Text>
+        </TouchableOpacity>
       </View>
     </ImageBackground>
   );

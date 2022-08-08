@@ -4,6 +4,7 @@ import {
   StyleSheet,
   View,
   TextInput,
+  Keyboard,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 
@@ -16,8 +17,8 @@ function HeaderSearchBar(props) {
 
   const [location, setLocation] = useState("");
   const [filters, setFilters] = useState({
-    nbBatch: '', // Number
-    location: '', // String 
+    nbBatch: "", // Number
+    location: "", // String
     radius: 10, // Number
     campus: [], // Array
     cursus: [], // Array
@@ -27,18 +28,16 @@ function HeaderSearchBar(props) {
     workType: [], // Array
   });
   useEffect(() => {
-    filters.location = location
-  },[location])
+    filters.location = location;
+  }, [location]);
 
   async function loadSearchResults() {
     var searchResults = await fetch(
-      // `${urlLocal}/search`,
       `${IPLOCAL}/search`,
       {method: "post",
       headers:{'Content-Type': 'application/json'},
       body: JSON.stringify(filters),
-      }
-    );
+    });
     searchResults = await searchResults.json();
 
     props.search({
@@ -47,24 +46,9 @@ function HeaderSearchBar(props) {
       searchResults: searchResults.users,
       searchLocation: searchResults.location,
     });
+    Keyboard.dismiss();
+  }
 
-}
-  // async function loadSearchResults() {
-  //   if (location) {
-  //     var searchResults = await fetch(
-  //       `http://${IPLOCAL}:3000/searchByLocation?location=${location}&radius=10`
-  //     );
-  //     searchResults = await searchResults.json();
-
-  //     props.search({
-  //       // search :true is used to display the radius circle after first search, even with no results
-  //       search: true,
-  //       searchResults: searchResults.users,
-  //       searchLocation: searchResults.location,
-  //     });
-  //     Keyboard.dismiss();
-  //   }
-  // }
 
   return (
     <View style={styles.headerTitle}>

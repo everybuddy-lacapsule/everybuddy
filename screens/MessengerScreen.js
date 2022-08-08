@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 
 function MessengerScreen(props) {
 
-
+  //const isFocused = useIsFocused();
   const [discussions, setDiscussions] = useState([]);
 
   useEffect(() => {
@@ -26,7 +26,8 @@ function MessengerScreen(props) {
       }
     };
     getDiscussions();
-  }, [props.userDatas._id]);
+  //}, [isFocused]);
+}, []);
 
   //console.log("userDiscussions is", discussions);
   return (
