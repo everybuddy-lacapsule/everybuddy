@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connect } from "react-redux";
-
 import {IPLOCAL} from "@env"
 
 function SplashScreen(props) {
