@@ -67,7 +67,7 @@ const StackNavigator = function () {
 				}}
 			/>
 
-
+			<Stack.Screen
 				name="OnBoardingStatus"
 				component={OnBoardingStatus}
 				options={{
