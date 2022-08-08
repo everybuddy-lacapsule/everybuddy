@@ -9,14 +9,14 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connect } from "react-redux";
 
-import {IPLOCAL} from "@env"
-var urlLocal = 'http://'+IPLOCAL+':3000'
-
+import { IPLOCAL } from "@env";
+//var urlLocal = 'http://'+IPLOCAL+':3000';
+const urlLocal = "http://172.16.189.134:3000";
 
 function SplashScreen(props) {
   useEffect(() => {
     AsyncStorage.getItem("userID", async function (error, userID) {
-      console.log(userID)
+      console.log(userID);
       if (userID !== null) {
         var datas = await fetch(
           `${urlLocal}/users/getUserDatas?userID=${userID}`
@@ -36,17 +36,24 @@ function SplashScreen(props) {
   };
 
   return (
-    <ImageBackground style={styles.container}
-    source={require("../assets/splash.png")}
+    <ImageBackground
+      style={styles.container}
+      source={require("../assets/splash.png")}
     >
-      <View style={{ flex:1, flexDirection: 'column', justifyContent:'flex-end' }}>
-      <Text style={[styles.confirm, {marginBottom:50}]}
-        onPress={() => {
-          AsyncStorage.clear(), props.setUserDatas(null);
-        }}>Clear local storage</Text>
-      <TouchableOpacity style={styles.button} onPress={() => handleStart()}>
-        <Text style={styles.confirm}>Commencer</Text>
-      </TouchableOpacity>
+      <View
+        style={{ flex: 1, flexDirection: "column", justifyContent: "flex-end" }}
+      >
+        <Text
+          style={[styles.confirm, { marginBottom: 50 }]}
+          onPress={() => {
+            AsyncStorage.clear(), props.setUserDatas(null);
+          }}
+        >
+          Clear local storage
+        </Text>
+        <TouchableOpacity style={styles.button} onPress={() => handleStart()}>
+          <Text style={styles.confirm}>Commencer</Text>
+        </TouchableOpacity>
       </View>
     </ImageBackground>
   );

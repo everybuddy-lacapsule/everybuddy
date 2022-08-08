@@ -16,7 +16,8 @@ const urlLocal = "http://172.16.189.134:3000";
 function ProfileScreen(props) {
   const [alumniDatas, setAlumniDatas] = useState({});
   const [visible, setVisible] = useState(false);
-  // const [beerText, setBeerText] = useState("Biere");
+  const [msgSent, setMsgSent] = useState(null);
+  const [discussionID, setDiscussionID] = useState('');
 
   const toggleOverlay = () => {
     setVisible(!visible);
@@ -25,13 +26,67 @@ function ProfileScreen(props) {
   useEffect(() => {
     const getAlumnisDatas = async () => {
       const response = await fetch(
-        `http://172.16.189.134:3000/users/getUserDatas?userID=${props.alumniIDSearch}`
+        `${urlLocal}/users/getUserDatas?userID=${props.alumniIDSearch}`
       );
-      var dataJSON = await response.json();
+      //console.log("reponse", response);
+      const dataJSON = await response.json();
+      //console.log("ça marche", dataJSON);
       setAlumniDatas(dataJSON.userDatas);
     };
     getAlumnisDatas();
   }, [props.alumniIDSearch]);
+
+    /* ----------------------SEND MESSAGE AND SAVE TO DB---------------- */
+    useEffect(() => {
+      /* --------------- SEND A DEFAULT MESSAGE ---------------- */
+      const getDiscussion = async () => {
+        /* --------------- FIND DISCUSSIONID IF EXIST/ ELSE CREATE A NEW DISCUSSION  ---------------- */
+        const discussionIDRes = await fetch(
+          `${urlLocal}/discussions/createDiscussion`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `senderID=${props.userDatas._id}&receiverID=${props.alumniIDSearch}`,
+          }
+        );
+        const discussionIDJSON = await discussionIDRes.json();
+        setDiscussionID(discussionIDJSON);
+        //console.log("DiscussionIDJSON", discussionIDJSON);
+      };
+      getDiscussion();
+      // Create an obj === a document saved in message collection when BUTTON SEND default MSG actived
+      // Send default msg if button 'red' cliked
+      const defautMsg = `Hello ${alumniDatas.name}, envie d’aller boire une bière ?`;
+      //console.log("TEST", defautMsg);
+      const sendDefaultMsg = async () => {
+        if (msgSent) {
+          //console.log("MSG default", defautMsg);
+          const defautMsgToDB = {
+            discussionID: discussionID,
+            senderID: props.userDatas._id,
+            content: defautMsg,
+          };
+          try {
+            // SEND message to DB
+            const saveMsgToDB = await fetch(`${urlLocal}/messages/addMessage`, {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: `message=${defautMsgToDB.content}&discussionID=${defautMsgToDB.discussionID}&userID=${defautMsgToDB.senderID}`,
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        }
+        if (msgSent === false) {
+          // Dispatch infos of the discussion to store => transfert to ChatScreen
+          props.getDiscussionID({
+            discussionID: discussionID,
+            anotherMember: alumniDatas,
+          });
+        }
+      };
+      sendDefaultMsg();
+    }, [msgSent]);
 
   return (
     <View style={styles.container}>
@@ -55,7 +110,7 @@ function ProfileScreen(props) {
         <View style={{flexDirection: 'row', justifyContent: "center"}}>
           <TouchableOpacity
             style={[styles.overlayButton]}
-            onPress={() => {}}
+            onPress={() => {setMsgSent(true); toggleOverlay()}}
           >
             <Text style={{ fontSize: 18, color: "#FFFFFF" }}>
               {"\uD83C\uDF7B"} Oui
@@ -68,6 +123,7 @@ function ProfileScreen(props) {
           </TouchableOpacity>
         </View>
       </Overlay>
+    <View style={styles.container}>
       <View style={styles.content}>
         <View style={styles.avatar}>
           <Avatar rounded size={142} source={{ uri: alumniDatas.avatar }} />
@@ -83,6 +139,7 @@ function ProfileScreen(props) {
           </Text>
           {/* Job + Entreprise */}
           <Text style={styles.text1}>
+            
             {alumniDatas.work?.work} @ {alumniDatas.work?.company}
           </Text>
           {/* Statut : OpenToWork/ Just Curious / Partner / Hiring */}
@@ -117,7 +174,9 @@ function ProfileScreen(props) {
             {"\uD83C\uDF7B"} Proposer une bière
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.button]} onPress={() => {}}>
+        <TouchableOpacity style={[styles.button]}
+        onPress={() => {setMsgSent(false);
+          props.navigation.navigate("Chat");}}>
           <Text style={{ fontSize: 18, color: "#FFFFFF" }}>
             {"\uD83D\uDCAA"} Envoyer un message
           </Text>
@@ -153,8 +212,7 @@ function ProfileScreen(props) {
         />
       </View>
     </View>
-    // )}
-    // )}
+    </View>
   );
 }
 
@@ -278,8 +336,17 @@ var styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
+    userDatas: state.userDatas,
     alumniIDSearch: state.alumniIDSearch,
   };
 };
 
-export default connect(mapStateToProps, null)(ProfileScreen);
+const mapDispatchToProps = (ditpatch) => {
+  return {
+    getDiscussionID: function (discussionInfos) {
+      ditpatch({ type: "getDiscussionID", discussionInfos: discussionInfos });
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);

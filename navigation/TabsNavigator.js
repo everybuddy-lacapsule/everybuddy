@@ -96,6 +96,7 @@ const TabsNavigator = function (props) {
 				component={MessengerScreen}
 				options={{
 					headerRight: () => <View style={styles.right}></View>,
+					unmountOnBlur: true,
 				}}
 			/>
 			<Tab.Screen
@@ -110,6 +111,7 @@ const TabsNavigator = function (props) {
 				component={ChatScreen}
 				options={{
 					headerRight: () => <View style={styles.right}></View>,
+					unmountOnBlur: true,
 				}}
 			/>
 			<Tab.Screen

@@ -1,4 +1,11 @@
-import { Text, View, StyleSheet, Dimensions, ScrollView } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import MapView, { Marker, Circle } from "react-native-maps";
 import { ListItem, Avatar } from "@rneui/base";
@@ -6,20 +13,22 @@ import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import BottomDrawer from "react-native-bottom-drawer-view";
 import { connect } from "react-redux";
+import { IPLOCAL } from "@env";
+//const urlLocal = "http://" + IPLOCAL + ":3000";
+const urlLocal = 'http://'+'172.16.188.131'+':3000';
 
 function MapScreen(props) {
-
   const [resultLink, setResultLink] = useState("liste");
   // Radius default, unit = meter
   const [buddyList, setBuddyList] = useState([]);
 
   /*--------------------Generate circle radius when search is true (reducer searchResult)-------------*/
   let circle;
-  let latDelta = 0.1922
-  let longDelta = 0.1421
+  let latDelta = 0.1922;
+  let longDelta = 0.1421;
   if (props.searchResults.search) {
-    latDelta = 0.03231*props.searchResults.searchLocation.radius
-    longDelta =  0.01421*props.searchResults.searchLocation.radius
+    latDelta = 0.03231 * props.searchResults.searchLocation.radius;
+    longDelta = 0.01421 * props.searchResults.searchLocation.radius;
     circle = (
       <Circle
         center={{
@@ -29,7 +38,7 @@ function MapScreen(props) {
         strokeWidth={1}
         strokeColor={"#1a66ff"}
         fillColor={"rgba(230,238,255,0.5)"}
-        radius={props.searchResults.searchLocation.radius*1000}
+        radius={props.searchResults.searchLocation.radius * 1000}
       />
     );
   }
@@ -58,6 +67,29 @@ function MapScreen(props) {
     }
   }
 
+  /*--------------------Get alumni and user's discussion AND get alumni infos-------------*/
+  const getDiscussion = async (alumniID) => {
+    /*-------------------Receive discussionID from backend-------------------*/
+    const discussionIDRes = await fetch(
+      `${urlLocal}/discussions/createDiscussion`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `senderID=${props.userDatas._id}&receiverID=${alumniID}`,
+      }
+    );
+    const discussionIDJSON = await discussionIDRes.json();
+    /*-------------------Receive alumi information from backend-------------------*/
+    const alumniInfos = await fetch(
+      `${urlLocal}/users/getUserDatas?userID=${alumniID}`
+    );
+    const alumniInfosJSON = await alumniInfos.json();
+    props.getDiscussionID({
+      discussionID: discussionIDJSON,
+      anotherMember: alumniInfosJSON.userDatas,
+    });
+  };
+
   //*BOTTOM DRAWER
   const windowHeight = Dimensions.get("window").height;
   function bottomDrawer(searchResults) {
@@ -79,26 +111,33 @@ function MapScreen(props) {
             }
 
             return (
-              <ListItem
-                key={i}
-                onPress={() => {{props.getAlumniIDSearch(r._id); props.navigation.navigate("ProfileScreen")}}}
-                bottomDivider>
-                <Avatar rounded size={90} source={{ uri: r.avatar }}/>
-                <ListItem.Content>
-                  <ListItem.Title>
-                    {r.firstName} {r.name}{" "}
-                  </ListItem.Title>
-                  <ListItem.Subtitle>{r.work.company}</ListItem.Subtitle>
-                  <ListItem.Subtitle style={styles.listItemText}>
-                    Batch #{r.nbBatch}
-                  </ListItem.Subtitle>
-                  <ListItem.Subtitle style={styles.listItemText}>
-                    {r.work.work}
-                  </ListItem.Subtitle>
-                  <ListItem.Subtitle style={styles.listItemText}>
-                    {r.work.typeWork}
-                  </ListItem.Subtitle>
-                </ListItem.Content>
+              <ListItem key={i} bottomDivider>
+                <TouchableOpacity
+                  style={{ flex: 1, flexDirection: "row" }}
+                  onPress={() => {
+                    {
+                      props.getAlumniIDSearch(r._id);
+                      props.navigation.navigate("ProfileScreen");
+                    }
+                  }}
+                >
+                  <Avatar rounded size={90} source={{ uri: r.avatar }} />
+                  <ListItem.Content style={{ paddingLeft: 10 }}>
+                    <ListItem.Title>
+                      {r.firstName} {r.name}{" "}
+                    </ListItem.Title>
+                    <ListItem.Subtitle>{r.work.company}</ListItem.Subtitle>
+                    <ListItem.Subtitle style={styles.listItemText}>
+                      Batch #{r.nbBatch}
+                    </ListItem.Subtitle>
+                    <ListItem.Subtitle style={styles.listItemText}>
+                      {r.work.work}
+                    </ListItem.Subtitle>
+                    <ListItem.Subtitle style={styles.listItemText}>
+                      {r.work.typeWork}
+                    </ListItem.Subtitle>
+                  </ListItem.Content>
+                </TouchableOpacity>
                 <View style={buddyIconStyle}>
                   <Ionicons
                     name={buddyIcon}
@@ -109,7 +148,16 @@ function MapScreen(props) {
                     }}
                   />
                 </View>
-                <FontAwesome name="paper-plane" size={32} color="#0E0E66" />
+                <FontAwesome
+                  name="paper-plane"
+                  size={32}
+                  color="#0E0E66"
+                  onPress={() => {
+                    props.getAlumniIDSearch(r._id);
+                    getDiscussion(r._id);
+                    props.navigation.navigate("Chat");
+                  }}
+                />
               </ListItem>
             );
           })}
@@ -127,7 +175,7 @@ function MapScreen(props) {
           latitude: Number(props.searchResults.searchLocation.lat),
           longitude: Number(props.searchResults.searchLocation.long),
           latitudeDelta: latDelta,
-          longitudeDelta:longDelta,
+          longitudeDelta: longDelta,
         }}
         mapType="mutedStandard"
         userInterfaceStyle="dark"
@@ -197,7 +245,10 @@ const mapStateToProps = (state) => {
 function mapDispatchToProps(dispatch) {
   return {
     getAlumniIDSearch: function (id) {
-      dispatch({ type: "getAlumniIDSearch", id});
+      dispatch({ type: "getAlumniIDSearch", id });
+    },
+    getDiscussionID: function (discussionInfos) {
+      dispatch({ type: "getDiscussionID", discussionInfos });
     },
   };
 }

@@ -4,6 +4,7 @@ import {
   StyleSheet,
   View,
   TextInput,
+  Keyboard,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 
@@ -16,8 +17,8 @@ var urlLocal = 'http://172.16.189.134:3000'
 function HeaderSearchBar(props) {
   const [location, setLocation] = useState("");
   const [filters, setFilters] = useState({
-    nbBatch: '', // Number
-    location: '', // String 
+    nbBatch: "", // Number
+    location: "", // String
     radius: 10, // Number
     campus: [], // Array
     cursus: [], // Array
@@ -27,17 +28,15 @@ function HeaderSearchBar(props) {
     workType: [], // Array
   });
   useEffect(() => {
-    filters.location = location
-  },[location])
+    filters.location = location;
+  }, [location]);
 
   async function loadSearchResults() {
-    var searchResults = await fetch(
-      `${urlLocal}/search`,
-      {method: "post",
-      headers:{'Content-Type': 'application/json'},
+    var searchResults = await fetch(`${urlLocal}/search`, {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(filters),
-      }
-    );
+    });
     searchResults = await searchResults.json();
 
     props.search({
@@ -46,8 +45,8 @@ function HeaderSearchBar(props) {
       searchResults: searchResults.users,
       searchLocation: searchResults.location,
     });
-
-}
+    Keyboard.dismiss();
+  }
   // async function loadSearchResults() {
   //   if (location) {
   //     var searchResults = await fetch(
