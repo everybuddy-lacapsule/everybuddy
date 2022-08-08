@@ -223,7 +223,8 @@ function MyProfileScreen(props) {
         </Text>
       </View>
       <ScrollView
-      style={{ marginHorizontal: 20}}
+      style={{ marginHorizontal: 20,  minHeight: '6%',
+      }}
       horizontal={true}
       scrollbar
       contentContainerStyle={styles.tags}>
@@ -323,6 +324,7 @@ var styles = StyleSheet.create({
   view2: {
     justifyContent: "space-between",
     margin: 20,
+
   },
   view3:{
     flexDirection:'row',
@@ -333,7 +335,7 @@ var styles = StyleSheet.create({
     borderWidth: 1.2,
     padding: 5,
     marginRight:5,
-    marginVertical: 2.5
+    marginVertical: 2.5,
   },
   text1: {
     fontSize: 16,
