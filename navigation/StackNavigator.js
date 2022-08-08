@@ -6,7 +6,7 @@ import RightDrawerScreen from "./DrawerNavigator";
 import LoginScreen from "../screens/LoginScreen";
 import CheckEmailScreen from "../screens/CheckEmailScreen";
 import SplashScreen from "../screens/SplashScreen";
-import ProfileScreen from "../screens/ProfileScreen";
+import OnBoardingStatus from "../screens/OnBoardingStatus";
 
 const Stack = createStackNavigator();
 
@@ -54,10 +54,10 @@ const StackNavigator = function () {
 			/>
 
 			<Stack.Screen
-				name="ProfileScreen"
-				component={ProfileScreen}
+				name="OnBoardingStatus"
+				component={OnBoardingStatus}
 				options={{
-					title: "S'identifier",
+					title: "Faisons connaissance !",
 					headerStyle: styles.headers,
 					headerTintColor: "#fff",
 					headerBackVisible: false,
