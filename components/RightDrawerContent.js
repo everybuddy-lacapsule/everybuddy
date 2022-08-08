@@ -14,9 +14,7 @@ import { ListItemAccordion } from "@rneui/base/dist/ListItem/ListItem.Accordion"
 import { FontAwesome } from "@expo/vector-icons";
 
 import { connect } from "react-redux";
-import {IPLOCAL} from "@env"
-var urlLocal = 'http://'+IPLOCAL+ ':3000'
-
+import { IPLOCAL } from "@env";
 
 //* RIGHT DRAWER CONTENT
 function CustomRightDrawerContent(props) {
@@ -24,8 +22,8 @@ function CustomRightDrawerContent(props) {
 
   // Etats du slider radius
   const [km, setKm] = useState(10);
-  const [batch, setBatch] = useState('');
-  const [location, setLocation] = useState('');
+  const [batch, setBatch] = useState("");
+  const [location, setLocation] = useState("");
 
   // Etats pour dérouler et afficher les différentes catégories
   const [expandedCapsule, setExpandedCapsule] = useState(false);
@@ -37,13 +35,11 @@ function CustomRightDrawerContent(props) {
   const [toggledTags, setToggledTags] = useState();
   const [toggledJobs, setToggledJobs] = useState();
 
- 
- 
   // Etat avec toutes les datas
   const [filters, setFilters] = useState({
-    nbBatch: '', // Number
-    location: '', // String 
-    radius: '', // Number
+    nbBatch: "", // Number
+    location: "", // String
+    radius: "", // Number
     campus: [], // Array
     cursus: [], // Array
     status: [], // Array
@@ -52,36 +48,35 @@ function CustomRightDrawerContent(props) {
     workType: [], // Array
   });
 
-// Allow the KM slider to set Filters.radius depending on his value state
+  // Allow the KM slider to set Filters.radius depending on his value state
   useEffect(() => {
-    filters.radius = km
-  },[km])
+    filters.radius = km;
+  }, [km]);
   useEffect(() => {
-    filters.location = location
-  },[location])
+    filters.location = location;
+  }, [location]);
   useEffect(() => {
-    filters.nbBatch = batch
-  },[batch])
+    filters.nbBatch = batch;
+  }, [batch]);
 
-function addFilters(filter, value) {
-  let filtersCopy = {...filters}
-  if (filter === 'nbBatch' || filter === 'location' || filter === 'radius'){
-    filtersCopy[filter] = value
-  }else{
-    if (!filtersCopy[filter].find((e) => e === value)) {
-      filtersCopy[filter] = [... filtersCopy[filter], value]
+  function addFilters(filter, value) {
+    let filtersCopy = { ...filters };
+    if (filter === "nbBatch" || filter === "location" || filter === "radius") {
+      filtersCopy[filter] = value;
     } else {
-      filtersCopy[filter] = filtersCopy[filter].filter((e) => e !== value);
+      if (!filtersCopy[filter].find((e) => e === value)) {
+        filtersCopy[filter] = [...filtersCopy[filter], value];
+      } else {
+        filtersCopy[filter] = filtersCopy[filter].filter((e) => e !== value);
     }
-  }
-  setFilters(filtersCopy)
-};
-function resetFilters() {
-  setFilters
-    ({
-      nbBatch: '', // Number
-      location: '', // String 
-      radius: '', // Number
+    setFilters(filtersCopy);
+  }}
+
+  function resetFilters() {
+    setFilters({
+      nbBatch: "", // Number
+      location: "", // String
+      radius: "", // Number
       campus: [], // Array
       cursus: [], // Array
       status: [], // Array
@@ -89,17 +84,17 @@ function resetFilters() {
       work: [], // Array
       workType: [], // Array
     });
-}
+  }
 
-async function loadSearchResults() {
-
+  async function loadSearchResults() {
+    // sans ce commentaire, ca marche pas !!! Si tu delte je te nique tes morts
     var searchResults = await fetch(
-      `${urlLocal}/search`,
-      {method: "post",
-      headers:{'Content-Type': 'application/json'},
+      `${IPLOCAL}/search`, 
+      {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(filters),
-      }
-    );
+    });
     searchResults = await searchResults.json();
 
     props.search({
@@ -108,12 +103,11 @@ async function loadSearchResults() {
       searchResults: searchResults.users,
       searchLocation: searchResults.location,
     });
-
-}
+  }
 
   const campusDatasList1 = ["Paris", "Lyon", "Marseille"];
   const campusDatasList2 = ["Toulouse", "Bordeaux", "Monaco"];
-  const cursusDatasList = ["FullStack", "DevOps", "Code for business"];
+  const cursusDatasList = ["Fullstack", "DevOps", "Code for business"];
   const statusDatasList = [
     "#OPEN TO WORK",
     "#HIRING",
@@ -123,7 +117,7 @@ async function loadSearchResults() {
   const tagsDatasList = [
     "Frontend",
     "Backend",
-    "FullStack",
+    "Fullstack",
     "JavaScript",
     "AngularJS",
     "ReactJS",
@@ -153,17 +147,15 @@ async function loadSearchResults() {
     "En recherche",
   ];
 
-
-  var displayValue = filters.radius;
-  if (filters.radius === 100) {
+  var displayValue = km;
+  if (km === 100) {
     displayValue = "France entière";
   }
   useEffect(() => {
-    if (props.searchResults.searchLocation.locationRequest){
-      setLocation(props.searchResults.searchLocation.locationRequest)
+    if (props.searchResults.searchLocation.locationRequest) {
+      setLocation(props.searchResults.searchLocation.locationRequest);
     }
-  },[props.searchResults.searchLocation.locationRequest])
-  
+  }, [props.searchResults.searchLocation.locationRequest]);
 
   return (
     <LinearGradient
@@ -219,7 +211,7 @@ async function loadSearchResults() {
             }}
           />
           <Text style={{ color: "#FFFFFF" }}>
-            Km: {displayValue}
+            Distance: {displayValue} km
           </Text>
         </View>
         </View>
@@ -276,7 +268,7 @@ async function loadSearchResults() {
                         style={{ alignSelf: "flex-end" }}
                         value={checked}
                         color="#fff"
-                        onValueChange={() => addFilters('status',status)}
+                        onValueChange={() => addFilters("status", status)}
                       />
                     </View>
                   </View>
@@ -324,7 +316,6 @@ async function loadSearchResults() {
                   placeholder="#_ _"
                   onChangeText={(value) => setBatch(value)}
                   placeholderTextColor="rgba(255, 255, 255, 0.5)"
-                  
                 />
               </View>
               <Divider style={styles.divider} />
@@ -367,7 +358,7 @@ async function loadSearchResults() {
                             style={{ alignSelf: "flex-end" }}
                             value={checked}
                             color="#fff"
-                            onValueChange={() => addFilters('campus',campus)}
+                            onValueChange={() => addFilters("campus", campus)}
                           />
                         </View>
                       );
@@ -401,7 +392,7 @@ async function loadSearchResults() {
                             style={{ alignSelf: "flex-end" }}
                             value={checked}
                             color="#fff"
-                            onValueChange={() => addFilters('campus',campus)}
+                            onValueChange={() => addFilters("campus", campus)}
                           />
                         </View>
                       );
@@ -434,7 +425,7 @@ async function loadSearchResults() {
                           style={{ alignSelf: "flex-end" }}
                           value={checked}
                           color="#fff"
-                          onValueChange={() => addFilters('cursus',cursus)}
+                          onValueChange={() => addFilters("cursus", cursus)}
                         />
                       </View>
                     );
@@ -489,7 +480,7 @@ async function loadSearchResults() {
                   <Badge
                     key={i}
                     value={tag}
-                    onPress={() => addFilters('tags',tag)}
+                    onPress={() => addFilters("tags", tag)}
                     containerStyle={{ margin: 5 }}
                     status={status}
                     textStyle={{ color: color, fontSize: 13 }}
@@ -561,7 +552,7 @@ async function loadSearchResults() {
                         style={{ alignSelf: "flex-end" }}
                         value={checked}
                         color="#fff"
-                        onValueChange={() => addFilters('work',work)}
+                        onValueChange={() => addFilters("work", work)}
                       />
                     </View>
                   </View>
@@ -601,7 +592,7 @@ async function loadSearchResults() {
                       style={{ alignSelf: "flex-end" }}
                       value={checked}
                       color="#fff"
-                      onValueChange={() => addFilters('workType',workType)}
+                      onValueChange={() => addFilters("workType", workType)}
                     />
                   </View>
                 </View>
@@ -611,22 +602,24 @@ async function loadSearchResults() {
         </View>
       </DrawerContentScrollView>
       <View style={{ flexDirection: "row" }}>
-    <TouchableOpacity
-      style={[styles.button, {width: "70%"}]}
-      onPress={()=>{loadSearchResults(); props.navigation.toggleDrawer()}}>
-       <Text style={{ fontSize: 20, color: "#7C4DFF" }}>Rechercher</Text>
-    </TouchableOpacity>
-    <TouchableOpacity
-      style={[styles.button, {width: "15%"}]}
-      onPress={()=>{resetFilters()}}>
-            <Icon
-              name="trash-o"
-              type="font-awesome"
-              color='#7C4DFF'
-              size={20}
-            />
-    </TouchableOpacity>
-  </View>
+        <TouchableOpacity
+          style={[styles.button, { width: "70%" }]}
+          onPress={() => {
+            loadSearchResults();
+            props.navigation.toggleDrawer();
+          }}
+        >
+          <Text style={{ fontSize: 20, color: "#7C4DFF" }}>Rechercher</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, { width: "15%" }]}
+          onPress={() => {
+            resetFilters();
+          }}
+        >
+          <Icon name="trash-o" type="font-awesome" color="#7C4DFF" size={20} />
+        </TouchableOpacity>
+      </View>
     </LinearGradient>
   );
 }
@@ -647,7 +640,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     padding: 5,
     textAlign: "center",
-    color: 'white'
+    color: "white",
   },
   DDitem: {
     flex: 1,
@@ -669,11 +662,11 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     alignItems: "center",
     justifyContent: "center",
-    width: "90%",
     height: 55,
     borderRadius: 5,
+    marginRight: 0,
     margin: 15,
-    marginRight: 0
+    marginRight: 0,
   },
   contentView: {
     width: "80%",
@@ -708,19 +701,18 @@ const styles = StyleSheet.create({
   headerTitle: {
     flexDirection: "row",
     paddingVertical: 20,
-
   },
-  searchButton:{
+  searchButton: {
     left: -25,
     top: 5,
-  }
-  
+  },
 });
 
 const mapStateToProps = (state) => {
   return {
     searchResults: state.searchResults,
     userDatas: state.userDatas,
+    drawerStatus : state.drawerStatus,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -731,4 +723,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CustomRightDrawerContent);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CustomRightDrawerContent)

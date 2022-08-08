@@ -6,17 +6,18 @@ import RightDrawerScreen from "./DrawerNavigator";
 import LoginScreen from "../screens/LoginScreen";
 import CheckEmailScreen from "../screens/CheckEmailScreen";
 import SplashScreen from "../screens/SplashScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 
 const Stack = createStackNavigator();
 
 const StackNavigator = function () {
+
 	return (
 		<Stack.Navigator
 			screenOptions={{
 				headerStyle: styles.headers,
 				headerTintColor: "#fff",
 				headerTitleStyle: { alignSelf: "center" },
-
 			}}
 		>
 			<Stack.Screen
@@ -44,6 +45,17 @@ const StackNavigator = function () {
 			<Stack.Screen
 				name="LoginScreen"
 				component={LoginScreen}
+				options={{
+					title: "S'identifier",
+					headerStyle: styles.headers,
+					headerTintColor: "#fff",
+					headerBackVisible: false,
+				}}
+			/>
+
+			<Stack.Screen
+				name="ProfileScreen"
+				component={ProfileScreen}
 				options={{
 					title: "S'identifier",
 					headerStyle: styles.headers,
