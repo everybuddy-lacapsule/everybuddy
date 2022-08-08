@@ -5,190 +5,6 @@ import { Avatar } from "@rneui/base";
 import { connect } from "react-redux";
 
 function MyProfileScreen(props) {
-  // var isEdited= false
-  // var myProfile
-  // if (isEdited === false) {
-  //      myProfile = return (
-
-  //       <View style={styles.content}>
-  //       <View style={styles.avatar}>
-  //         <Avatar
-  //           rounded
-  //           size={142}
-  //           source={{uri : props.userData.avatar}}
-  //         />
-
-  //       </View>
-  //       <View style={styles.view1}>
-  //         {/* Nom Prénom */}
-  //         <Text style={styles.name}>
-  //           {props.userData.firstName} {props.userData.name}
-  //         </Text>
-  //         {/* Cursus */}
-  //         <Text style={styles.text1}>
-  //           Batch {props.userData.capsule.nbBatch} {props.userData.capsule.campus}
-  //           </Text>
-  //           {/* Job + Entreprise */}
-  //         <Text style={styles.text1}>
-  //         {props.userData.work.work} @ {props.userData.work.company}
-  //           </Text>
-  //           {/* Statut : OpenToWork/ Just Curious / Partner / Hiring */}
-  //         <Text style={styles.badge1}>
-  //           {props.userData.status}
-  //           </Text>
-  //       </View>
-  //       </View>
-  //       <View style={styles.view1}>
-  //         {/* Localisation actuelle */}
-  //         <Text style={styles.text2}>
-  //           {props.userData.address.city} {props.userData.address.country}
-  //           </Text>
-  //       </View>
-  //       <View style={styles.tags}>
-  //         {/* Tags et compétences */}
-  //         {
-  //         props.userData.tags.map((tag, i) => {
-  //           return (
-  //       <Text style={styles.badge2} key={i}>
-  //         {tag}
-  //         </Text>
-  //           )
-  //         })
-  //       }
-
-  // </View>
-
-  // <ScrollView
-  // contentContainerStyle={styles.view2}
-  // scrollbar
-  // >
-
-  // <Text style={styles.title}>
-  // RECHERCHE ACTUELLE
-  // </Text>
-  // <Text style={styles.text2}>
-  // {props.userData.searchCurrent}
-  // </Text>
-  //   <Text style={styles.title}>
-  // PRÉSENTATION
-  //   </Text>
-  //   <Text style={styles.text2}>
-  //   {props.userData.presentation}
-  //   </Text>
-
-  // </ScrollView>
-
-  // <Divider
-  // 					color={hollowWhite}
-  // 					style={{ width: " 90%", marginLeft: "5%" }}
-  // 				/>
-
-  // <View style={styles.icon}>
-  //   {/* ICONES RESEAUX SOCIAUX */}
-  //   {/* ------------- TROUVER COMMENT RECUPERER LES LIENS DE LA BDD ! ---------- */}
-  // <SocialIcon
-  //   onPress={() => {Linking.openURL('props.userData.linkRs.Github')}}
-  //   type='github'
-  // />
-  // <SocialIcon
-  // onPress={() => {Linking.openURL('https://www.linkedin.com/')}}
-  //   type='linkedin'
-  // />
-
-  // </View >
-
-  //      )
-  // } else {
-  //  myProfile = return (  -------------- AVEC DES INPUTS MODIFIABLES A LA PLACE DES CHAMPS QUE L'ON VEUT CHANGER ---------------
-  //     <View style={styles.content}>
-  //     <View style={styles.avatar}>
-  //       <Avatar
-  //         rounded
-  //         size={142}
-  //         source={{uri : props.userData.avatar}}
-  //       />
-
-  //     </View>
-  //     <View style={styles.view1}>
-  //       {/* Nom Prénom */}
-  //       <Text style={styles.name}>
-  //         {props.userData.firstName} {props.userData.name}
-  //       </Text>
-  //       {/* Cursus */}
-  //       <Text style={styles.text1}>
-  //         Batch {props.userData.capsule.nbBatch} {props.userData.capsule.campus}
-  //         </Text>
-  //         {/* Job + Entreprise */}
-  //       <Text style={styles.text1}>
-  //       {props.userData.work.work} @ {props.userData.work.company}
-  //         </Text>
-  //         {/* Statut : OpenToWork/ Just Curious / Partner / Hiring */}
-  //       <Text style={styles.badge1}>
-  //         {props.userData.status}
-  //         </Text>
-  //     </View>
-  //     </View>
-  //     <View style={styles.view1}>
-  //       {/* Localisation actuelle */}
-  //       <Text style={styles.text2}>
-  //         {props.userData.address.city} {props.userData.address.country}
-  //         </Text>
-  //     </View>
-  //     <View style={styles.tags}>
-  //       {/* Tags et compétences */}
-  //       {
-  //       props.userData.tags.map((tag, i) => {
-  //         return (
-  //     <Text style={styles.badge2} key={i}>
-  //       {tag}
-  //       </Text>
-  //         )
-  //       })
-  //     }
-
-  // </View>
-
-  // <ScrollView
-  // contentContainerStyle={styles.view2}
-  // scrollbar
-  // >
-
-  // <Text style={styles.title}>
-  // RECHERCHE ACTUELLE
-  // </Text>
-  // <Text style={styles.text2}>
-  // {props.userData.searchCurrent}
-  // </Text>
-  // <Text style={styles.title}>
-  // PRÉSENTATION
-  // </Text>
-  // <Text style={styles.text2}>
-  // {props.userData.presentation}
-  // </Text>
-
-  // </ScrollView>
-
-  // <Divider
-  //         color={hollowWhite}
-  //         style={{ width: " 90%", marginLeft: "5%" }}
-  //       />
-
-  // <View style={styles.icon}>
-  // {/* ICONES RESEAUX SOCIAUX */}
-  // {/* ------------- TROUVER COMMENT RECUPERER LES LIENS DE LA BDD ! ---------- */}
-  // <SocialIcon
-  // onPress={() => {Linking.openURL('https://www.youtube.com/watch?v=dQw4w9WgXcQ')}}
-  // type='github'
-  // />
-  // <SocialIcon
-  // onPress={() => {Linking.openURL('https://www.linkedin.com/')}}
-  // type='linkedin'
-  // />
-
-  // </View >
-
-  //   )
-  // }
 
   return (
     <View style={styles.container}>
@@ -248,7 +64,7 @@ function MyProfileScreen(props) {
         {/* ------------- TROUVER COMMENT RECUPERER LES LIENS DE LA BDD ! ---------- */}
         <SocialIcon
           onPress={() => {
-            Linking.openURL("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+            Linking.openURL("https://www.youtube.com/watch?v=HIcSWuKMwOw");
           }}
           type="github"
         />
@@ -280,7 +96,6 @@ var styles = StyleSheet.create({
     flexDirection: "row",
     marginBottom: 10,
     marginTop: 10,
-    // marginLeft: 10
   },
   tags: {
     flexDirection: "row",
