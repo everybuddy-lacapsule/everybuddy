@@ -3,12 +3,14 @@ import { ListItem, Avatar } from "@rneui/themed";
 
 import { useState, useEffect } from "react";
 import { connect } from "react-redux";
+import { useIsFocused } from "@react-navigation/native";
 
 import {IPLOCAL} from "@env"
-var urlLocal = 'http://'+IPLOCAL+ ':3000'
+//var urlLocal = 'http://'+IPLOCAL+ ':3000';
+const urlLocal = 'http://'+'172.16.188.131'+':3000'
 
 function Discussion({ discussionID, discussion, currentUser, navigation, getDiscussionID }) {
-
+  const isFocused = useIsFocused();
   const [anotherMember, setAnotherMember] = useState({});
   const [lastMessage, setLastMessage] = useState("");
 
@@ -38,7 +40,7 @@ function Discussion({ discussionID, discussion, currentUser, navigation, getDisc
     setLastMessage(dataJSON.content);
   }
   displayLastMessage();
-}, []);
+}, [isFocused]);
 
   return (
     <ListItem

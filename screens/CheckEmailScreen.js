@@ -10,7 +10,8 @@ import {
 import { Overlay, Input } from "@rneui/themed";
 
 import {IPLOCAL} from "@env"
-var urlLocal = 'http://'+IPLOCAL+':3000'
+//var urlLocal = 'http://'+IPLOCAL+':3000';
+const urlLocal = 'http://'+'172.16.188.131'+':3000';
 
 function CheckEmailScreen(props) {
   const [visible, setVisible] = useState(false);

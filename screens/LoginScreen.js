@@ -10,7 +10,8 @@ import {
 import { Overlay, Button, Input } from "@rneui/themed";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {IPLOCAL} from "@env"
-const urlLocal = 'http://'+IPLOCAL+':3000'
+//const urlLocal = 'http://'+IPLOCAL+':3000'
+const urlLocal = 'http://'+'172.16.188.131'+':3000'
 
 
 function LoginScreen(props) {
