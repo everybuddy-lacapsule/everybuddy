@@ -7,7 +7,7 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
-import { Overlay, Button, Input } from "@rneui/themed";
+import { Overlay, Input } from "@rneui/themed";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {IPLOCAL} from "@env"
 

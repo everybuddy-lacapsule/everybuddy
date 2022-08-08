@@ -3,6 +3,8 @@ import { View, StyleSheet, Text, ScrollView, Linking } from "react-native";
 import { Divider, SocialIcon, hollowWhite } from "@rneui/themed";
 import { Avatar } from "@rneui/base";
 import { connect } from "react-redux";
+import { Ionicons } from '@expo/vector-icons'; 
+
 
 function MyProfileScreen(props) {
   // var isEdited= false
@@ -220,16 +222,26 @@ function MyProfileScreen(props) {
           {props.userData.address.city} {props.userData.address.country}
         </Text>
       </View>
-      <View style={styles.tags}>
+      <ScrollView
+      style={{ marginHorizontal: 20}}
+      horizontal={true}
+      scrollbar
+      contentContainerStyle={styles.tags}>
+      <Ionicons name="add-circle" size={30} color="#E74C3C" style={{marginTop:2.5}}/>
+
         {/* Tags et compétences */}
         {props.userData.tags.map((tag, i) => {
           return (
-            <Text style={styles.badge2} key={i}>
+            <View style={styles.view3} key={i}>
+            <Text style={styles.badge2}>
               {tag}
             </Text>
+            <Ionicons name="close" size={16} color="#0E0E66" style={{marginTop:2.5}}/>
+
+            </View>
           );
         })}
-      </View>
+      </ScrollView>
 
       <ScrollView contentContainerStyle={styles.view2} scrollbar>
         <Text style={styles.title}>RECHERCHE ACTUELLE</Text>
@@ -280,13 +292,10 @@ var styles = StyleSheet.create({
     flexDirection: "row",
     marginBottom: 10,
     marginTop: 10,
-    // marginLeft: 10
   },
   tags: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    marginTop: 0,
-    margin: 8,
+    alignItems: "center",
   },
   icon: {
     flexDirection: "row",
@@ -307,12 +316,24 @@ var styles = StyleSheet.create({
     marginTop: 15,
   },
   view1: {
+    width: '55%',
     justifyContent: "space-between",
-    marginLeft: 20,
+    marginHorizontal: 20,
   },
   view2: {
     justifyContent: "space-between",
     margin: 20,
+  },
+  view3:{
+    flexDirection:'row',
+    alignItems: 'center',
+    justifyContent: "center",
+    borderColor: "#0E0E66",
+    borderRadius: 50,
+    borderWidth: 1.2,
+    padding: 5,
+    marginRight:5,
+    marginVertical: 2.5
   },
   text1: {
     fontSize: 16,
@@ -340,16 +361,13 @@ var styles = StyleSheet.create({
     paddingTop: 2,
   },
   badge2: {
-    margin: 10,
-    marginTop: 0,
+    marginLeft:5,
     fontWeight: "bold",
     color: "#0E0E66",
-    fontSize: 11.4,
-    borderColor: "#0E0E66",
-    borderRadius: 50,
-    borderWidth: 1.2,
+    fontSize: 10,
     textAlign: "center",
-    padding: 6,
+    textAlignVertical:"center",
+
   },
 });
 

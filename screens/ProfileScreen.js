@@ -11,6 +11,8 @@ import { Divider, SocialIcon, hollowWhite, Overlay } from "@rneui/themed";
 import { Avatar } from "@rneui/base";
 import { connect } from "react-redux";
 import { IPLOCAL } from "@env";
+import { Ionicons } from '@expo/vector-icons'; 
+
 
 function ProfileScreen(props) {
   const [alumniDatas, setAlumniDatas] = useState({});
@@ -124,6 +126,7 @@ function ProfileScreen(props) {
           </TouchableOpacity>
         </View>
       </Overlay>
+      
     <View style={styles.container}>
       <View style={styles.content}>
         <View style={styles.avatar}>
@@ -153,18 +156,23 @@ function ProfileScreen(props) {
           {alumniDatas.address?.city} {alumniDatas.address?.country}
         </Text>
       </View>
-      <View style={styles.tags}>
+      <ScrollView 
+      style={{ marginHorizontal: 20, height:'50%'}}
+      contentContainerStyle={styles.tags}
+      horizontal={true}>
         {/* Tags et compétences */}
         {alumniDatas.tags?.map((tag, i) => {
           return (
-            <Text style={styles.badge2} key={i}>
+            <View style={styles.view3} key={i}>
+            <Text style={styles.badge2}>
               {tag}
             </Text>
+            </View>
           );
         })}
-      </View>
+      </ScrollView>
 
-      <View>
+      <View style={{ marginHorizontal:20}}>
         <TouchableOpacity
           style={[styles.button]}
           onPress={() => {
@@ -198,7 +206,7 @@ function ProfileScreen(props) {
 
       <View style={styles.icon}>
         {/* ICONES RESEAUX SOCIAUX */}
-        {/* ------------- TROUVER COMMENT RECUPERER LES LIENS DE LA BDD ! ---------- */}
+        {/* //TODO------------- TROUVER COMMENT RECUPERER LES LIENS DE LA BDD ! ---------- */}
         <SocialIcon
           onPress={() => {
             Linking.openURL("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
@@ -228,14 +236,10 @@ var styles = StyleSheet.create({
     flexDirection: "row",
     marginBottom: 10,
     marginTop: 10,
-    // marginLeft: 10
   },
   tags: {
-    color: "#0e0e66",
     flexDirection: "row",
-    flexWrap: "wrap",
-    marginTop: 0,
-    margin: 8,
+    alignItems: "center",
   },
   icon: {
     flexDirection: "row",
@@ -257,11 +261,23 @@ var styles = StyleSheet.create({
   },
   view1: {
     justifyContent: "space-between",
-    marginLeft: 20,
+    marginHorizontal: 20,
+    width: '55%',
   },
   view2: {
     justifyContent: "space-between",
     margin: 20,
+  },
+  view3:{
+    flexDirection:'row',
+    alignItems: 'center',
+    justifyContent: "center",
+    borderColor: "#0E0E66",
+    borderRadius: 50,
+    borderWidth: 1.2,
+    padding: 5,
+    marginRight:5,
+    marginVertical: 2.5
   },
   text1: {
     color: "#0e0e66",
@@ -270,7 +286,6 @@ var styles = StyleSheet.create({
   },
   text2: {
     fontSize: 15,
-    marginBottom: 15,
     textAlign: "justify",
     color: "#0e0e66",
   },
@@ -292,19 +307,16 @@ var styles = StyleSheet.create({
     paddingTop: 2,
   },
   badge2: {
-    margin: 10,
-    marginTop: 0,
     fontWeight: "bold",
     color: "#0E0E66",
-    fontSize: 11.4,
-    borderColor: "#0E0E66",
-    borderRadius: 50,
-    borderWidth: 1.2,
+    fontSize: 10,
     textAlign: "center",
-    padding: 6,
+    textAlignVertical:"center",
+    margin:5
+  
   },
   button: {
-    width: "92%",
+    width: "100%",
     margin: 3,
     backgroundColor: "#E74C3C",
     alignSelf: "center",
