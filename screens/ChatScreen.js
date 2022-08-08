@@ -17,8 +17,8 @@ import { connect } from "react-redux";
 // change hook useIsFocused by option unmountOnBlur in the Chat Screen in TabsNavigator 
 //import { useIsFocused } from "@react-navigation/native";
 
-import { IPLOCAL } from "@env";
-const urlLocal = 'http://172.16.189.134:3000';
+import {IPLOCAL} from "@env"
+
 
 /*----Web socket----*/
 import socketIOClient from "socket.io-client";
@@ -36,7 +36,7 @@ function ChatScreen(props) {
 
   useEffect(() => {
     // init socket.current value with extraHeader which contain a room id (=> discussionID)
-    socket.current = socketIOClient(urlLocal, {
+    socket.current = socketIOClient(IPLOCAL, {
       extraHeaders: {
         roomID: props.discussionInfos.discussionID,
       },
@@ -48,7 +48,7 @@ function ChatScreen(props) {
   useEffect(() => {
     const getMessagesFromDB = async () => {
       const messagesFromDB = await fetch(
-        `${urlLocal}/messages/${props.discussionInfos.discussionID}`
+        `${IPLOCAL}/messages/${props.discussionInfos.discussionID}`
       );
       let messagesFromDBJSON = await messagesFromDB.json();
       setAllMessages(messagesFromDBJSON);
@@ -96,7 +96,7 @@ function ChatScreen(props) {
     try {
       /* SEND message to DB */
       const messageDB = await fetch(
-        `${urlLocal}/messages/addMessage`,
+        `${IPLOCAL}/messages/addMessage`,
         {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },

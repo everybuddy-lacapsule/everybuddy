@@ -9,12 +9,12 @@ import {
 import { FontAwesome } from "@expo/vector-icons";
 
 import { connect } from "react-redux";
-
 import {IPLOCAL} from "@env"
-var urlLocal = 'http://172.16.189.134:3000'
 
 
 function HeaderSearchBar(props) {
+  // console.log(IPLOCAL)
+
   const [location, setLocation] = useState("");
   const [filters, setFilters] = useState({
     nbBatch: "", // Number
@@ -33,8 +33,7 @@ function HeaderSearchBar(props) {
 
   async function loadSearchResults() {
     var searchResults = await fetch(
-      `${urlLocal}/search`,
-      // "http://192.168.33.59:3000/search",
+      `${IPLOCAL}/search`,
       {method: "post",
       headers:{'Content-Type': 'application/json'},
       body: JSON.stringify(filters),
@@ -49,22 +48,7 @@ function HeaderSearchBar(props) {
     });
     Keyboard.dismiss();
   }
-  // async function loadSearchResults() {
-  //   if (location) {
-  //     var searchResults = await fetch(
-  //       `http://${IPLOCAL}:3000/searchByLocation?location=${location}&radius=10`
-  //     );
-  //     searchResults = await searchResults.json();
 
-  //     props.search({
-  //       // search :true is used to display the radius circle after first search, even with no results
-  //       search: true,
-  //       searchResults: searchResults.users,
-  //       searchLocation: searchResults.location,
-  //     });
-  //     Keyboard.dismiss();
-  //   }
-  // }
 
   return (
     <View style={styles.headerTitle}>
