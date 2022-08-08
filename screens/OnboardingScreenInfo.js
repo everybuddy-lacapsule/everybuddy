@@ -67,7 +67,7 @@ name="right"
 size={25} 
 color="white" 
 onPress={() => {
-  props.navigation.navigate('OnboardingStatus')
+  props.navigation.navigate('OnBoardingStatus')
 }}
 />
 </View>
