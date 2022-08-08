@@ -14,8 +14,9 @@ import { ListItemAccordion } from "@rneui/base/dist/ListItem/ListItem.Accordion"
 import { FontAwesome } from "@expo/vector-icons";
 
 import { connect } from "react-redux";
-import {IPLOCAL} from "@env"
-var urlLocal = 'http://'+IPLOCAL+':3000'
+import { IPLOCAL } from "@env";
+//var urlLocal = 'http://'+IPLOCAL+':3000'
+const urlLocal = "http://172.16.189.134:3000";
 
 //* RIGHT DRAWER CONTENT
 function CustomRightDrawerContent(props) {
@@ -70,16 +71,14 @@ function CustomRightDrawerContent(props) {
       } else {
         filtersCopy[filter] = filtersCopy[filter].filter((e) => e !== value);
     }
-  }
-  setFilters(filtersCopy)
-};
+    setFilters(filtersCopy);
+  }}
 
-function resetFilters() {
-  setFilters
-    ({
-      nbBatch: '', // Number
-      location: '', // String 
-      radius: '', // Number
+  function resetFilters() {
+    setFilters({
+      nbBatch: "", // Number
+      location: "", // String
+      radius: "", // Number
       campus: [], // Array
       cursus: [], // Array
       status: [], // Array
@@ -87,7 +86,7 @@ function resetFilters() {
       work: [], // Array
       workType: [], // Array
     });
-}
+  }
 
   async function loadSearchResults() {
     // sans ce commentaire, ca marche pas !!! Si tu delte je te nique tes morts
@@ -606,19 +605,21 @@ function resetFilters() {
       </DrawerContentScrollView>
       <View style={{ flexDirection: "row" }}>
         <TouchableOpacity
-          style={[styles.button, {width: "70%"}]}
-          onPress={()=>{loadSearchResults(); props.navigation.toggleDrawer()}}>
-           <Text style={{ fontSize: 20, color: "#7C4DFF" }}>Rechercher</Text>
+          style={[styles.button, { width: "70%" }]}
+          onPress={() => {
+            loadSearchResults();
+            props.navigation.toggleDrawer();
+          }}
+        >
+          <Text style={{ fontSize: 20, color: "#7C4DFF" }}>Rechercher</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.button, {width: "15%"}]}
-          onPress={()=>{resetFilters()}}>
-                <Icon
-                  name="trash-o"
-                  type="font-awesome"
-                  color='#7C4DFF'
-                  size={20}
-                />
+          style={[styles.button, { width: "15%" }]}
+          onPress={() => {
+            resetFilters();
+          }}
+        >
+          <Icon name="trash-o" type="font-awesome" color="#7C4DFF" size={20} />
         </TouchableOpacity>
       </View>
     </LinearGradient>

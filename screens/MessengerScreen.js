@@ -4,6 +4,9 @@ import { connect } from "react-redux";
 import Discussion from "../components/DiscussionComponent";
 
 import {IPLOCAL} from "@env"
+const urlLocal = 'http://172.16.189.134:3000';
+// change hook useIsFocused by option unmountOnBlur in the Messenger Screen in TabsNavigator
+//import { useIsFocused } from "@react-navigation/native";
 
 //import socketIOClient from "socket.io-client";
 import { useEffect, useState } from "react";
@@ -11,13 +14,13 @@ import { useEffect, useState } from "react";
 
 function MessengerScreen(props) {
 
-
+  //const isFocused = useIsFocused();
   const [discussions, setDiscussions] = useState([]);
 
   useEffect(() => {
     const getDiscussions = async () => {
       try{
-        const response = await fetch(`$http://172.16.189.134:3000/discussions/${props.userDatas._id}`);
+        const response = await fetch(`${urlLocal}/discussions/${props.userDatas._id}`);
         let userDiscussions = await response.json();
         setDiscussions(userDiscussions);
       }
@@ -26,7 +29,8 @@ function MessengerScreen(props) {
       }
     };
     getDiscussions();
-  }, [props.userDatas._id]);
+  //}, [isFocused]);
+}, []);
 
   //console.log("userDiscussions is", discussions);
   return (
