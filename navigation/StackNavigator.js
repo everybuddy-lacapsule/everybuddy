@@ -6,8 +6,8 @@ import RightDrawerScreen from "./DrawerNavigator";
 import LoginScreen from "../screens/LoginScreen";
 import CheckEmailScreen from "../screens/CheckEmailScreen";
 import SplashScreen from "../screens/SplashScreen";
-import ProfileScreen from "../screens/ProfileScreen";
 import OnboardingScreenInfo from "../screens/OnboardingScreenInfo";
+import OnBoardingStatus from "../screens/OnBoardingStatus";
 
 const Stack = createStackNavigator();
 
@@ -58,6 +58,18 @@ const StackNavigator = function () {
 			<Stack.Screen
 				name="OnboardingScreenInfo"
 				component={OnboardingScreenInfo}
+				options={{
+					title: "Faisons connaissance !",
+					headerTitleAlign: 'center',
+					headerStyle: styles.headers,
+					headerTintColor: "#fff",
+					headerBackVisible: false,
+				}}
+			/>
+
+
+				name="OnBoardingStatus"
+				component={OnBoardingStatus}
 				options={{
 					title: "Faisons connaissance !",
 					headerTitleAlign: 'center',
