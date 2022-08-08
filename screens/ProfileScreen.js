@@ -34,9 +34,7 @@ function ProfileScreen(props) {
       setAlumniDatas(dataJSON.userDatas);
     };
     getAlumnisDatas();
-  }, []);
-
-  console.log("TEEEESSSTT", alumniDatas);
+  }, [props.alumniIDSearch]);
 
     /* ----------------------SEND MESSAGE AND SAVE TO DB---------------- */
     useEffect(() => {
@@ -58,8 +56,8 @@ function ProfileScreen(props) {
       getDiscussion();
       // Create an obj === a document saved in message collection when BUTTON SEND default MSG actived
       // Send default msg if button 'red' cliked
-      const defautMsg = `Hello ${alumniDatas.name}, envie d’aller boire une bière ?`;
-      //console.log("TEST", defautMsg);
+      const defautMsg = `Hello ${alumniDatas.firstName}, envie d’aller boire une bière ?`;
+      console.log("TEST", defautMsg);
       const sendDefaultMsg = async () => {
         if (msgSent) {
           //console.log("MSG default", defautMsg);
@@ -108,7 +106,7 @@ function ProfileScreen(props) {
         <Text style={{color: "#0e0e66", marginTop: 20}}>
           En cliquant sur Oui, un message automatique sera envoyé :
         </Text>
-        <Text style={{color: "#0e0e66"}}>“Hello X, envie d’aller boire une bière ?”</Text>
+        <Text style={{color: "#0e0e66"}}>“Hello {alumniDatas.firstName}, envie d’aller boire une bière ?”</Text>
         <View style={{flexDirection: 'row', justifyContent: "center"}}>
           <TouchableOpacity
             style={[styles.overlayButton]}
