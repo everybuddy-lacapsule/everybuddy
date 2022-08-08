@@ -28,9 +28,15 @@ function SplashScreen(props) {
 
   var handleStart = async () => {
     if (props.userDatas) {
+<<<<<<< HEAD
+      props.navigation.navigate("OnboardingScreenInfo");
+    } else {
+      props.navigation.navigate("OnboardingScreenInfo");
+=======
       props.navigation.navigate("OnBoardingStatus");
     } else {
       props.navigation.navigate("OnBoardingStatus");
+>>>>>>> eb8ac601c44ed2a70525959ea419376e344635ea
     }
   };
 
