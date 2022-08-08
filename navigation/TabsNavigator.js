@@ -20,16 +20,15 @@ const hiddenTabs = ["Buddies", "MyProfile", "Chat"];
 
 const TabsNavigator = function (props) {
 	const isLeftDrawerVisible = useDrawerStatus();
-	const [isLeftFocused, setIsLeftFocused] = useState(''); 
+	const [isLeftFocused, setIsLeftFocused] = useState("");
 
 	useEffect(() => {
 		if (isLeftDrawerVisible == "open") {
-			console.log('prout', isLeftDrawerVisible);
-			setIsLeftFocused(isLeftDrawerVisible)
+			console.log("prout", isLeftDrawerVisible);
+			setIsLeftFocused(isLeftDrawerVisible);
 		} else {
-			setIsLeftFocused(isLeftDrawerVisible)
-			console.log('prout2', isLeftDrawerVisible);
-
+			setIsLeftFocused(isLeftDrawerVisible);
+			console.log("prout2", isLeftDrawerVisible);
 		}
 	}, [isLeftDrawerVisible]);
 
@@ -38,15 +37,18 @@ const TabsNavigator = function (props) {
 			screenOptions={({ route }) => ({
 				headerRight: () =>
 					props.drawerStatus == "open" ? (
-						<View style={styles.right2}>
-							<TouchableOpacity
-								onPress={() => {
-									props.navigation.getParent("RightDrawer").toggleDrawer();
-								}}
-							>
-								<Ionicons name="options" size={24} color="#0E0E66" />
-							</TouchableOpacity>
-						</View>
+						<TouchableOpacity
+							onPress={() => {
+								props.navigation.getParent("RightDrawer").toggleDrawer();
+							}}
+						>
+							<Ionicons
+								name="options"
+								size={24}
+								color="#0E0E66"
+								style={styles.right2}
+							/>
+						</TouchableOpacity>
 					) : (
 						<TouchableOpacity
 							style={styles.right}
@@ -57,27 +59,26 @@ const TabsNavigator = function (props) {
 							<Ionicons name="options" size={24} color="white" />
 						</TouchableOpacity>
 					),
-				headerLeft: () => 
-				isLeftFocused == "open" ? (
-					<View style={styles.left2}>
+				headerLeft: () =>
+					isLeftFocused == "open" ? (
 						<TouchableOpacity
+							style={styles.left2}
 							onPress={() => {
 								props.navigation.toggleDrawer();
 							}}
 						>
-							<Ionicons name="options" size={24} color="#0E0E66" />
+							<Ionicons name="menu" size={24} color="#0E0E66" />
 						</TouchableOpacity>
-					</View>
-				) : (
-					<TouchableOpacity
-						style={styles.left}
-						onPress={() => {
-							props.navigation.toggleDrawer();
-						}}
-					>
-						<Ionicons name="options" size={24} color="white" />
-					</TouchableOpacity>
-				),
+					) : (
+						<TouchableOpacity
+							style={styles.left}
+							onPress={() => {
+								props.navigation.toggleDrawer();
+							}}
+						>
+							<Ionicons name="menu" size={24} color="white" />
+						</TouchableOpacity>
+					),
 				headerStyle: {
 					backgroundColor: "#0E0E66",
 				},
@@ -228,13 +229,9 @@ const styles = StyleSheet.create({
 		width: 64,
 	},
 	left2: {
-		alignSelf: "center",
-		justifyContent: "center",
-		alignItems: "center",
-		width: 34,
 		backgroundColor: "white",
+		marginHorizontal: 20,
 		borderRadius: 5,
-		marginLe:20,
 	},
 	right: {
 		flex: 1,
@@ -243,13 +240,9 @@ const styles = StyleSheet.create({
 		width: 64,
 	},
 	right2: {
-		alignSelf: "center",
-		justifyContent: "center",
-		alignItems: "center",
-		width: 34,
 		backgroundColor: "white",
+		marginHorizontal: 20,
 		borderRadius: 5,
-		marginLeft: 20,
 	},
 });
 
@@ -257,7 +250,7 @@ const mapStateToProps = (state) => {
 	return {
 		searchResults: state.searchResults,
 		userDatas: state.userDatas,
-		drawerStatus:state.drawerStatus,
+		drawerStatus: state.drawerStatus,
 	};
 };
 
