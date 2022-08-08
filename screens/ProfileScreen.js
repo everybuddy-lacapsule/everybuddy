@@ -4,7 +4,7 @@ import { Divider, SocialIcon, hollowWhite } from "@rneui/themed";
 import { Avatar } from "@rneui/base";
 import { connect } from "react-redux";
 import { IPLOCAL } from "@env";
-const urlLocal = "http://" + IPLOCAL + ":3000";
+const urlLocal = "http://172.16.189.134:3000";
 
 // --------------- COPIE DE MYPROFILESCREEN ----------------
 
