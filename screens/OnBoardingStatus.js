@@ -6,19 +6,24 @@ import {
   StyleSheet,
   ImageBackground,
   ScrollView,
+  TextInput,
+  TouchableOpacity,
 } from "react-native";
 import { CheckBox } from "@rneui/base";
 import { AntDesign } from "@expo/vector-icons";
+import { Badge } from "@rneui/themed";
+import { FontAwesome } from "@expo/vector-icons";
 
 function OnBoardingStatus(props) {
   const [page, setPage] = useState(1);
+  const [location, setLocation] = useState("");
   const [userDatasInput, setUserDatas] = useState({
     location: "", // String
     status: "", // Array
     tags: [], // Array
     work: "", // Array
     workType: "", // Array
-    id: props.userDatas._id,
+    // userID: props.userDatas._id,
   });
 
   const statusDatasList = [
@@ -27,7 +32,6 @@ function OnBoardingStatus(props) {
     "#PARTNER",
     "#JUST CURIOUS",
   ];
-
   const workDatasList = [
     "Développeur",
     "Product Owner",
@@ -41,6 +45,25 @@ function OnBoardingStatus(props) {
     "Freelance",
     "En recherche",
   ];
+  const tagsDatasList = [
+    "Frontend",
+    "Backend",
+    "Fullstack",
+    "JavaScript",
+    "AngularJS",
+    "ReactJS",
+    "VueJS",
+    "TypeScript",
+    "ReactNative",
+    "Swift",
+    "Kotlin",
+    "Flutter",
+    "BDD",
+    "API",
+    "Java",
+    "Python",
+    "PHP",
+  ];
 
   function addData(filter, value) {
     let userDatasInputCopy = { ...userDatasInput };
@@ -48,15 +71,17 @@ function OnBoardingStatus(props) {
     setUserDatas(userDatasInputCopy);
   }
 
-  //   function addTags(filter, value) {
-  //     let userDatasCopy = { ...userDatas };
-  //       if (!userDatasCopy[filter].find((e) => e === value)) {
-  //         userDatasCopy[filter] = [...userDatasCopy[filter], value];
-  //       } else {
-  //         userDatasCopy[filter] = userDatasCopy[filter].filter((e) => e !== value);
-  //     }
-  //     setUserDatas(userDatasCopy);
-  //   }
+  function addFilters(filter, value) {
+    let userDatasInputCopy = { ...userDatasInput };
+    if (!userDatasInputCopy[filter].find((e) => e === value)) {
+      userDatasInputCopy[filter] = [...userDatasInputCopy[filter], value];
+    } else {
+      userDatasInputCopy[filter] = userDatasInputCopy[filter].filter(
+        (e) => e !== value
+      );
+    }
+    setUserDatas(userDatasInputCopy);
+  }
 
   console.log(userDatasInput);
   console.log("numéro", page);
@@ -125,12 +150,80 @@ function OnBoardingStatus(props) {
     </ScrollView>
   );
 
+  var tag = (
+    <View>
+      <Text style={styles.title}>CHOISIS TES TAGS PUTAIN</Text>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          flexWrap: "wrap",
+          margin: 30,
+          paddingBottom: 10,
+          paddingLeft: 10,
+        }}
+      >
+        {tagsDatasList.map(function (tag, i) {
+          var color = "#0E0E66";
+          var status = "";
+          if (userDatasInput.tags.find((i) => i === tag)) {
+            color = "#0e0e66";
+            status = "white";
+          }
+          return (
+            <Badge
+              key={i}
+              value={tag}
+              onPress={() => addFilters("tags", tag)}
+              containerStyle={{ margin: 5 }}
+              status={status}
+              textStyle={{ color: color, fontSize: 16 }}
+              badgeStyle={{
+                borderColor: "#ffffff",
+                borderWidth: 1.1,
+                padding: 2,
+                height: 30,
+                borderRadius: 15,
+              }}
+            />
+          );
+        })}
+      </View>
+      <View style={styles.headerTitle}>
+        <TextInput
+          value={location}
+          style={styles.searchBar}
+          placeholder="Indique ta ville"
+          onChangeText={(value) => setLocation(value)}
+          //   onSubmitEditing={({ nativeEvent: { text, eventCount, target } }) =>
+          //     loadSearchResults()
+          //   }
+        ></TextInput>
+        <FontAwesome
+          style={styles.searchButton}
+          name="search"
+          size={16}
+          color='#0e0e66'
+        />
+      </View>
+      <TouchableOpacity
+        style={styles.button}
+        //   onPress={() => ()}
+      >
+        <Text style={styles.confirm}>C'est parti !</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
   var content;
   if (page === 1) {
     content = status;
   }
   if (page === 2) {
     content = work;
+  }
+  if (page === 3) {
+    content = tag;
   }
 
   return (
@@ -186,6 +279,36 @@ const styles = StyleSheet.create({
     height: 55,
     justifyContent: "space-between",
     padding: 10,
+  },
+  searchBar: {
+    height: "100%",
+    width: "80%",
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    borderRadius: 50,
+    paddingLeft: 15,
+    paddingRight: 15,
+  },
+  headerTitle: {
+    flexDirection: "row",
+    paddingVertical: 20,
+    justifyContent: "center",
+  },
+  searchButton: {
+    left: -25,
+    top: 5,
+  },
+  button: {
+    width: "90%",
+    borderRadius: 10,
+    backgroundColor: "#E74C3C",
+    marginBottom: 25,
+    padding: 15,
+    alignSelf: "center",
+  },
+  confirm: {
+    fontSize: 20,
+    textAlign: "center",
+    color: "#FFFFFF",
   },
 });
 
