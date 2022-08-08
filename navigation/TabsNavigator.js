@@ -9,13 +9,14 @@ import MapScreen from "../screens/MapScreen";
 import NewsScreen from "../screens/NewsScreen";
 import MessengerScreen from "../screens/MessengerScreen";
 import BuddiesScreen from "../screens/BuddiesScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 import MyProfileScreen from "../screens/MyProfileScreen";
 import HeaderSearchBar from "../components/HeaderSearchBar";
 import ChatScreen from "../screens/ChatScreen";
 
 
 const Tab = createBottomTabNavigator();
-const hiddenTabs = ["Buddies", "MyProfile", "Chat"];
+const hiddenTabs = ["Buddies", "MyProfile", "Chat", "ProfileScreen"];
 
 const TabsNavigator = function (props) {
 	
@@ -112,16 +113,31 @@ const TabsNavigator = function (props) {
 				}}
 			/>
 			<Tab.Screen
+				name="ProfileScreen"
+				component={ProfileScreen}
+				options={{
+					title: "Profil de l'Alumni",
+					headerRight: () => (
+						<TouchableOpacity
+							style={styles.right}
+						>
+							<Ionicons name="person" size={25} color="white" />
+						</TouchableOpacity>
+					),
+				}}
+			/>
+			<Tab.Screen
 				name="MyProfile"
 				component={MyProfileScreen}
 				options={{
+					title:"Mon Profil",
 					headerRight: () => (
 						<TouchableOpacity
 							style={styles.right}
 							//TODO enable profile modification mode
 							//TODO onPress={() => }
 						>
-							<Ionicons name="pencil" size={20} color="white" />
+							<Ionicons name="pencil" size={25} color="white" />
 						</TouchableOpacity>
 					),
 				}}
