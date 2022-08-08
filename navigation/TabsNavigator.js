@@ -1,9 +1,10 @@
-import React from "react";
-import { TouchableOpacity, StyleSheet, View} from "react-native";
+import React, { useEffect, useState } from "react";
+import { TouchableOpacity, StyleSheet, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
+import { connect } from "react-redux";
 
 import MapScreen from "../screens/MapScreen";
 import NewsScreen from "../screens/NewsScreen";
@@ -12,34 +13,72 @@ import BuddiesScreen from "../screens/BuddiesScreen";
 import MyProfileScreen from "../screens/MyProfileScreen";
 import HeaderSearchBar from "../components/HeaderSearchBar";
 import ChatScreen from "../screens/ChatScreen";
-
+import { useDrawerStatus } from "@react-navigation/drawer";
 
 const Tab = createBottomTabNavigator();
 const hiddenTabs = ["Buddies", "MyProfile", "Chat"];
 
 const TabsNavigator = function (props) {
-	
+	const isLeftDrawerVisible = useDrawerStatus();
+	const [isLeftFocused, setIsLeftFocused] = useState("");
+
+	useEffect(() => {
+		if (isLeftDrawerVisible == "open") {
+			console.log("prout", isLeftDrawerVisible);
+			setIsLeftFocused(isLeftDrawerVisible);
+		} else {
+			setIsLeftFocused(isLeftDrawerVisible);
+			console.log("prout2", isLeftDrawerVisible);
+		}
+	}, [isLeftDrawerVisible]);
+
 	return (
 		<Tab.Navigator
 			screenOptions={({ route }) => ({
-				headerRight: () => (
-					<TouchableOpacity
-						style={styles.right}
-						onPress={() =>
-							props.navigation.getParent("RightDrawer").toggleDrawer()
-						}
-					>
-						<Ionicons name="options" size={24} color="white" />
-					</TouchableOpacity>
-				),
-				headerLeft: () => (
-					<TouchableOpacity
-						style={styles.left}
-						onPress={() => props.navigation.toggleDrawer()}
-					>
-						<Feather name="menu" size={24} color="white" />
-					</TouchableOpacity>
-				),
+				headerRight: () =>
+					props.drawerStatus == "open" ? (
+						<TouchableOpacity
+							onPress={() => {
+								props.navigation.getParent("RightDrawer").toggleDrawer();
+							}}
+						>
+							<Ionicons
+								name="options"
+								size={24}
+								color="#0E0E66"
+								style={styles.right2}
+							/>
+						</TouchableOpacity>
+					) : (
+						<TouchableOpacity
+							style={styles.right}
+							onPress={() => {
+								props.navigation.getParent("RightDrawer").toggleDrawer();
+							}}
+						>
+							<Ionicons name="options" size={24} color="white" />
+						</TouchableOpacity>
+					),
+				headerLeft: () =>
+					isLeftFocused == "open" ? (
+						<TouchableOpacity
+							style={styles.left2}
+							onPress={() => {
+								props.navigation.toggleDrawer();
+							}}
+						>
+							<Ionicons name="menu" size={24} color="#0E0E66" />
+						</TouchableOpacity>
+					) : (
+						<TouchableOpacity
+							style={styles.left}
+							onPress={() => {
+								props.navigation.toggleDrawer();
+							}}
+						>
+							<Ionicons name="menu" size={24} color="white" />
+						</TouchableOpacity>
+					),
 				headerStyle: {
 					backgroundColor: "#0E0E66",
 				},
@@ -87,7 +126,10 @@ const TabsNavigator = function (props) {
 					headerStyle: styles.headers,
 					headerTintColor: "#fff",
 					headerTitleAlign: "center",
-					headerTitle: (props) => <HeaderSearchBar {...props} />,
+					headerTitle:
+						props.drawerStatus === "open"
+							? "Recherche avancée"
+							: (props) => <HeaderSearchBar {...props} />,
 				}}
 			/>
 			<Tab.Screen
@@ -186,12 +228,38 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		width: 64,
 	},
+	left2: {
+		backgroundColor: "white",
+		marginHorizontal: 20,
+		borderRadius: 5,
+	},
 	right: {
 		flex: 1,
 		justifyContent: "center",
 		alignItems: "center",
 		width: 64,
 	},
+	right2: {
+		backgroundColor: "white",
+		marginHorizontal: 20,
+		borderRadius: 5,
+	},
 });
 
-export default TabsNavigator;
+const mapStateToProps = (state) => {
+	return {
+		searchResults: state.searchResults,
+		userDatas: state.userDatas,
+		drawerStatus: state.drawerStatus,
+	};
+};
+
+function mapDispatchToProps(dispatch) {
+	return {
+		leftDrawerStatus: function (status) {
+			dispatch({ type: "leftDrawer status", leftDrawerStatus: status });
+		},
+	};
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TabsNavigator);

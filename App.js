@@ -8,12 +8,21 @@ import userDatas from "./reducers/userDatas";
 import userEmail from "./reducers/userEmail";
 import {searchResults} from "./reducers/searchResults";
 import {discussionInfos} from "./reducers/discussionInfos";
+<<<<<<< HEAD
 import alumniIDSearch from "./reducers/alumniIDSearch";
 
 
 LogBox.ignoreAllLogs();
 
 const store = createStore(combineReducers({ userDatas, userEmail, searchResults, discussionInfos, alumniIDSearch }));
+=======
+import drawerStatus from "./reducers/drawerStatus";
+import leftDrawerStatus from "./reducers/leftDrawerStatus";
+
+LogBox.ignoreAllLogs();
+
+const store = createStore(combineReducers({ userDatas, userEmail, searchResults, discussionInfos, drawerStatus, leftDrawerStatus }));
+>>>>>>> 466cf2bdc6f26c81f43476c4056d2b677cf13fa4
 
 // APP ----------------------------------------------------------------
 export default function App() {

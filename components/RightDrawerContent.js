@@ -87,8 +87,13 @@ function resetFilters() {
       work: [], // Array
       workType: [], // Array
     });
+<<<<<<< HEAD
 }
 
+=======
+  }
+  // console.log(filters)
+>>>>>>> 466cf2bdc6f26c81f43476c4056d2b677cf13fa4
   async function loadSearchResults() {
     // sans ce commentaire, ca marche pas !!! Si tu delte je te nique tes morts
     var searchResults = await fetch(
@@ -168,45 +173,55 @@ function resetFilters() {
       end={{ x: 1, y: 0.3 }}
     >
       <DrawerContentScrollView {...props}>
-        <View style={{ alignItems: "center" }}>
-          <View style={styles.headerTitle}>
-            <TextInput
-              value={location}
-              style={styles.searchBar}
-              placeholder="Type in city"
-              placeholderTextColor="rgba(255, 255, 255, 0.5)"
-              onChangeText={(value) => setLocation(value)}
-              onSubmitEditing={({
-                nativeEvent: { text, eventCount, target },
-              }) => loadSearchResults()}
-            ></TextInput>
-            <FontAwesome
-              style={styles.searchButton}
-              name="search"
-              size={16}
-              color="white"
-            />
-          </View>
-          <View style={[styles.contentView]}>
-            <Slider
-              value={km}
-              onValueChange={setKm}
-              maximumValue={100}
-              minimumValue={10}
-              step={5}
-              allowTouchTrack
-              trackStyle={{ height: 5, backgroundColor: "transparent" }}
-              thumbStyle={{
-                height: 20,
-                width: 20,
-                backgroundColor: "transparent",
-              }}
-              thumbProps={{
-                children: <Icon name="circle" type="font-awesome" size={20} />,
-              }}
-            />
-            <Text style={{ color: "#FFFFFF" }}>Km: {displayValue}</Text>
-          </View>
+        <View style={{ alignItems: 'center' }}>
+        <View style={styles.headerTitle}>
+      <TextInput
+      value = {location}
+        style={styles.searchBar}
+        placeholder="Type in city"
+        placeholderTextColor="rgba(255, 255, 255, 0.5)"
+        onChangeText={(value) => setLocation(value)}
+        onSubmitEditing={({ nativeEvent: { text, eventCount, target } }) =>
+          loadSearchResults()
+        }
+      >
+       
+        </TextInput>
+        <FontAwesome
+          style={styles.searchButton}
+          name="search"
+          size={16}
+          color="white"
+        />
+    </View>
+        <View style={[styles.contentView]}>
+          <Slider
+            value={filters.radius}
+            onValueChange={setKm}
+            maximumValue={100}
+            minimumValue={10}
+            step={5}
+            allowTouchTrack
+            trackStyle={{ height: 5, backgroundColor: "transparent" }}
+            thumbStyle={{
+              height: 20,
+              width: 20,
+              backgroundColor: "transparent",
+            }}
+            thumbProps={{
+              children: (
+                <Icon
+                  name="circle"
+                  type="font-awesome"
+                  size={20}
+                />
+              ),
+            }}
+          />
+          <Text style={{ color: "#FFFFFF" }}>
+            Distance: {displayValue} km
+          </Text>
+        </View>
         </View>
 
         {/* //! 1ST SEGMENT */}
@@ -703,6 +718,7 @@ const mapStateToProps = (state) => {
   return {
     searchResults: state.searchResults,
     userDatas: state.userDatas,
+    drawerStatus : state.drawerStatus,
   };
 };
 const mapDispatchToProps = (dispatch) => {
