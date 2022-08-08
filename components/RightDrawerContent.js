@@ -15,7 +15,6 @@ import { FontAwesome } from "@expo/vector-icons";
 
 import { connect } from "react-redux";
 import { IPLOCAL } from "@env";
-var urlLocal = "http://"+IPLOCAL+":3000";
 
 //* RIGHT DRAWER CONTENT
 function CustomRightDrawerContent(props) {
@@ -69,10 +68,10 @@ function CustomRightDrawerContent(props) {
         filtersCopy[filter] = [...filtersCopy[filter], value];
       } else {
         filtersCopy[filter] = filtersCopy[filter].filter((e) => e !== value);
-      }
     }
     setFilters(filtersCopy);
-  }
+  }}
+
   function resetFilters() {
     setFilters({
       nbBatch: "", // Number
@@ -86,11 +85,11 @@ function CustomRightDrawerContent(props) {
       workType: [], // Array
     });
   }
-  // console.log(filters)
+
   async function loadSearchResults() {
     // sans ce commentaire, ca marche pas !!! Si tu delte je te nique tes morts
     var searchResults = await fetch(
-      `${urlLocal}/search`, 
+      `${IPLOCAL}/search`, 
       {
       method: "post",
       headers: { "Content-Type": "application/json" },
@@ -663,9 +662,9 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     alignItems: "center",
     justifyContent: "center",
-    width: "90%",
     height: 55,
     borderRadius: 5,
+    marginRight: 0,
     margin: 15,
     marginRight: 0,
   },
@@ -727,4 +726,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CustomRightDrawerContent);
+)(CustomRightDrawerContent)

@@ -14,39 +14,41 @@ import { FontAwesome } from "@expo/vector-icons";
 import { useState, useEffect, useRef } from "react";
 import InsetShadow from "react-native-inset-shadow";
 import { connect } from "react-redux";
+// change hook useIsFocused by option unmountOnBlur in the Chat Screen in TabsNavigator 
+//import { useIsFocused } from "@react-navigation/native";
 
 import {IPLOCAL} from "@env"
-var urlLocal = 'http://'+IPLOCAL+':3000'
 
 
 /*----Web socket----*/
 import socketIOClient from "socket.io-client";
 
 function ChatScreen(props) {
-
+  //const isFocused = useIsFocused();
   const socket = useRef();
   const scrollRef = useRef();
 
   const colors = ["#7C4DFF", "#F94A56", "#FF1744"];
   const colorz = ["#FF1744", "#F94A56", "#7C4DFF"];
 
-	const [message, setMessage] = useState("");
-	const [allMessages, setAllMessages] = useState([]);
+  const [message, setMessage] = useState("");
+  const [allMessages, setAllMessages] = useState([]);
 
   useEffect(() => {
     // init socket.current value with extraHeader which contain a room id (=> discussionID)
-    socket.current = socketIOClient(urlLocal, {
+    socket.current = socketIOClient(IPLOCAL, {
       extraHeaders: {
         roomID: props.discussionInfos.discussionID,
       },
     });
-  }, []);
+  //}, [isFocused]);
+}, []);
 
   /*GET all messages ONCE TIME from Database when ChatScreen is loaded*/
   useEffect(() => {
     const getMessagesFromDB = async () => {
       const messagesFromDB = await fetch(
-        `${urlLocal}/messages/${props.discussionInfos.discussionID}`
+        `${IPLOCAL}/messages/${props.discussionInfos.discussionID}`
       );
       let messagesFromDBJSON = await messagesFromDB.json();
       setAllMessages(messagesFromDBJSON);
@@ -62,11 +64,11 @@ function ChatScreen(props) {
   }, [props.discussionInfos.discussionID]);
 
   useEffect(() => {
-    console.log("s'inscrire au forfait mobile quand le component est généré");
+    //console.log("s'inscrire au forfait mobile quand le component est généré");
     // si forfait augmente, on change l'opérateur
     socket.current.on("sendMessageServer", (message) => {
       if (message.senderID !== props.userDatas._id) {
-        console.log('another member');
+        //console.log('another member');
         setAllMessages([...allMessages, message]);
       }
     });
@@ -79,9 +81,10 @@ function ChatScreen(props) {
     // on résilie l'ancien opérateur
     return () => {
       socket.current.off("sendMessageServer");
-      console.log("se désabonner");
+      //console.log("se désabonner");
     }; // for delete all: // socket.off()
-  }, [allMessages]); // observer le prix du forfait
+  //}, [isFocused, allMessages]); // observer le prix du forfait
+}, [allMessages]); // observer le prix du forfait
 
   /* Send socket to  */
   const handleGetMessage = async () => {
@@ -93,7 +96,7 @@ function ChatScreen(props) {
     try {
       /* SEND message to DB */
       const messageDB = await fetch(
-        `${urlLocal}/messages/addMessage`,
+        `${IPLOCAL}/messages/addMessage`,
         {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -101,7 +104,7 @@ function ChatScreen(props) {
         }
       );
       const messageDBJson = await messageDB.json();
-      
+
       socket.current.emit("sendMessage", messageDBJson);
       setMessage("");
       setAllMessages([...allMessages, messageDBJson]);
@@ -205,110 +208,110 @@ function ChatScreen(props) {
 }
 
 var styles = StyleSheet.create({
-	searchBar: {
-		backgroundColor: "rgba(255, 255, 255, 0.5)",
-		borderTopLeftRadius: 50,
-		borderBottomLeftRadius: 50,
-		width: "80%",
-		height: "100%",
-		paddingLeft: 15,
-		paddingRight: 15,
-	},
-	searchButton: {
-		alignSelf: "center",
-		backgroundColor: "#E74C3C",
-		padding: 6,
-		borderRadius: 50,
-	},
-	searchButtonBackground: {
-		backgroundColor: "rgba(255, 255, 255, 0.5)",
-		borderTopRightRadius: 50,
-		borderBottomRightRadius: 50,
-	},
-	messageBox: {
-		alignSelf: "flex-end",
-		width: "75%",
-		marginLeft: "3%",
-		marginBottom: "1%",
-		flexGrow: 1,
-		padding: 15,
-		borderTopLeftRadius: 10,
-		borderTopRightRadius: 15,
-		borderBottomRightRadius: 15,
-		elevation: 5,
-		shadowRadius: 10,
-		shadowOpacity: 1,
-	},
-	rightMessageBox: {
-		alignSelf: "flex-end",
-		width: "75%",
-		marginRight: "3%",
-		marginBottom: "3%",
-		flexGrow: 1,
-		padding: 15,
-		borderTopLeftRadius: 10,
-		borderTopRightRadius: 15,
-		borderBottomLeftRadius: 15,
-		elevation: 5,
-		shadowRadius: 15,
-		shadowOpacity: 1,
-	},
-	textInput: {
-		backgroundColor: "#8686b3",
-		height: 55,
-		justifyContent: "center",
-		alignItems: "center",
-	},
-	img: {
-		alignSelf: "flex-end",
-		borderRadius: 50,
-		width: 31,
-		height: 34,
-		paddingTop: 10,
-		marginLeft: "3%",
-		marginBottom: "1%",
-	},
-	rightImg: {
-		alignSelf: "flex-end",
-		borderRadius: 50,
-		width: 31,
-		height: 34,
-		paddingTop: 10,
-		marginRight: "3%",
-		marginBottom: "3%",
-	},
-	leftMessage: {
-		flexDirection: "row",
-		width: "80%",
-		marginTop: "5%",
-		alignItems: "center",
-	},
-	rightMessage: {
-		flexDirection: "row-reverse",
-		alignSelf: "flex-end",
-		width: "80%",
-		marginTop: "5%",
-		alignItems: "center",
-	},
-	messageSender: {
-		textAlign: "left",
-		color: "rgba(255, 255, 255, 0.5)",
-		fontWeight: "bold",
-		fontSize: 10,
-	},
-	rightMessageSender: {
-		textAlign: "right",
-		color: "rgba(255, 255, 255, 0.5)",
-		fontWeight: "bold",
-		fontSize: 10,
-	},
+  searchBar: {
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    borderTopLeftRadius: 50,
+    borderBottomLeftRadius: 50,
+    width: "80%",
+    height: "100%",
+    paddingLeft: 15,
+    paddingRight: 15,
+  },
+  searchButton: {
+    alignSelf: "center",
+    backgroundColor: "#E74C3C",
+    padding: 6,
+    borderRadius: 50,
+  },
+  searchButtonBackground: {
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    borderTopRightRadius: 50,
+    borderBottomRightRadius: 50,
+  },
+  messageBox: {
+    alignSelf: "flex-end",
+    width: "75%",
+    marginLeft: "3%",
+    marginBottom: "1%",
+    flexGrow: 1,
+    padding: 15,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 15,
+    borderBottomRightRadius: 15,
+    elevation: 5,
+    shadowRadius: 10,
+    shadowOpacity: 1,
+  },
+  rightMessageBox: {
+    alignSelf: "flex-end",
+    width: "75%",
+    marginRight: "3%",
+    marginBottom: "3%",
+    flexGrow: 1,
+    padding: 15,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 15,
+    borderBottomLeftRadius: 15,
+    elevation: 5,
+    shadowRadius: 15,
+    shadowOpacity: 1,
+  },
+  textInput: {
+    backgroundColor: "#8686b3",
+    height: 55,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  img: {
+    alignSelf: "flex-end",
+    borderRadius: 50,
+    width: 31,
+    height: 34,
+    paddingTop: 10,
+    marginLeft: "3%",
+    marginBottom: "1%",
+  },
+  rightImg: {
+    alignSelf: "flex-end",
+    borderRadius: 50,
+    width: 31,
+    height: 34,
+    paddingTop: 10,
+    marginRight: "3%",
+    marginBottom: "3%",
+  },
+  leftMessage: {
+    flexDirection: "row",
+    width: "80%",
+    marginTop: "5%",
+    alignItems: "center",
+  },
+  rightMessage: {
+    flexDirection: "row-reverse",
+    alignSelf: "flex-end",
+    width: "80%",
+    marginTop: "5%",
+    alignItems: "center",
+  },
+  messageSender: {
+    textAlign: "left",
+    color: "rgba(255, 255, 255, 0.5)",
+    fontWeight: "bold",
+    fontSize: 10,
+  },
+  rightMessageSender: {
+    textAlign: "right",
+    color: "rgba(255, 255, 255, 0.5)",
+    fontWeight: "bold",
+    fontSize: 10,
+  },
 });
 
 const mapStateToProps = (state) => {
-	return {
-		userDatas: state.userDatas,
-		discussionInfos: state.discussionInfos,
-	};
+  return {
+    userDatas: state.userDatas,
+    discussionInfos: state.discussionInfos,
+  };
 };
 
 export default connect(mapStateToProps, null)(ChatScreen);
