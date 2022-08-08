@@ -16,7 +16,6 @@ import InsetShadow from "react-native-inset-shadow";
 import { connect } from "react-redux";
 
 import {IPLOCAL} from "@env"
-var urlLocal = 'http://'+IPLOCAL+':3000'
 
 
 /*----Web socket----*/
@@ -35,7 +34,7 @@ function ChatScreen(props) {
 
   useEffect(() => {
     // init socket.current value with extraHeader which contain a room id (=> discussionID)
-    socket.current = socketIOClient(urlLocal, {
+    socket.current = socketIOClient(IPLOCAL, {
       extraHeaders: {
         roomID: props.discussionInfos.discussionID,
       },
@@ -46,7 +45,7 @@ function ChatScreen(props) {
   useEffect(() => {
     const getMessagesFromDB = async () => {
       const messagesFromDB = await fetch(
-        `${urlLocal}/messages/${props.discussionInfos.discussionID}`
+        `${IPLOCAL}/messages/${props.discussionInfos.discussionID}`
       );
       let messagesFromDBJSON = await messagesFromDB.json();
       setAllMessages(messagesFromDBJSON);

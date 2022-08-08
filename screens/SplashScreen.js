@@ -10,7 +10,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connect } from "react-redux";
 
 import {IPLOCAL} from "@env"
-var urlLocal = 'http://'+IPLOCAL+':3000'
 
 
 function SplashScreen(props) {
@@ -19,7 +18,7 @@ function SplashScreen(props) {
       console.log(userID)
       if (userID !== null) {
         var datas = await fetch(
-          `${urlLocal}/users/getUserDatas?userID=${userID}`
+          `${IPLOCAL}/users/getUserDatas?userID=${userID}`
         );
         datas = await datas.json();
         props.setUserDatas(datas.userDatas);

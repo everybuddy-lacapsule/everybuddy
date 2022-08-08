@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import Discussion from "../components/DiscussionComponent";
 
 import {IPLOCAL} from "@env"
-const urlLocal = 'http://'+IPLOCAL+':3000'
 
 //import socketIOClient from "socket.io-client";
 import { useEffect, useState } from "react";
@@ -18,7 +17,7 @@ function MessengerScreen(props) {
   useEffect(() => {
     const getDiscussions = async () => {
       try{
-        const response = await fetch(`${urlLocal}/discussions/${props.userDatas._id}`);
+        const response = await fetch(`${IPLOCAL}/discussions/${props.userDatas._id}`);
         let userDiscussions = await response.json();
         setDiscussions(userDiscussions);
       }
