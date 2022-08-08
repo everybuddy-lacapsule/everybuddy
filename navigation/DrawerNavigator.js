@@ -2,7 +2,6 @@ import { StyleSheet } from "react-native";
 import {
 	createDrawerNavigator,
 } from "@react-navigation/drawer";
-import { Divider} from "@rneui/themed";
 import LeftDrawerScreen from "./leftDrawer"
 import CustomRightDrawerContent from "../components/RightDrawerContent";
 import { Ionicons } from "@expo/vector-icons";
@@ -11,7 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 //*RIGHT DRAWER Wrapping LEFT DRAWER
 const RightDrawer = createDrawerNavigator();
 const RightDrawerScreen = () => {
-
+	
 	return (
 		<RightDrawer.Navigator
 			id="RightDrawer"

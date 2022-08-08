@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { TouchableOpacity, StyleSheet, View} from "react-native";
+import React, { useEffect, useState } from "react";
+import { TouchableOpacity, StyleSheet, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
@@ -15,41 +15,67 @@ import HeaderSearchBar from "../components/HeaderSearchBar";
 import ChatScreen from "../screens/ChatScreen";
 import { useDrawerStatus } from "@react-navigation/drawer";
 
-
-
 const Tab = createBottomTabNavigator();
 const hiddenTabs = ["Buddies", "MyProfile", "Chat"];
 
-const TabsNavigator = function (props) {	
+const TabsNavigator = function (props) {
+	const isLeftDrawerVisible = useDrawerStatus();
+	const [isLeftFocused, setIsLeftFocused] = useState(''); 
+
+	useEffect(() => {
+		if (isLeftDrawerVisible == "open") {
+			console.log('prout', isLeftDrawerVisible);
+			setIsLeftFocused(isLeftDrawerVisible)
+		} else {
+			setIsLeftFocused(isLeftDrawerVisible)
+			console.log('prout2', isLeftDrawerVisible);
+
+		}
+	}, [isLeftDrawerVisible]);
+
 	return (
 		<Tab.Navigator
 			screenOptions={({ route }) => ({
-				headerRight: () => ( props.drawerStatus== 'open' ? 
-				<View style={styles.right2}>
-				<TouchableOpacity
-				onPress={() =>
-					{props.navigation.getParent("RightDrawer").toggleDrawer() }
-				}
-			>
-				<Ionicons name="options" size={24} color="#0E0E66" />
-			</TouchableOpacity>
-			</View>
-			 :
-					<TouchableOpacity
-						style={styles.right}
-						onPress={() =>
-							{props.navigation.getParent("RightDrawer").toggleDrawer() }
-						}
-					>
-						<Ionicons name="options" size={24} color="white" />
-					</TouchableOpacity>
-				),
-				headerLeft: () => (
+				headerRight: () =>
+					props.drawerStatus == "open" ? (
+						<View style={styles.right2}>
+							<TouchableOpacity
+								onPress={() => {
+									props.navigation.getParent("RightDrawer").toggleDrawer();
+								}}
+							>
+								<Ionicons name="options" size={24} color="#0E0E66" />
+							</TouchableOpacity>
+						</View>
+					) : (
+						<TouchableOpacity
+							style={styles.right}
+							onPress={() => {
+								props.navigation.getParent("RightDrawer").toggleDrawer();
+							}}
+						>
+							<Ionicons name="options" size={24} color="white" />
+						</TouchableOpacity>
+					),
+				headerLeft: () => 
+				isLeftFocused == "open" ? (
+					<View style={styles.left2}>
+						<TouchableOpacity
+							onPress={() => {
+								props.navigation.toggleDrawer();
+							}}
+						>
+							<Ionicons name="options" size={24} color="#0E0E66" />
+						</TouchableOpacity>
+					</View>
+				) : (
 					<TouchableOpacity
 						style={styles.left}
-						onPress={() => props.navigation.toggleDrawer()}
+						onPress={() => {
+							props.navigation.toggleDrawer();
+						}}
 					>
-						<Feather name="menu" size={24} color="white" />
+						<Ionicons name="options" size={24} color="white" />
 					</TouchableOpacity>
 				),
 				headerStyle: {
@@ -99,7 +125,10 @@ const TabsNavigator = function (props) {
 					headerStyle: styles.headers,
 					headerTintColor: "#fff",
 					headerTitleAlign: "center",
-					headerTitle: 	props.drawerStatus === 'open'? 'Recherche avancée' : (props) => <HeaderSearchBar {...props} />,
+					headerTitle:
+						props.drawerStatus === "open"
+							? "Recherche avancée"
+							: (props) => <HeaderSearchBar {...props} />,
 				}}
 			/>
 			<Tab.Screen
@@ -198,6 +227,15 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		width: 64,
 	},
+	left2: {
+		alignSelf: "center",
+		justifyContent: "center",
+		alignItems: "center",
+		width: 34,
+		backgroundColor: "white",
+		borderRadius: 5,
+		marginLe:20,
+	},
 	right: {
 		flex: 1,
 		justifyContent: "center",
@@ -205,23 +243,30 @@ const styles = StyleSheet.create({
 		width: 64,
 	},
 	right2: {
-		alignSelf:'center',
+		alignSelf: "center",
 		justifyContent: "center",
 		alignItems: "center",
 		width: 34,
-		backgroundColor:'white',
-		borderRadius:5,
-		marginLeft: 25
+		backgroundColor: "white",
+		borderRadius: 5,
+		marginLeft: 20,
 	},
 });
 
 const mapStateToProps = (state) => {
 	return {
-	  searchResults: state.searchResults,
-	  userDatas: state.userDatas,
-	  drawerStatus : state.drawerStatus,
+		searchResults: state.searchResults,
+		userDatas: state.userDatas,
+		drawerStatus:state.drawerStatus,
 	};
-  };
-  
-  export default connect(mapStateToProps, null)(TabsNavigator);
+};
 
+function mapDispatchToProps(dispatch) {
+	return {
+		leftDrawerStatus: function (status) {
+			dispatch({ type: "leftDrawer status", leftDrawerStatus: status });
+		},
+	};
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TabsNavigator);

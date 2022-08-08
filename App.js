@@ -9,10 +9,11 @@ import userEmail from "./reducers/userEmail";
 import {searchResults} from "./reducers/searchResults";
 import {discussionInfos} from "./reducers/discussionInfos";
 import drawerStatus from "./reducers/drawerStatus";
+import leftDrawerStatus from "./reducers/leftDrawerStatus";
 
 LogBox.ignoreAllLogs();
 
-const store = createStore(combineReducers({ userDatas, userEmail, searchResults, discussionInfos, drawerStatus }));
+const store = createStore(combineReducers({ userDatas, userEmail, searchResults, discussionInfos, drawerStatus, leftDrawerStatus }));
 
 // APP ----------------------------------------------------------------
 export default function App() {

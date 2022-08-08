@@ -10,13 +10,13 @@ import SplashScreen from "../screens/SplashScreen";
 const Stack = createStackNavigator();
 
 const StackNavigator = function () {
+
 	return (
 		<Stack.Navigator
 			screenOptions={{
 				headerStyle: styles.headers,
 				headerTintColor: "#fff",
 				headerTitleStyle: { alignSelf: "center" },
-
 			}}
 		>
 			<Stack.Screen
