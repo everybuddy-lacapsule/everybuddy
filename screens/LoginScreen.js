@@ -31,8 +31,7 @@ function LoginScreen(props) {
   }, [props.userEmail]);
 
   var handleSubmitSignIn = async () => {
-    // var res = await fetch(`${urlLocal}/users/sign-in`, {
-      var res = await fetch(`${urlLocal}/users/sign-in`, {
+    var res = await fetch(`${urlLocal}/users/sign-in`, {
 
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },

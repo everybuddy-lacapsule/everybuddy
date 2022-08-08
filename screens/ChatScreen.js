@@ -36,7 +36,7 @@ function ChatScreen(props) {
 
   useEffect(() => {
     // init socket.current value with extraHeader which contain a room id (=> discussionID)
-    socket.current = socketIOClient(urlLocal, {
+    socket.current = socketIOClient(IPLOCAL, {
       extraHeaders: {
         roomID: props.discussionInfos.discussionID,
       },
@@ -96,7 +96,7 @@ function ChatScreen(props) {
     try {
       /* SEND message to DB */
       const messageDB = await fetch(
-        `${urlLocal}/messages/addMessage`,
+        `${IPLOCAL}/messages/addMessage`,
         {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
