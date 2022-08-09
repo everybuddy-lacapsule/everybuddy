@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import {
 	View,
 	StyleSheet,
-	TextInput,
 	Text,
 	ScrollView,
 	Linking,
 	KeyboardAvoidingView,
 } from "react-native";
+import { TextInput } from "react-native-paper";
 import { Divider, SocialIcon, hollowWhite } from "@rneui/themed";
 import { Avatar } from "@rneui/base";
 import { connect } from "react-redux";
@@ -15,7 +15,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 function EditingProfileContent(props) {
 	const [userData, setUseData] = useState(props.userData);
-	const [presentation, setPresentation] = useState("");
+	const [presentation, setPresentation] = useState(props.userData.presentation);
 	console.log("caca", userData);
 	return (
 		<ScrollView style={styles.container}>
@@ -47,52 +47,61 @@ function EditingProfileContent(props) {
 					{props.userData.address.city} {props.userData.address.country}
 				</Text>
 			</View>
-			<KeyboardAvoidingView style={{marginVertical:5}}>
-			<ScrollView
-				style={{ marginHorizontal: 20 }}
-				horizontal={true}
-				scrollbar
-				contentContainerStyle={styles.tags}
-			>
-				<Ionicons
-					name="add-circle"
-					size={30}
-					color="#E74C3C"
-					style={{ marginTop: 2.5 }}
-				/>
+			<KeyboardAvoidingView style={{ marginVertical: 5 }}>
+				<ScrollView
+					style={{ marginHorizontal: 20 }}
+					horizontal={true}
+					scrollbar
+					contentContainerStyle={styles.tags}
+				>
+					<Ionicons
+						name="add-circle"
+						size={40}
+						color="#E74C3C"
+						style={{ marginTop: 2.5 }}
+					/>
 
-				{/* Tags et compétences */}
-				{props.userData.tags.map((tag, i) => {
-					return (
-						<View style={styles.view3} key={i}>
-							<Text style={styles.badge2}>{tag}</Text>
-							<Ionicons
-								name="close"
-								size={16}
-								color="#0E0E66"
-								style={{ marginTop: 2.5 }}
-							/>
-						</View>
-					);
-				})}
-			</ScrollView>
+					{/* Tags et compétences */}
+					{props.userData.tags.map((tag, i) => {
+						return (
+							<View style={styles.view3} key={i}>
+								<Text style={styles.badge2}>{tag}</Text>
+								<Ionicons
+									name="close"
+									size={16}
+									color="#0E0E66"
+									style={{ marginTop: 2.5 }}
+								/>
+							</View>
+						);
+					})}
+				</ScrollView>
 			</KeyboardAvoidingView>
 			<View style={styles.view2} scrollbar>
 				<Text style={styles.title}>RECHERCHE ACTUELLE</Text>
 				<TextInput
-					style={{ backgroundColor: 'white', borderRadius:5, textAlignVertical:'top', padding:10}}
+					mode="outlined"
+					label="Tell your personal goals"
+					outlineColor="#F0F0F0"
+					style={[styles.textinput, { textAlignVertical: "top" }]}
+					activeOutlineColor="#E74C3C"
 					placeholder={props.userData.searchCurrent}
-					placeholderTextColor= "rgba(0, 0, 0, 0.5)"
+					placeholderTextColor="rgba(0, 0, 0, 0.5)"
 					multiline={true}
+					editable={true}
 					numberOfLines={4}
 					onChangeText={(text) => setPresentation({ text })}
 					value={presentation}
-				/>				
+				/>
 				<Text style={styles.title}>PRÉSENTATION</Text>
 				<TextInput
-					style={{flexGrow:0.8 ,backgroundColor: 'white', borderRadius:5, textAlignVertical:'top', padding:10}}
+					mode="outlined"
+					label="PortFolio / Github Link"
+					outlineColor="#F0F0F0"
+					style={styles.textinput}
+					activeOutlineColor="#E74C3C"
 					placeholder={props.userData.presentation}
-					placeholderTextColor= "rgba(0, 0, 0, 0.5)"
+					placeholderTextColor="rgba(0, 0, 0, 0.5)"
 					multiline={true}
 					numberOfLines={4}
 					onChangeText={(text) => setPresentation({ text })}
@@ -102,40 +111,59 @@ function EditingProfileContent(props) {
 
 			<Divider
 				color={hollowWhite}
-				style={{ width: " 90%", marginLeft: "5%", marginBottom:'3%' }}
+				style={{ width: " 90%", marginLeft: "5%", marginBottom: "3%" }}
 			/>
 
 			<View style={styles.icon}>
 				{/* ICONES RESEAUX SOCIAUX */}
 				{/* ------------- TROUVER COMMENT RECUPERER LES LIENS DE LA BDD ! ---------- */}
-				<View style={{ flexDirection:'row', marginHorizontal:20,width:'100%',}}>
-				<SocialIcon
-					iconSize={12}
-					onPress={() => {
-						Linking.openURL("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+				<View
+					style={{
+						flexDirection: "row",
+						marginHorizontal: 20,
+						width: "99%",
+						alignItems: "center",
 					}}
-					type="github"
-				/>
-				<TextInput
-					style={{backgroundColor: 'white', borderRadius:5, textAlignVertical:'top', padding:10}}
-					placeholder='https://github.com/...'
-					placeholderTextColor= "rgba(0, 0, 0, 0.5)"
-					onChangeText={(text) => setPresentation({ text })}
-					value={presentation}
-				/>
-				</View>
-				<View style={{ flexDirection:'row', marginHorizontal:20, width:'100%',}}>
-				<SocialIcon
-				iconSize={12}
-					type="linkedin"
-				/>
+				>
+					<SocialIcon
+						iconSize={12}
+						onPress={() => {
+							Linking.openURL("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+						}}
+						type="github"
+					/>
 					<TextInput
-					style={{backgroundColor: 'white', borderRadius:5, textAlignVertical:'top', padding:10, marginVertical:10}}
-					placeholder='https://www.linkedin.com/in/...'
-					placeholderTextColor= "rgba(0, 0, 0, 0.5)"
-					onChangeText={(text) => setPresentation({ text })}
-					value={presentation}
-				/>
+						mode="outlined"
+						label="PortFolio / Github Link"
+						outlineColor="#F0F0F0"
+						style={styles.textinput2}
+						activeOutlineColor="#E74C3C"
+						placeholder="https://github.com/..."
+						placeholderTextColor="rgba(0, 0, 0, 0.5)"
+						onChangeText={(text) => setPresentation({ text })}
+						value={presentation}
+					/>
+				</View>
+				<View
+					style={{
+						flexDirection: "row",
+						marginHorizontal: 20,
+						width: "99%",
+						alignItems: "center",
+					}}
+				>
+					<SocialIcon iconSize={12} type="linkedin" />
+					<TextInput
+						mode="outlined"
+						label="LinkedIn page"
+						outlineColor="#F0F0F0"
+						style={styles.textinput2}
+						activeOutlineColor="#E74C3C"
+						placeholder="https://www.linkedin.com/in/..."
+						placeholderTextColor="rgba(0, 0, 0, 0.5)"
+						onChangeText={(text) => setPresentation({ text })}
+						value={presentation}
+					/>
 				</View>
 			</View>
 		</ScrollView>
@@ -168,9 +196,8 @@ var styles = StyleSheet.create({
 		flexDirection: "column",
 		alignSelf: "center",
 		marginBottom: 10,
-		marginTop: 10,
+		// marginTop: 10,
 		marginHorizontal: 20,
-
 	},
 	name: {
 		fontWeight: "bold",
@@ -235,5 +262,16 @@ var styles = StyleSheet.create({
 		fontSize: 10,
 		textAlign: "center",
 		textAlignVertical: "center",
+	},
+	textinput: {
+		// height: 140,
+		width: "100%",
+	},
+	textinput2: {
+		borderRadius: 5,
+		textAlignVertical: "top",
+		marginVertical: 10,
+		height: 40,
+		width: "89%",
 	},
 });
