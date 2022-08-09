@@ -29,9 +29,7 @@ function ProfileScreen(props) {
       const response = await fetch(
         `${IPLOCAL}/users/getUserDatas?userID=${props.alumniIDSearch}`
       );
-      //console.log("reponse", response);
       const dataJSON = await response.json();
-      //console.log("ça marche", dataJSON);
       setAlumniDatas(dataJSON.userDatas);
     };
     getAlumnisDatas();
@@ -88,6 +86,7 @@ function ProfileScreen(props) {
         }
       };
       sendDefaultMsg();
+      setMsgSent(null);
     }, [msgSent]);
 
   return (

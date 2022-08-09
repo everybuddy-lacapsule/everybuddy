@@ -3,8 +3,8 @@ import { TouchableOpacity, StyleSheet, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
 import { connect } from "react-redux";
+import { IPLOCAL } from "@env";
 
 import MapScreen from "../screens/MapScreen";
 import NewsScreen from "../screens/NewsScreen";
@@ -22,16 +22,27 @@ const hiddenTabs = ["Buddies", "MyProfile", "Chat", "ProfileScreen"];
 const TabsNavigator = function (props) {
 	const isLeftDrawerVisible = useDrawerStatus();
 	const [isLeftFocused, setIsLeftFocused] = useState("");
+	const [alumniDatas, setAlumniDatas] = useState({});
 
 	useEffect(() => {
 		if (isLeftDrawerVisible == "open") {
-			console.log("prout", isLeftDrawerVisible);
 			setIsLeftFocused(isLeftDrawerVisible);
 		} else {
 			setIsLeftFocused(isLeftDrawerVisible);
-			console.log("prout2", isLeftDrawerVisible);
 		}
 	}, [isLeftDrawerVisible]);
+
+	useEffect(() => {			
+		const getAlumnisDatas = async () => {
+		  const response = await fetch(
+			`${IPLOCAL}/users/getUserDatas?userID=${props.alumniIDSearch}`
+		  );
+		  const dataJSON = await response.json();
+		  setAlumniDatas(dataJSON.userDatas);
+		};
+		getAlumnisDatas();
+	  }, [props.alumniIDSearch]);
+
 
 	return (
 		<Tab.Navigator
@@ -150,6 +161,7 @@ const TabsNavigator = function (props) {
 				name="Chat"
 				component={ChatScreen}
 				options={{
+					title: `${alumniDatas.firstName} ${alumniDatas.name}`,
 					headerRight: () => <View style={styles.right}></View>,
 					unmountOnBlur: true,
 				}}
@@ -264,9 +276,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
 	return {
-		searchResults: state.searchResults,
-		userDatas: state.userDatas,
 		drawerStatus: state.drawerStatus,
+		alumniIDSearch: state.alumniIDSearch,
 	};
 };
 
