@@ -21,20 +21,28 @@ function OnBoardingStatus(props) {
 
   /*----------------Locals Stats => set datas = datas from DB----------------------*/
   const [statusDatasList, setStatusDatasList] = useState([]);
-  const [visible, setVisible] = useState(false)
-  const [errorMessage, setErrorMessage] = useState(false)
+  const [visible, setVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [workDatasList, setWorkDatasList] = useState([]);
   const [workTypeDatasList, setWorkTypeDatasList] = useState([]);
   const [tagsDatasList, setTagsDatasList] = useState([]);
-  const [areSelected, setAreSelected] = useState(false);
+  /*----------------Locals Stats => verify information of onboarding----------------------*/
   const [location, setLocation] = useState("");
+  const [addressValited, setAddressValited] = useState(false);
+  const [areSelected, setAreSelected] = useState(false);
+  /*--------------------Setting  Overlay----------------------*/
+
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
+
   const [userDatasInput, setUserDatas] = useState({
     address: null, // String
     status: "", // Array
     tags: [], // Array
     work: "", // Array
     workType: "", // Array
-    userID: "62ee83d7c569cba82e5d7f2e",
+    userID: props.userDatas._id,
   });
   /*----------------Function => get datas from DB----------------------*/
   const getDatasFromDB = async (typeDatas) => {
@@ -63,6 +71,26 @@ function OnBoardingStatus(props) {
       .catch((error) => console.log(error));
   }, []);
 
+  /*--------------VERIFY LOCATION ---------------*/
+  const handleVerifyLocation = async () => {
+    const res = await fetch(`${IPLOCAL}/users/userLocation`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `location=${location}`,
+    });
+    const resJSON = await res.json();
+    if (res) {
+      setAddressValited(true);
+      setUserDatas({ ...userDatasInput, address: resJSON.address });
+    } else {
+      setErrorMessage("Veuillez indiquer un lieu valide")
+      toggleOverlay();
+    }
+  };
+
+  console.log(userDatasInput);
+
+  /*--------------VERIFY INFORMATIONS ONBOARDING ---------------*/
   useEffect(() => {
     if (
       userDatasInput.address &&
@@ -77,16 +105,18 @@ function OnBoardingStatus(props) {
 
   /*--------------VALIDATION AND SAVE USER DATAS IN DB------------------*/
   const handleSubmitValid = async () => {
-    console.log(areSelected);
-    var res = await fetch(`${IPLOCAL}/users/userDatas`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(userDatasInput),
-    });
-    res = await res.json();
+    if (areSelected) {
+      var res = await fetch(`${IPLOCAL}/users/userDatas`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(location),
+      });
+      props.navigation.navigate("Home");
+    } else {
+      toggleOverlay();
+    }
   };
 
-  /*--------------VALIDATION AND SAVE USER DATAS IN DB------------------*/
   function addData(filter, value) {
     let userDatasInputCopy = { ...userDatasInput };
     userDatasInputCopy[filter] = value;
@@ -104,11 +134,6 @@ function OnBoardingStatus(props) {
     }
     setUserDatas(userDatasInputCopy);
   }
-
-  const toggleOverlay = () => {
-    setVisible(!visible);
-  };
-
 
   // PAGE POUR LES STATUTS
   var status = (
@@ -223,14 +248,16 @@ function OnBoardingStatus(props) {
           style={styles.searchBar}
           placeholder="Indique ta ville"
           onChangeText={(value) => setLocation(value)}
-        >
-        </TextInput>
-
+          onSubmitEditing={({ nativeEvent: { text, eventCount, target } }) =>
+            handleVerifyLocation()
+          }
+        ></TextInput>
         <FontAwesome
           style={styles.searchButton}
           name="search"
           size={20}
           color="#0e0e66"
+          onPress={() => handleVerifyLocation()}
         />
       </View>
       <TouchableOpacity
