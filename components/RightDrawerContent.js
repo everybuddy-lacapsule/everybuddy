@@ -18,6 +18,7 @@ import { IPLOCAL } from "@env";
 
 //* RIGHT DRAWER CONTENT
 function CustomRightDrawerContent(props) {
+  console.log(IPLOCAL)
   let colors = ["#FF1744", "#F94A56", "#7C4DFF"];
 
   // Etats du slider radius
