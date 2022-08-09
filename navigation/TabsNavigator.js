@@ -215,63 +215,63 @@ const TabsNavigator = function (props) {
 };
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "#fff",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-	searchBar: {
-		height: "100%",
-		width: "100%",
-		backgroundColor: "rgba(255, 255, 255, 0.5)",
-		color: "white",
-		borderTopLeftRadius: 50,
-		borderBottomLeftRadius: 50,
-		paddingLeft: 15,
-		paddingRight: 15,
-	},
-	headers: {
-		backgroundColor: "#0E0E66",
-		height: 56,
-	},
-	headerTitle: {
-		flexDirection: "row",
-		marginRight: 30,
-	},
-	searchButton: {
-		alignSelf: "baseline",
-		backgroundColor: "#E74C3C",
-		padding: 6,
-		borderRadius: 50,
-	},
-	searchButtonBackground: {
-		backgroundColor: "rgba(255, 255, 255, 0.5)",
-		borderTopRightRadius: 50,
-		borderBottomRightRadius: 50,
-	},
-	left: {
-		flex: 1,
-		justifyContent: "center",
-		alignItems: "center",
-		width: 64,
-	},
-	left2: {
-		backgroundColor: "white",
-		marginHorizontal: 20,
-		borderRadius: 5,
-	},
-	right: {
-		flex: 1,
-		justifyContent: "center",
-		alignItems: "center",
-		width: 64,
-	},
-	right2: {
-		backgroundColor: "white",
-		marginHorizontal: 20,
-		borderRadius: 5,
-	},
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  searchBar: {
+    height: "100%",
+    width: "100%",
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    color: "white",
+    borderTopLeftRadius: 50,
+    borderBottomLeftRadius: 50,
+    paddingLeft: 15,
+    paddingRight: 15,
+  },
+  headers: {
+    backgroundColor: "#0E0E66",
+    height: 56,
+  },
+  headerTitle: {
+    flexDirection: "row",
+    marginRight: 30,
+  },
+  searchButton: {
+    alignSelf: "baseline",
+    backgroundColor: "#E74C3C",
+    padding: 6,
+    borderRadius: 50,
+  },
+  searchButtonBackground: {
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    borderTopRightRadius: 50,
+    borderBottomRightRadius: 50,
+  },
+  left: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: 64,
+  },
+  left2: {
+    backgroundColor: "white",
+    marginHorizontal: 20,
+    borderRadius: 5,
+  },
+  right: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: 64,
+  },
+  right2: {
+    backgroundColor: "white",
+    marginHorizontal: 20,
+    borderRadius: 5,
+  },
 });
 
 const mapStateToProps = (state) => {
@@ -282,11 +282,11 @@ const mapStateToProps = (state) => {
 };
 
 function mapDispatchToProps(dispatch) {
-	return {
-		leftDrawerStatus: function (status) {
-			dispatch({ type: "leftDrawer status", leftDrawerStatus: status });
-		},
-	};
+  return {
+    leftDrawerStatus: function (status) {
+      dispatch({ type: "leftDrawer status", leftDrawerStatus: status });
+    },
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TabsNavigator);

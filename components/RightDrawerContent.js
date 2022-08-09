@@ -24,7 +24,7 @@ function CustomRightDrawerContent(props) {
   const [km, setKm] = useState(10);
   const [batch, setBatch] = useState("");
   const [location, setLocation] = useState("");
-  
+
 
   // Etats pour dérouler et afficher les différentes catégories
   const [expandedCapsule, setExpandedCapsule] = useState(false);

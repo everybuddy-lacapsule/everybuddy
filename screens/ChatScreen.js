@@ -21,8 +21,7 @@ import moment from 'moment/min/moment-with-locales';
 // change hook useIsFocused by option unmountOnBlur in the Chat Screen in TabsNavigator
 //import { useIsFocused } from "@react-navigation/native";
 
-// import { IPLOCAL } from "@env";
-const IPLOCAL = "http://172.16.189.144:3000"
+import { IPLOCAL } from "@env";
 
 /*----Web socket----*/
 import socketIOClient from "socket.io-client";
