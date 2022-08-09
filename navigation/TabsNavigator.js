@@ -16,6 +16,7 @@ import HeaderSearchBar from "../components/HeaderSearchBar";
 import ChatScreen from "../screens/ChatScreen";
 import { useDrawerStatus } from "@react-navigation/drawer";
 import editionMode from "../reducers/editionMode";
+import { IPLOCAL } from "@env";
 
 const Tab = createBottomTabNavigator();
 const hiddenTabs = ["Buddies", "MyProfile", "Chat", "ProfileScreen"];
@@ -37,6 +38,16 @@ const TabsNavigator = function (props) {
 			setIsLeftFocused(isLeftDrawerVisible);
 		};
 	}, [isLeftDrawerVisible]);
+	  /*--------------VALIDATION AND SAVE USER DATAS IN DB------------------*/
+  // A METTRE DANS LE HEADER CONCERNE
+  const updateProfileSumbit = async () => {
+    var res = await fetch(`${IPLOCAL}/users/updateProfile`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(props.userDatas),
+    });
+    res = await res.json();
+  };
 
 
 	return (
@@ -185,7 +196,7 @@ const TabsNavigator = function (props) {
 						<TouchableOpacity
 							style={styles.right}
 							//* enable profile modification mode
-							onPress={() => {console.log('toggle', editing);props.editionMode(!props.editingMode)}}
+							onPress={() => {console.log('toggle', editing);props.editionMode(!props.editingMode); updateProfileSumbit()}}
 						>
 							<Ionicons name="pencil" size={25} color="white" />
 						</TouchableOpacity>

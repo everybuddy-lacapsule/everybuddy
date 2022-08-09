@@ -6,6 +6,8 @@ import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 
 function ProfileContent(props) {
+	console.log(props.userData)
+
 	return (
 		<View style={styles.container}>
 			{/* //* Bloc info top */}
