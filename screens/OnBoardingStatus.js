@@ -102,6 +102,7 @@ function OnBoardingStatus(props) {
       setAreSelected(true);
     }
   }, [userDatasInput]);
+  console.log("areSelected", areSelected);
 
   /*--------------VALIDATION AND SAVE USER DATAS IN DB------------------*/
   const handleSubmitValid = async () => {
@@ -109,10 +110,11 @@ function OnBoardingStatus(props) {
       var res = await fetch(`${IPLOCAL}/users/userDatas`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(location),
+        body: JSON.stringify(userDatasInput),
       });
       props.navigation.navigate("Home");
     } else {
+      setErrorMessage("Veuillez valider tous les champs");
       toggleOverlay();
     }
   };
