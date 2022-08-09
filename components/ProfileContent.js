@@ -53,7 +53,7 @@ function ProfileContent(props) {
 				<Text style={styles.badge1}>{props.userData.status}</Text>
 			</View>
 			<ScrollView
-				style={{ marginHorizontal: 20, height:0 }}
+				style={{ marginHorizontal: 20, minHeight:90 }}
 				horizontal={true}
 				scrollbar
 				contentContainerStyle={styles.tags}
@@ -63,6 +63,12 @@ function ProfileContent(props) {
 					return (
 						<View style={styles.view3} key={i}>
 							<Text style={styles.badge2}>{tag}</Text>
+                            <Ionicons
+									name="close"
+									size={16}
+									color="#0E0E66"
+									style={{ width:0,marginTop: 2.5 }}
+								/>
 						</View>
 					);
 				})}

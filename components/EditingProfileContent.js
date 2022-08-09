@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	View,
 	StyleSheet,
@@ -8,12 +8,16 @@ import {
 	KeyboardAvoidingView,
 } from "react-native";
 import { TextInput } from "react-native-paper";
-import { Divider, SocialIcon, hollowWhite } from "@rneui/themed";
+import { Divider, SocialIcon, hollowWhite, SpeedDial } from "@rneui/themed";
 import { Avatar } from "@rneui/base";
 import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
+import { IPLOCAL } from "@env";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 function EditingProfileContent(props) {
+	const [open, setOpen] = React.useState(false);
+
 	const [userData, setUserData] = useState(props.userData);
 	const [presentation, setPresentation] = useState(props.userData.presentation);
 	const [searchCurrent, setSearchCurrent] = useState(
@@ -30,112 +34,183 @@ function EditingProfileContent(props) {
 	const [tagsDatasList, setTagsDatasList] = useState([]);
 	const [location, setLocation] = useState("");
 	const [userDatasInput, setUserDatasInput] = useState({
-	firstName:"",
-	name: "",
-	avatar: "",
-	presentation:"",
-	searchCurrent: "",
-	nbBatch :0,
-	campus : "",
-	cursus : "",
-	long:0,
-	lat:0,
-	city:"",
-	country: "",
-	work: "",
-	company: "",
-	typeWork: "",
-	linkedin: "",
-	github:"",
-	location: "", // String
-	status: "", // Array
-	tags: [], // Array
-	userID: "62ee83d7c569cba82e5d7f2e",
+		firstName: "",
+		name: "",
+		avatar: "",
+		presentation: "",
+		searchCurrent: "",
+		nbBatch: 0,
+		campus: "",
+		cursus: "",
+		long: 0,
+		lat: 0,
+		city: "",
+		country: "",
+		work: "",
+		company: "",
+		typeWork: "",
+		linkedin: "",
+		github: "",
+		location: "", // String
+		status: "", // Array
+		tags: [], // Array
+		userID: "62ee83d7c569cba82e5d7f2e",
 	});
 	/*----------------Function => get datas from DB----------------------*/
 	const getDatasFromDB = async (typeDatas) => {
-	const datas = await fetch(`${IPLOCAL}/datas/${typeDatas}`);
-	const datasJSON = await datas.json();
-	return datasJSON;
+		const datas = await fetch(`${IPLOCAL}/datas/${typeDatas}`);
+		const datasJSON = await datas.json();
+		return datasJSON;
 	};
 
 	/*--------------GET ALLS DATAS FROM DB ONCE TIME => FILL Statuses/Works/TypeWorks List------------------*/
 	useEffect(() => {
-	/*------------------------Statuses---------------------*/
-	getDatasFromDB("statuses")
-		.then((response) => setStatusDatasList(response))
-		.catch((error) => console.log(error));
-	/*----------------------Works or jobs--------------------*/
-	getDatasFromDB("jobs")
-		.then((response) => setWorkDatasList(response))
-		.catch((error) => console.log(error));
-	/*----------------------WorkType--------------------*/
-	getDatasFromDB("typeJobs")
-		.then((response) => setWorkTypeDatasList(response))
-		.catch((error) => console.log(error));
-	/*----------------------Tags--------------------*/
-	getDatasFromDB("tags")
-		.then((response) => setTagsDatasList(response))
-		.catch((error) => console.log(error));
+		/*------------------------Statuses---------------------*/
+		getDatasFromDB("statuses")
+			.then((response) => setStatusDatasList(response))
+			.catch((error) => console.log(error));
+		/*----------------------Works or jobs--------------------*/
+		getDatasFromDB("jobs")
+			.then((response) => setWorkDatasList(response))
+			.catch((error) => console.log(error));
+		/*----------------------WorkType--------------------*/
+		getDatasFromDB("typeJobs")
+			.then((response) => setWorkTypeDatasList(response))
+			.catch((error) => console.log(error));
+		/*----------------------Tags--------------------*/
+		getDatasFromDB("tags")
+			.then((response) => setTagsDatasList(response))
+			.catch((error) => console.log(error));
 	}, []);
 
 	/*--------------VALIDATION AND SAVE USER DATAS IN DB------------------*/
 	const handleSubmitValid = async () => {
-	var res = await fetch(`${IPLOCAL}/users/updateProfile`, {
-		method: "POST",
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify(userDatasInput),
-	});
-	res = await res.json();
+		var res = await fetch(`${IPLOCAL}/users/updateProfile`, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(userDatasInput),
+		});
+		res = await res.json();
 	};
-	
+
 	return (
+		<View style={styles.container}>
 		<ScrollView style={styles.container}>
-			<View style={styles.content}>
-				<View style={styles.avatar}>
-					<Avatar rounded size={150} source={{ uri: props.userData.avatar }} />
-				</View>
-				<View style={styles.view1}>
-					{/* Nom Prénom */}
-					<Text style={styles.name}>
-						{props.userData.firstName} {props.userData.name}
-					</Text>
-					{/* TypeJob + Job + Entreprise */}
-					<Text style={{ color: "#E74C3C", fontWeight: "bold", fontSize: 14 }}>
-						{props.userData.work.typeWork}
-					</Text>
-					<Text style={styles.text1}>
-						{props.userData.work.work}
-						{"\n"}
-						<Text style={{ color: "#0E0E66", fontWeight: "bold" }}>
-							@ {props.userData.work.company}
-						</Text>
-						{"\n"}
-						{"\n"}
-						{/* Cursus */}
-						Batch #{props.userData.capsule.nbBatch}{" "}
-						{props.userData.capsule.campus}
-						{"\n"}
-						{props.userData.capsule.cursus}
-					</Text>
-				</View>
+			<View style={styles.avatar}>
+				<Avatar rounded size={150} source={{ uri: props.userData.avatar }} />
 			</View>
-			<View
-				style={[
-					{
-						flexDirection: "row",
-						alignItems: "flex-start",
-						justifyContent: "space-between",
-						marginHorizontal: 20,
-					},
-				]}
-			>
-				{/* Localisation actuelle */}
-				<Text style={{ textAlignVertical: "center", alignSelf: "center" }}>
-					{props.userData.address.city}, {props.userData.address.country}
-				</Text>
-				{/* Statut : OpenToWork/ Just Curious / Partner / Hiring */}
-				<Text style={styles.badge1}>{props.userData.status}</Text>
+			<View style={{ marginHorizontal: 20 }}>
+				<TextInput
+					mode="outlined"
+					label="Prénom"
+					outlineColor="#F0F0F0"
+					style={[styles.textinput3, { textAlignVertical: "top" }]}
+					activeOutlineColor="#E74C3C"
+					placeholderTextColor="rgba(0, 0, 0, 0.5)"
+					editable={true}
+					onChangeText={(text) => setSearchCurrent({ text })}
+				/>
+				<TextInput
+					mode="outlined"
+					label="Nom"
+					outlineColor="#F0F0F0"
+					style={[styles.textinput3, { textAlignVertical: "top" }]}
+					activeOutlineColor="#E74C3C"
+					placeholderTextColor="rgba(0, 0, 0, 0.5)"
+					editable={true}
+					onChangeText={(text) => setSearchCurrent({ text })}
+				/>
+				{/* FAIRE UNE PUTAIN DE MODALE */}
+				<TouchableOpacity style={styles.modalbutton}>
+					<Text style={styles.modalText}>#STATUT</Text>
+				</TouchableOpacity>
+				<TextInput
+					mode="outlined"
+					label="Poste"
+					outlineColor="#F0F0F0"
+					style={[styles.textinput3, { textAlignVertical: "top" }]}
+					activeOutlineColor="#E74C3C"
+					placeholderTextColor="rgba(0, 0, 0, 0.5)"
+					editable={true}
+					onChangeText={(text) => setSearchCurrent({ text })}
+				/>
+				<TextInput
+					mode="outlined"
+					label="Entreprise"
+					outlineColor="#F0F0F0"
+					style={[styles.textinput3, { textAlignVertical: "top" }]}
+					activeOutlineColor="#E74C3C"
+					placeholderTextColor="rgba(0, 0, 0, 0.5)"
+					editable={true}
+					onChangeText={(text) => setSearchCurrent({ text })}
+				/>
+								<View
+					style={[
+						{
+							flexDirection: "row",
+							justifyContent: "space-between",
+							alignItems: "center",
+						},
+					]}
+				>
+				<TextInput
+					mode="outlined"
+					label="Batch#"
+					keyboardType="numeric"
+					outlineColor="#F0F0F0"
+					style={[styles.textinput4, { textAlignVertical: "top" }]}
+					activeOutlineColor="#E74C3C"
+					placeholderTextColor="rgba(0, 0, 0, 0.5)"
+					editable={true}
+					onChangeText={(text) => setSearchCurrent({ text })}
+				/>
+					<TouchableOpacity style={[styles.modalbutton, { marginTop: 15 }]}>
+						<Text
+							style={[styles.modalText,{marginHorizontal:"16%"}]}
+						>
+						CAMPUS
+						</Text>
+					</TouchableOpacity>
+				</View>
+				<TextInput
+					mode="outlined"
+					label="Cursus"
+					outlineColor="#F0F0F0"
+					style={[styles.textinput3, { textAlignVertical: "top" }]}
+					activeOutlineColor="#E74C3C"
+					placeholderTextColor="rgba(0, 0, 0, 0.5)"
+					editable={true}
+					onChangeText={(text) => setSearchCurrent({ text })}
+				/>
+				<View
+					style={[
+						{
+							flexDirection: "row",
+							justifyContent: "space-between",
+							alignItems: "center",
+						},
+					]}
+				>
+					{/* Localisation actuelle */}
+					<TextInput
+						mode="outlined"
+						label="Ville"
+						outlineColor="#F0F0F0"
+						style={styles.textinput4}
+						activeOutlineColor="#E74C3C"
+						placeholderTextColor="rgba(0, 0, 0, 0.5)"
+						editable={true}
+						onChangeText={(text) => setSearchCurrent({ text })}
+					/>
+					{/* Statut : OpenToWork/ Just Curious / Partner / Hiring */}
+					<TouchableOpacity style={[styles.modalbutton, { marginTop: 15 }]}>
+						<Text
+							style={styles.modalText}
+						>
+							STATUT PRO
+						</Text>
+					</TouchableOpacity>
+				</View>
 			</View>
 			<KeyboardAvoidingView style={{ marginVertical: 5 }}>
 				<ScrollView
@@ -144,13 +219,6 @@ function EditingProfileContent(props) {
 					scrollbar
 					contentContainerStyle={styles.tags}
 				>
-					<Ionicons
-						name="add-circle"
-						size={40}
-						color="#E74C3C"
-						style={{ marginTop: 2.5 }}
-					/>
-
 					{/* Tags et compétences */}
 					{props.userData.tags.map((tag, i) => {
 						return (
@@ -163,6 +231,7 @@ function EditingProfileContent(props) {
 									style={{ marginTop: 2.5 }}
 								/>
 							</View>
+							
 						);
 					})}
 				</ScrollView>
@@ -219,6 +288,7 @@ function EditingProfileContent(props) {
 							Linking.openURL("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
 						}}
 						type="github"
+						style={{ marginTop: 14 }}
 					/>
 					<TextInput
 						mode="outlined"
@@ -240,7 +310,7 @@ function EditingProfileContent(props) {
 						alignItems: "center",
 					}}
 				>
-					<SocialIcon iconSize={12} type="linkedin" />
+					<SocialIcon iconSize={12} type="linkedin" style={{ marginTop: 14 }} />
 					<TextInput
 						mode="outlined"
 						label="LinkedIn page"
@@ -255,6 +325,26 @@ function EditingProfileContent(props) {
 				</View>
 			</View>
 		</ScrollView>
+		{/* <SpeedDial
+    isOpen={open}
+	buttonStyle={{backgroundColor: "#E74C3C", width:40, height:40, padding:0, alignSelf: "center"}}
+    icon={<Ionicons name="add" size={22} color="#fff" style={{ alignSelf: "center"}}/>}
+    openIcon={{ name: 'close', color: '#fff' }}
+    onOpen={() => setOpen(!open)}
+    onClose={() => setOpen(!open)}
+  >
+    <SpeedDial.Action
+      icon={{ name: 'add', color: '#fff' }}
+      title="Add"
+      onPress={() => console.log('Add Something')}
+    />
+    <SpeedDial.Action
+      icon={{ name: 'delete', color: '#fff' }}
+      title="Delete"
+      onPress={() => console.log('Delete Something')}
+    />
+  </SpeedDial> */}
+		</View>
 	);
 }
 
@@ -294,7 +384,7 @@ var styles = StyleSheet.create({
 	},
 	avatar: {
 		size: 100,
-		alignSelf: "flex-start",
+		alignSelf: "center",
 		marginTop: 15,
 	},
 	view1: {
@@ -320,6 +410,7 @@ var styles = StyleSheet.create({
 	text1: {
 		fontSize: 14,
 		marginBottom: 5,
+		flexDirection: "column",
 	},
 	text2: {
 		fontSize: 14,
@@ -349,4 +440,41 @@ var styles = StyleSheet.create({
 		textAlign: "center",
 		textAlignVertical: "center",
 	},
+	textinput: {
+		backgroundColor: "white",
+		// height: 140,
+		width: "100%",
+	},
+	textinput2: {
+		backgroundColor: "white",
+		borderRadius: 5,
+		textAlignVertical: "top",
+		marginVertical: 10,
+		height: 40,
+		width: "89%",
+	},
+	textinput3: {
+		backgroundColor: "white",
+		marginVertical: 10,
+		height: 40,
+		width: "100%",
+	},
+	textinput4: {
+		backgroundColor: "white",
+		borderRadius: 5,
+		marginVertical: 10,
+		height: 40,
+		width: "48%",
+	},
+	modalbutton: {
+		backgroundColor: "#E74C3C",
+		height: 40,
+		width: "100%",
+		justifyContent: "center",
+		alignItems: "center",
+		fontSize: 14,
+		borderRadius: 50,
+		marginVertical: 10,
+	},
+	modalText: { fontWeight: "bold", color: "white", marginHorizontal: "12%" },
 });
