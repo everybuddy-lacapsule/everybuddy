@@ -14,7 +14,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { Badge } from "@rneui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 
-const IPLOCAL = "http://192.168.0.149:3000";
+const IPLOCAL = "http://172.16.188.131:3000";
 
 function OnBoardingStatus(props) {
   const [page, setPage] = useState(1);
@@ -24,11 +24,17 @@ function OnBoardingStatus(props) {
   const [workDatasList, setWorkDatasList] = useState([]);
   const [workTypeDatasList, setWorkTypeDatasList] = useState([]);
   const [tagsDatasList, setTagsDatasList] = useState([]);
-
+  /*----------------Locals Stats => verify information of onboarding----------------------*/
   const [location, setLocation] = useState("");
+  const [addressValited, setAddressValited] = useState(false);
+  const [areSelected, setAreSelected] = useState(false);
+  /*--------------------Setting  Overlay----------------------*/
+  const toggleOverlayLocation = () => {
+    setVisible(!visible);
+  };
 
   const [userDatasInput, setUserDatas] = useState({
-    location: "", // String
+    address: null,
     status: "", // Array
     tags: [], // Array
     work: "", // Array
@@ -62,58 +68,34 @@ function OnBoardingStatus(props) {
       .catch((error) => console.log(error));
   }, []);
 
-  /*--------------VALIDATION AND SAVE USER DATAS IN DB------------------*/
-  const handleSubmitValid = async () => {
-    var res = await fetch(`${IPLOCAL}/users/userDatas`, {
-      method: "PUT",
+  /*--------------VERIFY LOCATION ---------------*/
+  const handleVerifyLocation = async () => {
+    const res = await fetch(`${IPLOCAL}/users/userLocation`, {
+      method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(userDatasInput),
+      body: JSON.stringify(address),
     });
-    res = await res.json();
+    if (res) {
+      setAddressValited(true);
+      setUserDatas({ ...userDatasInput, address: address });
+    } else {
+      toggleOverlayLocation();
+    }
   };
 
-  /*
-  const statusDatasList = [
-    "#OPEN TO WORK",
-    "#HIRING",
-    "#PARTNER",
-    "#JUST CURIOUS",
-  ];
-  
-  const workDatasList = [
-    "Développeur",
-    "Product Owner",
-    "Data Scientist",
-    "DevOps",
-    "Scrum Master",
-  ];
-  const workTypeDatasList = [
-    "Entrepreneur",
-    "En contrat",
-    "Freelance",
-    "En recherche",
-  ];
-
-  const tagsDatasList = [
-    "Frontend",
-    "Backend",
-    "Fullstack",
-    "JavaScript",
-    "AngularJS",
-    "ReactJS",
-    "VueJS",
-    "TypeScript",
-    "ReactNative",
-    "Swift",
-    "Kotlin",
-    "Flutter",
-    "BDD",
-    "API",
-    "Java",
-    "Python",
-    "PHP",
-  ];
-  */
+  /*--------------VALIDATION AND SAVE USER DATAS IN DB------------------*/
+  const handleSubmitValid = async () => {
+    if (areSelected) {
+      var res = await fetch(`${IPLOCAL}/users/userDatas`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(location),
+      });
+      res = await res.json();
+    } else {
+      toggleOverlay();
+    }
+  };
 
   function addData(filter, value) {
     let userDatasInputCopy = { ...userDatasInput };
@@ -249,15 +231,16 @@ function OnBoardingStatus(props) {
           style={styles.searchBar}
           placeholder="Indique ta ville"
           onChangeText={(value) => setLocation(value)}
-          //   onSubmitEditing={({ nativeEvent: { text, eventCount, target } }) =>
-          //     loadSearchResults()
-          //   }
+          onSubmitEditing={({ nativeEvent: { text, eventCount, target } }) =>
+          handleVerifyLocation()
+          }
         ></TextInput>
         <FontAwesome
           style={styles.searchButton}
           name="search"
           size={16}
           color="#0e0e66"
+          onPress={() => handleVerifyLocation()}
         />
       </View>
       <TouchableOpacity
