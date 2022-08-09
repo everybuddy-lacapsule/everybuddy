@@ -18,14 +18,19 @@ import { IPLOCAL } from "@env";
 function EditingProfileContent(props) {
 	const [userData, setUserData] = useState(props.userData);
 	const [presentation, setPresentation] = useState(props.userData.presentation);
+	const [searchCurrent, setSearchCurrent] = useState(
+		props.userData.searchCurrent
+	);
+	const [githubLink, setGitHubLink] = useState(props.userData.searchCurrent);
+	const [LinkedInLink, setLinkedInLink] = useState(
+		props.userData.searchCurrent
+	);
 	/*----------------Locals Stats => set datas = datas from DB----------------------*/
 	const [statusDatasList, setStatusDatasList] = useState([]);
 	const [workDatasList, setWorkDatasList] = useState([]);
 	const [workTypeDatasList, setWorkTypeDatasList] = useState([]);
 	const [tagsDatasList, setTagsDatasList] = useState([]);
-
 	const [location, setLocation] = useState("");
-	console.log(props.userData)
 	const [userDatasInput, setUserDatasInput] = useState({
 	firstName:"",
 	name: "",
@@ -90,35 +95,53 @@ function EditingProfileContent(props) {
 		<ScrollView style={styles.container}>
 			<View style={styles.content}>
 				<View style={styles.avatar}>
-					<Avatar rounded size={142} source={{ uri: props.userData.avatar }} />
+					<Avatar rounded size={150} source={{ uri: props.userData.avatar }} />
 				</View>
 				<View style={styles.view1}>
 					{/* Nom Prénom */}
 					<Text style={styles.name}>
 						{props.userData.firstName} {props.userData.name}
 					</Text>
-					{/* Cursus */}
+					{/* TypeJob + Job + Entreprise */}
+					<Text style={{ color: "#E74C3C", fontWeight: "bold", fontSize: 14 }}>
+						{props.userData.work.typeWork}
+					</Text>
 					<Text style={styles.text1}>
-						Batch {props.userData.capsule.nbBatch}{" "}
+						{props.userData.work.work}
+						{"\n"}
+						<Text style={{ color: "#0E0E66", fontWeight: "bold" }}>
+							@ {props.userData.work.company}
+						</Text>
+						{"\n"}
+						{"\n"}
+						{/* Cursus */}
+						Batch #{props.userData.capsule.nbBatch}{" "}
 						{props.userData.capsule.campus}
+						{"\n"}
+						{props.userData.capsule.cursus}
 					</Text>
-					{/* Job + Entreprise */}
-					<Text style={styles.text1}>
-						{props.userData.work.work} @ {props.userData.work.company}
-					</Text>
-					{/* Statut : OpenToWork/ Just Curious / Partner / Hiring */}
-					<Text style={styles.badge1}>{props.userData.status}</Text>
 				</View>
 			</View>
-			<View style={styles.view1}>
+			<View
+				style={[
+					{
+						flexDirection: "row",
+						alignItems: "flex-start",
+						justifyContent: "space-between",
+						marginHorizontal: 20,
+					},
+				]}
+			>
 				{/* Localisation actuelle */}
-				<Text style={styles.text2}>
-					{props.userData.address.city} {props.userData.address.country}
+				<Text style={{ textAlignVertical: "center", alignSelf: "center" }}>
+					{props.userData.address.city}, {props.userData.address.country}
 				</Text>
+				{/* Statut : OpenToWork/ Just Curious / Partner / Hiring */}
+				<Text style={styles.badge1}>{props.userData.status}</Text>
 			</View>
 			<KeyboardAvoidingView style={{ marginVertical: 5 }}>
 				<ScrollView
-					style={{ marginHorizontal: 20 }}
+					style={{ marginHorizontal: 20, minHeight: 110 }}
 					horizontal={true}
 					scrollbar
 					contentContainerStyle={styles.tags}
@@ -154,13 +177,12 @@ function EditingProfileContent(props) {
 					outlineColor="#F0F0F0"
 					style={[styles.textinput, { textAlignVertical: "top" }]}
 					activeOutlineColor="#E74C3C"
-					placeholder={props.userData.searchCurrent}
 					placeholderTextColor="rgba(0, 0, 0, 0.5)"
 					multiline={true}
 					editable={true}
 					numberOfLines={4}
-					onChangeText={(text) => setPresentation({ text })}
-					value={presentation}
+					onChangeText={(text) => setSearchCurrent({ text })}
+					value={searchCurrent}
 				/>
 				<Text style={styles.title}>PRÉSENTATION</Text>
 				<TextInput
@@ -169,7 +191,6 @@ function EditingProfileContent(props) {
 					outlineColor="#F0F0F0"
 					style={styles.textinput}
 					activeOutlineColor="#E74C3C"
-					placeholder={props.userData.presentation}
 					placeholderTextColor="rgba(0, 0, 0, 0.5)"
 					multiline={true}
 					numberOfLines={4}
@@ -271,7 +292,6 @@ var styles = StyleSheet.create({
 	name: {
 		fontWeight: "bold",
 		fontSize: 22,
-		marginBottom: 10,
 		marginTop: 20,
 	},
 	avatar: {
@@ -286,7 +306,7 @@ var styles = StyleSheet.create({
 	},
 	view2: {
 		justifyContent: "space-between",
-		margin: 20,
+		marginHorizontal: 20,
 	},
 	view3: {
 		flexDirection: "row",
@@ -300,21 +320,21 @@ var styles = StyleSheet.create({
 		marginVertical: 2.5,
 	},
 	text1: {
-		fontSize: 16,
+		fontSize: 14,
 		marginBottom: 5,
 	},
 	text2: {
-		fontSize: 15,
+		fontSize: 14,
 		marginBottom: 15,
-		textAlign: "justify",
+		textAlign: "left",
 	},
 	title: {
-		fontSize: 18,
+		fontSize: 16,
 		fontWeight: "bold",
 		marginBottom: 5,
 	},
 	badge1: {
-		marginRight: 10,
+		width: "55%",
 		backgroundColor: "#0E0E66",
 		color: "white",
 		fontSize: 18,
@@ -322,25 +342,13 @@ var styles = StyleSheet.create({
 		borderRadius: 50,
 		borderWidth: 1.2,
 		textAlign: "center",
-		paddingTop: 2,
+		padding: 2,
 	},
 	badge2: {
-		marginLeft: 5,
 		fontWeight: "bold",
 		color: "#0E0E66",
 		fontSize: 10,
 		textAlign: "center",
 		textAlignVertical: "center",
-	},
-	textinput: {
-		// height: 140,
-		width: "100%",
-	},
-	textinput2: {
-		borderRadius: 5,
-		textAlignVertical: "top",
-		marginVertical: 10,
-		height: 40,
-		width: "89%",
 	},
 });
