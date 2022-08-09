@@ -14,7 +14,7 @@ import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 
 function EditingProfileContent(props) {
-	const [userData, setUseData] = useState(props.userData);
+	const [userData, setUserData] = useState(props.userData);
 	const [presentation, setPresentation] = useState(props.userData.presentation);
 	const [searchCurrent, setSearchCurrent] = useState(
 		props.userData.searchCurrent
@@ -23,7 +23,72 @@ function EditingProfileContent(props) {
 	const [LinkedInLink, setLinkedInLink] = useState(
 		props.userData.searchCurrent
 	);
-	console.log("caca", userData);
+	/*----------------Locals Stats => set datas = datas from DB----------------------*/
+	const [statusDatasList, setStatusDatasList] = useState([]);
+	const [workDatasList, setWorkDatasList] = useState([]);
+	const [workTypeDatasList, setWorkTypeDatasList] = useState([]);
+	const [tagsDatasList, setTagsDatasList] = useState([]);
+	const [location, setLocation] = useState("");
+	const [userDatasInput, setUserDatasInput] = useState({
+	firstName:"",
+	name: "",
+	avatar: "",
+	presentation:"",
+	searchCurrent: "",
+	nbBatch :0,
+	campus : "",
+	cursus : "",
+	long:0,
+	lat:0,
+	city:"",
+	country: "",
+	work: "",
+	company: "",
+	typeWork: "",
+	linkedin: "",
+	github:"",
+	location: "", // String
+	status: "", // Array
+	tags: [], // Array
+	userID: "62ee83d7c569cba82e5d7f2e",
+	});
+	/*----------------Function => get datas from DB----------------------*/
+	const getDatasFromDB = async (typeDatas) => {
+	const datas = await fetch(`${IPLOCAL}/datas/${typeDatas}`);
+	const datasJSON = await datas.json();
+	return datasJSON;
+	};
+
+	/*--------------GET ALLS DATAS FROM DB ONCE TIME => FILL Statuses/Works/TypeWorks List------------------*/
+	useEffect(() => {
+	/*------------------------Statuses---------------------*/
+	getDatasFromDB("statuses")
+		.then((response) => setStatusDatasList(response))
+		.catch((error) => console.log(error));
+	/*----------------------Works or jobs--------------------*/
+	getDatasFromDB("jobs")
+		.then((response) => setWorkDatasList(response))
+		.catch((error) => console.log(error));
+	/*----------------------WorkType--------------------*/
+	getDatasFromDB("typeJobs")
+		.then((response) => setWorkTypeDatasList(response))
+		.catch((error) => console.log(error));
+	/*----------------------Tags--------------------*/
+	getDatasFromDB("tags")
+		.then((response) => setTagsDatasList(response))
+		.catch((error) => console.log(error));
+	}, []);
+
+	/*--------------VALIDATION AND SAVE USER DATAS IN DB------------------*/
+	const handleSubmitValid = async () => {
+	var res = await fetch(`${IPLOCAL}/users/updateProfile`, {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify(userDatasInput),
+	});
+	res = await res.json();
+	};
+	
 	return (
 		<ScrollView style={styles.container}>
 			<View style={styles.content}>
