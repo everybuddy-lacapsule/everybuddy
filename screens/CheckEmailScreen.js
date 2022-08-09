@@ -9,7 +9,9 @@ import {
 } from "react-native";
 import { Overlay, Input } from "@rneui/themed";
 
-import {IPLOCAL} from "@env"
+// import {IPLOCAL} from "@env"
+const IPLOCAL = "http://172.16.189.144:3000";
+
 
 function CheckEmailScreen(props) {
   const [visible, setVisible] = useState(false);

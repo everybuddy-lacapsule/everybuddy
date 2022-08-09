@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { CheckBox } from "@rneui/base";
 import { AntDesign, Octicons } from "@expo/vector-icons";
-import { Badge } from "@rneui/themed";
+import { Badge, Overlay } from "@rneui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 
 const IPLOCAL = "http://172.16.190.135:3000";
@@ -21,14 +21,15 @@ function OnBoardingStatus(props) {
 
   /*----------------Locals Stats => set datas = datas from DB----------------------*/
   const [statusDatasList, setStatusDatasList] = useState([]);
+  const [visible, setVisible] = useState(false)
+  const [errorMessage, setErrorMessage] = useState(false)
   const [workDatasList, setWorkDatasList] = useState([]);
   const [workTypeDatasList, setWorkTypeDatasList] = useState([]);
   const [tagsDatasList, setTagsDatasList] = useState([]);
-
+  const [areSelected, setAreSelected] = useState(false);
   const [location, setLocation] = useState("");
-
   const [userDatasInput, setUserDatas] = useState({
-    location: "", // String
+    address: null, // String
     status: "", // Array
     tags: [], // Array
     work: "", // Array
@@ -62,8 +63,21 @@ function OnBoardingStatus(props) {
       .catch((error) => console.log(error));
   }, []);
 
+  useEffect(() => {
+    if (
+      userDatasInput.address &&
+      userDatasInput.status &&
+      userDatasInput.work &&
+      userDatasInput.workType &&
+      userDatasInput.tags.length > 0
+    ) {
+      setAreSelected(true);
+    }
+  }, [userDatasInput]);
+
   /*--------------VALIDATION AND SAVE USER DATAS IN DB------------------*/
   const handleSubmitValid = async () => {
+    console.log(areSelected);
     var res = await fetch(`${IPLOCAL}/users/userDatas`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -72,56 +86,14 @@ function OnBoardingStatus(props) {
     res = await res.json();
   };
 
-  /*
-  const statusDatasList = [
-    "#OPEN TO WORK",
-    "#HIRING",
-    "#PARTNER",
-    "#JUST CURIOUS",
-  ];
-  
-  const workDatasList = [
-    "Développeur",
-    "Product Owner",
-    "Data Scientist",
-    "DevOps",
-    "Scrum Master",
-  ];
-  const workTypeDatasList = [
-    "Entrepreneur",
-    "En contrat",
-    "Freelance",
-    "En recherche",
-  ];
-
-  const tagsDatasList = [
-    "Frontend",
-    "Backend",
-    "Fullstack",
-    "JavaScript",
-    "AngularJS",
-    "ReactJS",
-    "VueJS",
-    "TypeScript",
-    "ReactNative",
-    "Swift",
-    "Kotlin",
-    "Flutter",
-    "BDD",
-    "API",
-    "Java",
-    "Python",
-    "PHP",
-  ];
-  */
-
+  /*--------------VALIDATION AND SAVE USER DATAS IN DB------------------*/
   function addData(filter, value) {
     let userDatasInputCopy = { ...userDatasInput };
     userDatasInputCopy[filter] = value;
     setUserDatas(userDatasInputCopy);
   }
 
-  function addFilters(filter, value) {
+  function addTags(filter, value) {
     let userDatasInputCopy = { ...userDatasInput };
     if (!userDatasInputCopy[filter].find((e) => e === value)) {
       userDatasInputCopy[filter] = [...userDatasInputCopy[filter], value];
@@ -133,9 +105,13 @@ function OnBoardingStatus(props) {
     setUserDatas(userDatasInputCopy);
   }
 
-  useEffect(() => {
-    setUserDatas({ ...userDatasInput, location: location });
-  }, [location]);
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
+
+  // useEffect(() => {
+  //   setUserDatas({ ...userDatasInput, location: location });
+  // }, [location]);
 
   //console.log(userDatasInput);
   //console.log("numéro", page);
@@ -231,7 +207,7 @@ function OnBoardingStatus(props) {
             <Badge
               key={i}
               value={tag}
-              onPress={() => addFilters("tags", tag)}
+              onPress={() => addTags("tags", tag)}
               containerStyle={{ margin: 5 }}
               status={status}
               textStyle={{ color: color, fontSize: 16 }}
@@ -324,10 +300,14 @@ function OnBoardingStatus(props) {
       style={styles.container}
       source={require("../assets/back.png")}
     >
-      <View style={styles.content}>
-        {content}
-        </View>
-
+      <Overlay
+        overlayStyle={{ width: 300 }}
+        isVisible={visible}
+        onBackdropPress={toggleOverlay}
+      >
+        <Text>{errorMessage}</Text>
+      </Overlay>
+      <View style={styles.content}>{content}</View>
       <View style={styles.bottom}>
       <TouchableOpacity>
         <AntDesign

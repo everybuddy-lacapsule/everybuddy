@@ -9,7 +9,8 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connect } from "react-redux";
 
-import {IPLOCAL} from "@env"
+// import {IPLOCAL} from "@env"
+const IPLOCAL = "http://172.16.189.144:3000";
 
 
 function SplashScreen(props) {
@@ -28,9 +29,9 @@ function SplashScreen(props) {
 
   var handleStart = async () => {
     if (props.userDatas) {
-      props.navigation.navigate("OnboardingScreenInfo");
+      props.navigation.navigate("Home");
     } else {
-      props.navigation.navigate("OnboardingScreenInfo");
+      props.navigation.navigate("LoginScreen");
     }
   };
 
