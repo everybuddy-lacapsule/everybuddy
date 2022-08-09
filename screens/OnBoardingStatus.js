@@ -80,8 +80,20 @@ function OnBoardingStatus(props) {
     });
     const resJSON = await res.json();
     if (resJSON.success) {
+      console.log(resJSON.address.city);
+      props.setOnboardingSearch({
+        // search :true is used to display the radius circle after first search, even with no results
+        search: false,
+        searchResults: resJSON.users,
+        searchLocation: {
+          long: resJSON.address.long,
+          lat: resJSON.address.lat
+        },
+      });
+
       setAddressValited(true);
       setUserDatas({ ...userDatasInput, address: resJSON.address });
+      console.log(resJSON.address);
       /*
       props.getAddress({
         search: false,
@@ -89,7 +101,7 @@ function OnBoardingStatus(props) {
           long: resJSON.address.long,
           lat: resJSON.address.lat,
         },
-        searchResults: [],
+        searchResults: [props.userDatas],
       });
       */
     } else {
@@ -442,4 +454,12 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(OnBoardingStatus);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setOnboardingSearch: function (resultsOnboarding) {
+      dispatch({ type: "onboardingSearch", resultsOnboarding: resultsOnboarding });
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(OnBoardingStatus);

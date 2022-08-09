@@ -10,7 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connect } from "react-redux";
 
 // import {IPLOCAL} from "@env"
-const IPLOCAL = "http://172.16.190.135:3000";
+const IPLOCAL = "http://172.16.188.131:3000";
 
 
 function SplashScreen(props) {

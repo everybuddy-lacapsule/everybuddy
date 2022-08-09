@@ -3,7 +3,8 @@ import {StyleSheet, View, ScrollView} from "react-native";
 import { connect } from "react-redux";
 import Discussion from "../components/DiscussionComponent";
 
-import {IPLOCAL} from "@env"
+//import {IPLOCAL} from "@env"
+const IPLOCAL = "http://172.16.188.131:3000";
 
 //import socketIOClient from "socket.io-client";
 import { useEffect, useState } from "react";

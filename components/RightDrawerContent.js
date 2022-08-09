@@ -14,7 +14,8 @@ import { ListItemAccordion } from "@rneui/base/dist/ListItem/ListItem.Accordion"
 import { FontAwesome } from "@expo/vector-icons";
 
 import { connect } from "react-redux";
-import { IPLOCAL } from "@env";
+//import { IPLOCAL } from "@env";
+const IPLOCAL = "http://172.16.188.131:3000";
 
 //* RIGHT DRAWER CONTENT
 function CustomRightDrawerContent(props) {
