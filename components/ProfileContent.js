@@ -8,37 +8,52 @@ import { Ionicons } from "@expo/vector-icons";
 function ProfileContent(props) {
 	return (
 		<View style={styles.container}>
-            {/* //* Bloc info top */}
+			{/* //* Bloc info top */}
 			<View style={styles.content}>
 				<View style={styles.avatar}>
-					<Avatar rounded size={142} source={{ uri: props.userData.avatar }} />
+					<Avatar rounded size={150} source={{ uri: props.userData.avatar }} />
 				</View>
 				<View style={styles.view1}>
 					{/* Nom Prénom */}
 					<Text style={styles.name}>
 						{props.userData.firstName} {props.userData.name}
 					</Text>
-					{/* Cursus */}
+					{/* TypeJob + Job + Entreprise */}
+                    <Text style={{color:'#E74C3C', fontWeight:'bold', fontSize:14}}>
+						{props.userData.work.typeWork}
+					</Text>
 					<Text style={styles.text1}>
-						Batch {props.userData.capsule.nbBatch}{" "}
+						{props.userData.work.work}
+						{"\n"}<Text style={{color:'#0E0E66',fontWeight:'bold'}}>@ {props.userData.work.company}</Text>
+						{"\n"}
+						{"\n"}
+						{/* Cursus */}
+						Batch #{props.userData.capsule.nbBatch}{" "}
 						{props.userData.capsule.campus}
+						{"\n"}
+						{props.userData.capsule.cursus}
 					</Text>
-					{/* Job + Entreprise */}
-					<Text style={styles.text1}>
-						{props.userData.work.work} @ {props.userData.work.company}
-					</Text>
-					{/* Statut : OpenToWork/ Just Curious / Partner / Hiring */}
-					<Text style={styles.badge1}>{props.userData.status}</Text>
 				</View>
 			</View>
-			<View style={styles.view1}>
+			<View
+				style={[
+					{
+						flexDirection: "row",
+						alignItems: "flex-start",
+						justifyContent: "space-between",
+						marginHorizontal: 20,
+					},
+				]}
+			>
 				{/* Localisation actuelle */}
-				<Text style={styles.text2}>
-					{props.userData.address.city} {props.userData.address.country}
+				<Text style={{ textAlignVertical: "center", alignSelf: "center" }}>
+					{props.userData.address.city}, {props.userData.address.country}
 				</Text>
+				{/* Statut : OpenToWork/ Just Curious / Partner / Hiring */}
+				<Text style={styles.badge1}>{props.userData.status}</Text>
 			</View>
 			<ScrollView
-				style={{ marginHorizontal: 20, minHeight:'6%' }}
+				style={{ marginHorizontal: 20, height:0 }}
 				horizontal={true}
 				scrollbar
 				contentContainerStyle={styles.tags}
@@ -117,7 +132,6 @@ var styles = StyleSheet.create({
 	name: {
 		fontWeight: "bold",
 		fontSize: 22,
-		marginBottom: 10,
 		marginTop: 20,
 	},
 	avatar: {
@@ -132,7 +146,7 @@ var styles = StyleSheet.create({
 	},
 	view2: {
 		justifyContent: "space-between",
-		margin: 20,
+		marginHorizontal: 20,
 	},
 	view3: {
 		flexDirection: "row",
@@ -146,21 +160,21 @@ var styles = StyleSheet.create({
 		marginVertical: 2.5,
 	},
 	text1: {
-		fontSize: 16,
+		fontSize: 14,
 		marginBottom: 5,
 	},
 	text2: {
-		fontSize: 15,
+		fontSize: 14,
 		marginBottom: 15,
-		textAlign: "justify",
+		textAlign: "left",
 	},
 	title: {
-		fontSize: 18,
+		fontSize: 16,
 		fontWeight: "bold",
 		marginBottom: 5,
 	},
 	badge1: {
-		marginRight: 10,
+		width: "55%",
 		backgroundColor: "#0E0E66",
 		color: "white",
 		fontSize: 18,
@@ -168,7 +182,7 @@ var styles = StyleSheet.create({
 		borderRadius: 50,
 		borderWidth: 1.2,
 		textAlign: "center",
-		paddingTop: 2,
+		padding: 2,
 	},
 	badge2: {
 		fontWeight: "bold",
