@@ -10,7 +10,8 @@ import {
 import { Divider, SocialIcon, hollowWhite, Overlay } from "@rneui/themed";
 import { Avatar } from "@rneui/base";
 import { connect } from "react-redux";
-import { IPLOCAL } from "@env";
+// import { IPLOCAL } from "@env";
+const IPLOCAL = "http://172.16.189.144:3000";
 
 function ProfileScreen(props) {
   const [alumniDatas, setAlumniDatas] = useState({});
