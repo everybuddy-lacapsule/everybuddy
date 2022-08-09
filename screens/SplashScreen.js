@@ -8,32 +8,33 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connect } from "react-redux";
-
-// import {IPLOCAL} from "@env"
-const IPLOCAL = "http://172.16.190.135:3000";
-
+import {IPLOCAL} from "@env"
 
 function SplashScreen(props) {
+  console.log(IPLOCAL)
   useEffect(() => {
     AsyncStorage.getItem("userID", async function (error, userID) {
-      console.log(userID);
       if (userID !== null) {
         var datas = await fetch(
           `${IPLOCAL}/users/getUserDatas?userID=${userID}`
         );
         datas = await datas.json();
         props.setUserDatas(datas.userDatas);
+      } else {
+        props.setUserDatas({})
       }
     });
   }, []);
 
+
   var handleStart = async () => {
-    if (props.userDatas) {
+    AsyncStorage.getItem("userID", async function (error, userID) {
+      if (userID !== null) {
       props.navigation.navigate("Home");
     } else {
       props.navigation.navigate("LoginScreen");
     }
-  };
+    })};
 
   return (
     <ImageBackground

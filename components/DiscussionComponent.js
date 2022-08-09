@@ -5,12 +5,14 @@ import { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
 
-import {IPLOCAL} from "@env"
+//import {IPLOCAL} from "@env"
+const IPLOCAL = "http://172.16.188.131:3000";
 
 function Discussion({ discussionID, discussion, currentUser, navigation, getDiscussionID }) {
   const isFocused = useIsFocused();
   const [anotherMember, setAnotherMember] = useState({});
   const [lastMessage, setLastMessage] = useState("");
+  console.log(IPLOCAL)
 
   useEffect(() => {
     const anotherMemberID = discussion.memberIDs.find(

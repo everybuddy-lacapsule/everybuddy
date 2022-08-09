@@ -26,7 +26,7 @@ const StackNavigator = function () {
 				name="SplashScreen"
 				component={SplashScreen}
 				options={{
-					title: "S'identifier",
+					title: "",
 					headerStyle: styles.headers,
 					headerTintColor: "#fff",
 					headerBackVisible: false,
@@ -36,12 +36,7 @@ const StackNavigator = function () {
 			<Stack.Screen
 				name="CheckEmail"
 				component={CheckEmailScreen}
-				options={{
-					title: "S'identifier",
-					headerStyle: styles.headers,
-					headerTintColor: "#fff",
-					headerBackVisible: false,
-				}}
+				options={{ headerShown: false }}
 			/>
 
 			<Stack.Screen

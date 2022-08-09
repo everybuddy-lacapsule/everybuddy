@@ -10,14 +10,15 @@ import {
 import { Divider, SocialIcon, hollowWhite, Overlay } from "@rneui/themed";
 import { Avatar } from "@rneui/base";
 import { connect } from "react-redux";
-// import { IPLOCAL } from "@env";
-const IPLOCAL = "http://172.16.189.144:3000";
+import { IPLOCAL } from "@env";
 
 function ProfileScreen(props) {
   const [alumniDatas, setAlumniDatas] = useState({});
   const [visible, setVisible] = useState(false);
   const [msgSent, setMsgSent] = useState(null);
   const [discussionID, setDiscussionID] = useState('');
+  console.log(IPLOCAL)
+
 
   const toggleOverlay = () => {
     setVisible(!visible);
@@ -28,190 +29,203 @@ function ProfileScreen(props) {
       const response = await fetch(
         `${IPLOCAL}/users/getUserDatas?userID=${props.alumniIDSearch}`
       );
-      //console.log("reponse", response);
       const dataJSON = await response.json();
-      //console.log("ça marche", dataJSON);
       setAlumniDatas(dataJSON.userDatas);
     };
     getAlumnisDatas();
   }, [props.alumniIDSearch]);
 
-    /* ----------------------SEND MESSAGE AND SAVE TO DB---------------- */
-    useEffect(() => {
-      /* --------------- SEND A DEFAULT MESSAGE ---------------- */
-      const getDiscussion = async () => {
-        /* --------------- FIND DISCUSSIONID IF EXIST/ ELSE CREATE A NEW DISCUSSION  ---------------- */
-        const discussionIDRes = await fetch(
-          `${IPLOCAL}/discussions/createDiscussion`,
-          {
+  /* ----------------------SEND MESSAGE AND SAVE TO DB---------------- */
+  useEffect(() => {
+    /* --------------- SEND A DEFAULT MESSAGE ---------------- */
+    const getDiscussion = async () => {
+      /* --------------- FIND DISCUSSIONID IF EXIST/ ELSE CREATE A NEW DISCUSSION  ---------------- */
+      const discussionIDRes = await fetch(
+        `${IPLOCAL}/discussions/createDiscussion`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: `senderID=${props.userDatas._id}&receiverID=${props.alumniIDSearch}`,
+        }
+      );
+      const discussionIDJSON = await discussionIDRes.json();
+      setDiscussionID(discussionIDJSON);
+      //console.log("DiscussionIDJSON", discussionIDJSON);
+    };
+    getDiscussion();
+    // Create an obj === a document saved in message collection when BUTTON SEND default MSG actived
+    // Send default msg if button 'red' cliked
+    const defautMsg = `Hello ${alumniDatas.firstName}, envie d’aller boire une bière ?`;
+    console.log("TEST", defautMsg);
+    const sendDefaultMsg = async () => {
+      if (msgSent) {
+        //console.log("MSG default", defautMsg);
+        const defautMsgToDB = {
+          discussionID: discussionID,
+          senderID: props.userDatas._id,
+          content: defautMsg,
+        };
+        try {
+          // SEND message to DB
+          const saveMsgToDB = await fetch(`${IPLOCAL}/messages/addMessage`, {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: `senderID=${props.userDatas._id}&receiverID=${props.alumniIDSearch}`,
-          }
-        );
-        const discussionIDJSON = await discussionIDRes.json();
-        setDiscussionID(discussionIDJSON);
-        //console.log("DiscussionIDJSON", discussionIDJSON);
-      };
-      getDiscussion();
-      // Create an obj === a document saved in message collection when BUTTON SEND default MSG actived
-      // Send default msg if button 'red' cliked
-      const defautMsg = `Hello ${alumniDatas.firstName}, envie d’aller boire une bière ?`;
-      console.log("TEST", defautMsg);
-      const sendDefaultMsg = async () => {
-        if (msgSent) {
-          //console.log("MSG default", defautMsg);
-          const defautMsgToDB = {
-            discussionID: discussionID,
-            senderID: props.userDatas._id,
-            content: defautMsg,
-          };
-          try {
-            // SEND message to DB
-            const saveMsgToDB = await fetch(`${IPLOCAL}/messages/addMessage`, {
-              method: "POST",
-              headers: { "Content-Type": "application/x-www-form-urlencoded" },
-              body: `message=${defautMsgToDB.content}&discussionID=${defautMsgToDB.discussionID}&userID=${defautMsgToDB.senderID}`,
-            });
-          } catch (error) {
-            console.log(error);
-          }
-        }
-        if (msgSent === false) {
-          // Dispatch infos of the discussion to store => transfert to ChatScreen
-          props.getDiscussionID({
-            discussionID: discussionID,
-            anotherMember: alumniDatas,
+            body: `message=${defautMsgToDB.content}&discussionID=${defautMsgToDB.discussionID}&userID=${defautMsgToDB.senderID}`,
           });
+        } catch (error) {
+          console.log(error);
         }
-      };
-      sendDefaultMsg();
-    }, [msgSent]);
+      } else if (msgSent === false) {
+        // Dispatch infos of the discussion to store => transfert to ChatScreen
+        props.getDiscussionID({
+          discussionID: discussionID,
+          anotherMember: alumniDatas,
+        });
+        props.navigation.navigate("Chat");
+      }
+    };
+    sendDefaultMsg();
+    setMsgSent(null);
+  }, [msgSent]);
 
   return (
     <View style={styles.container}>
       <Overlay
-        overlayStyle={{ width: 350, height: 280, justifyContent: "space-between" }}
+        overlayStyle={{
+          width: 350,
+          height: 280,
+          justifyContent: "space-between",
+        }}
         isVisible={visible}
         onBackdropPress={toggleOverlay}
       >
         <Text style={styles.overlayTitle}>
           Proposer une bière à {alumniDatas.firstName} ?
         </Text>
-        <Text style={{color: "#0e0e66"}}>
+        <Text style={{ color: "#0e0e66" }}>
           Sur everyBuddy, nous souhaitons vous inciter partager un verre / un
           repas avec les alumnis !
         </Text>
-        <Text style={{color: "#0e0e66"}}>On trouve ça plus sympa pour rencontrer les gens !</Text>
-        <Text style={{color: "#0e0e66", marginTop: 20}}>
+        <Text style={{ color: "#0e0e66" }}>
+          On trouve ça plus sympa pour rencontrer les gens !
+        </Text>
+        <Text style={{ color: "#0e0e66", marginTop: 20 }}>
           En cliquant sur Oui, un message automatique sera envoyé :
         </Text>
-        <Text style={{color: "#0e0e66"}}>“Hello {alumniDatas.firstName}, envie d’aller boire une bière ?”</Text>
-        <View style={{flexDirection: 'row', justifyContent: "center"}}>
+        <Text style={{ color: "#0e0e66" }}>
+          “Hello {alumniDatas.firstName}, envie d’aller boire une bière ?”
+        </Text>
+        <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <TouchableOpacity
             style={[styles.overlayButton]}
-            onPress={() => {setMsgSent(true); toggleOverlay()}}
+            onPress={() => {
+              setMsgSent(true);
+              toggleOverlay();
+            }}
           >
             <Text style={{ fontSize: 18, color: "#FFFFFF" }}>
               {"\uD83C\uDF7B"} Oui
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.overlayButton]} onPress={() => {toggleOverlay()}}>
-            <Text style={{ fontSize: 18, color: "#FFFFFF" }}>
-              Non
-            </Text>
+          <TouchableOpacity
+            style={[styles.overlayButton]}
+            onPress={() => {
+              toggleOverlay();
+            }}
+          >
+            <Text style={{ fontSize: 18, color: "#FFFFFF" }}>Non</Text>
           </TouchableOpacity>
         </View>
       </Overlay>
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <View style={styles.avatar}>
-          <Avatar rounded size={142} source={{ uri: alumniDatas.avatar }} />
+      <View style={styles.container}>
+        <View style={styles.content}>
+          <View style={styles.avatar}>
+            <Avatar rounded size={142} source={{ uri: alumniDatas.avatar }} />
+          </View>
+          <View style={styles.view1}>
+            {/* Nom Prénom */}
+            <Text style={styles.name}>
+              {alumniDatas.firstName} {alumniDatas.name}
+            </Text>
+            {/* Cursus */}
+            <Text style={styles.text1}>
+              Batch {alumniDatas.capsule?.nbBatch} {alumniDatas.capsule?.campus}
+            </Text>
+            {/* Job + Entreprise */}
+            <Text style={styles.text1}>
+              {alumniDatas.work?.work} @ {alumniDatas.work?.company}
+            </Text>
+            {/* Statut : OpenToWork/ Just Curious / Partner / Hiring */}
+            <Text style={styles.badge1}>{alumniDatas.status}</Text>
+          </View>
         </View>
         <View style={styles.view1}>
-          {/* Nom Prénom */}
-          <Text style={styles.name}>
-            {alumniDatas.firstName} {alumniDatas.name}
+          {/* Localisation actuelle */}
+          <Text style={styles.text2}>
+            {alumniDatas.address?.city} {alumniDatas.address?.country}
           </Text>
-          {/* Cursus */}
-          <Text style={styles.text1}>
-            Batch {alumniDatas.capsule?.nbBatch} {alumniDatas.capsule?.campus}
-          </Text>
-          {/* Job + Entreprise */}
-          <Text style={styles.text1}>
-            
-            {alumniDatas.work?.work} @ {alumniDatas.work?.company}
-          </Text>
-          {/* Statut : OpenToWork/ Just Curious / Partner / Hiring */}
-          <Text style={styles.badge1}>{alumniDatas.status}</Text>
+        </View>
+        <View style={styles.tags}>
+          {/* Tags et compétences */}
+          {alumniDatas.tags?.map((tag, i) => {
+            return (
+              <Text style={styles.badge2} key={i}>
+                {tag}
+              </Text>
+            );
+          })}
+        </View>
+
+        <View>
+          <TouchableOpacity
+            style={[styles.button]}
+            onPress={() => {
+              toggleOverlay();
+            }}
+          >
+            <Text style={{ fontSize: 18, color: "#FFFFFF" }}>
+              {"\uD83C\uDF7B"} Proposer une bière
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.button]}
+            onPress={() => setMsgSent(false)}
+          >
+            <Text style={{ fontSize: 18, color: "#FFFFFF" }}>
+              {"\uD83D\uDCAA"} Envoyer un message
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <ScrollView contentContainerStyle={styles.view2} scrollbar>
+          <Text style={styles.title}>RECHERCHE ACTUELLE</Text>
+          <Text style={styles.text2}>{alumniDatas.searchCurrent}</Text>
+          <Text style={styles.title}>PRÉSENTATION</Text>
+          <Text style={styles.text2}>{alumniDatas.presentation}</Text>
+        </ScrollView>
+
+        <Divider
+          color={hollowWhite}
+          style={{ width: " 90%", marginLeft: "5%" }}
+        />
+
+        <View style={styles.icon}>
+          {/* ICONES RESEAUX SOCIAUX */}
+          {/* ------------- TROUVER COMMENT RECUPERER LES LIENS DE LA BDD ! ---------- */}
+          <SocialIcon
+            onPress={() => {
+              Linking.openURL("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+            }}
+            type="github"
+          />
+          <SocialIcon
+            onPress={() => {
+              Linking.openURL("https://www.linkedin.com/");
+            }}
+            type="linkedin"
+          />
         </View>
       </View>
-      <View style={styles.view1}>
-        {/* Localisation actuelle */}
-        <Text style={styles.text2}>
-          {alumniDatas.address?.city} {alumniDatas.address?.country}
-        </Text>
-      </View>
-      <View style={styles.tags}>
-        {/* Tags et compétences */}
-        {alumniDatas.tags?.map((tag, i) => {
-          return (
-            <Text style={styles.badge2} key={i}>
-              {tag}
-            </Text>
-          );
-        })}
-      </View>
-
-      <View>
-        <TouchableOpacity
-          style={[styles.button]}
-          onPress={() => {
-            toggleOverlay();
-          }}
-        >
-          <Text style={{ fontSize: 18, color: "#FFFFFF" }}>
-            {"\uD83C\uDF7B"} Proposer une bière
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.button]}
-        onPress={() => {setMsgSent(false);
-          props.navigation.navigate("Chat");}}>
-          <Text style={{ fontSize: 18, color: "#FFFFFF" }}>
-            {"\uD83D\uDCAA"} Envoyer un message
-          </Text>
-        </TouchableOpacity>
-      </View>
-
-      <ScrollView contentContainerStyle={styles.view2} scrollbar>
-        <Text style={styles.title}>RECHERCHE ACTUELLE</Text>
-        <Text style={styles.text2}>{alumniDatas.searchCurrent}</Text>
-        <Text style={styles.title}>PRÉSENTATION</Text>
-        <Text style={styles.text2}>{alumniDatas.presentation}</Text>
-      </ScrollView>
-
-      <Divider
-        color={hollowWhite}
-        style={{ width: " 90%", marginLeft: "5%" }}
-      />
-
-      <View style={styles.icon}>
-        {/* ICONES RESEAUX SOCIAUX */}
-        {/* ------------- TROUVER COMMENT RECUPERER LES LIENS DE LA BDD ! ---------- */}
-        <SocialIcon
-          onPress={() => {
-            Linking.openURL("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
-          }}
-          type="github"
-        />
-        <SocialIcon
-          onPress={() => {
-            Linking.openURL("https://www.linkedin.com/");
-          }}
-          type="linkedin"
-        />
-      </View>
-    </View>
     </View>
   );
 }

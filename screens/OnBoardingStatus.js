@@ -14,11 +14,11 @@ import { AntDesign, Octicons } from "@expo/vector-icons";
 import { Badge, Overlay } from "@rneui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 
-const IPLOCAL = "http://172.16.190.135:3000";
+import {IPLOCAL} from "@env"
 
 function OnBoardingStatus(props) {
   const [page, setPage] = useState(1);
-
+  console.log(IPLOCAL)
   /*----------------Locals Stats => set datas = datas from DB----------------------*/
   const [statusDatasList, setStatusDatasList] = useState([]);
   const [visible, setVisible] = useState(false);
@@ -79,16 +79,39 @@ function OnBoardingStatus(props) {
       body: `location=${location}`,
     });
     const resJSON = await res.json();
-    if (res) {
+    if (resJSON.success) {
+      console.log(resJSON.address.city);
+      props.setOnboardingSearch({
+        // search :true is used to display the radius circle after first search, even with no results
+        search: true,
+        searchResults: resJSON.users,
+        searchLocation: {
+          long: resJSON.address.long,
+          lat: resJSON.address.lat,
+          locationRequest: resJSON.address.city,
+          radius: resJSON.radius
+        },
+      });
+
       setAddressValited(true);
       setUserDatas({ ...userDatasInput, address: resJSON.address });
+      console.log(resJSON.address);
+      /*
+      props.getAddress({
+        search: false,
+        searchLocation: {
+          long: resJSON.address.long,
+          lat: resJSON.address.lat,
+        },
+        searchResults: [props.userDatas],
+      });
+      */
     } else {
-      setErrorMessage("Veuillez indiquer un lieu valide")
+      console.log("Fause ville");
+      setErrorMessage("Veuillez indiquer un lieu valide");
       toggleOverlay();
     }
   };
-
-  console.log(userDatasInput);
 
   /*--------------VERIFY INFORMATIONS ONBOARDING ---------------*/
   useEffect(() => {
@@ -109,10 +132,11 @@ function OnBoardingStatus(props) {
       var res = await fetch(`${IPLOCAL}/users/userDatas`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(location),
+        body: JSON.stringify(userDatasInput),
       });
       props.navigation.navigate("Home");
     } else {
+      setErrorMessage("Veuillez valider tous les champs");
       toggleOverlay();
     }
   };
@@ -201,7 +225,7 @@ function OnBoardingStatus(props) {
     </ScrollView>
   );
 
-   // PAGE POUR LES STACKS
+  // PAGE POUR LES STACKS
   var tag = (
     <ScrollView showsVerticalScrollIndicator={false}>
       <Text style={styles.title}>Dans quoi te reconnais-tu ?</Text>
@@ -217,10 +241,10 @@ function OnBoardingStatus(props) {
       >
         {tagsDatasList.map(function (tag, i) {
           var color = "#0E0E66";
-          var backgroundColor = '#FFFFFF';
+          var backgroundColor = "#FFFFFF";
           if (userDatasInput.tags.find((i) => i === tag)) {
             color = "#FFFFFF";
-            backgroundColor = '#E74C3C';
+            backgroundColor = "#E74C3C";
           }
           return (
             <Badge
@@ -231,7 +255,7 @@ function OnBoardingStatus(props) {
               textStyle={{ color: color, fontSize: 20 }}
               badgeStyle={{
                 borderColor: "#ffffff",
-                justifyContent: 'center',
+                justifyContent: "center",
                 backgroundColor: backgroundColor,
                 borderWidth: 1.1,
                 paddingBottom: 2,
@@ -269,51 +293,51 @@ function OnBoardingStatus(props) {
     </ScrollView>
   );
 
-    // VARIABLE POUR LE DEFILEMENT DES PAGES
-    var firstDot = (
-      <View>
-        <Text>
-      <Octicons name="dot-fill" size={24} color="white" />,
-      <Octicons name="dot" size={24} color="white" />,
-      <Octicons name="dot" size={24} color="white" />
+  // VARIABLE POUR LE DEFILEMENT DES PAGES
+  var firstDot = (
+    <View>
+      <Text>
+        <Octicons name="dot-fill" size={24} color="white" />,
+        <Octicons name="dot" size={24} color="white" />,
+        <Octicons name="dot" size={24} color="white" />
       </Text>
-      </View>
-    )
+    </View>
+  );
 
-    var secondDot = (
-      <View>
-        <Text>
-      <Octicons name="dot" size={24} color="white" />,
-      <Octicons name="dot-fill" size={24} color="white" />,
-      <Octicons name="dot" size={24} color="white" />
+  var secondDot = (
+    <View>
+      <Text>
+        <Octicons name="dot" size={24} color="white" />,
+        <Octicons name="dot-fill" size={24} color="white" />,
+        <Octicons name="dot" size={24} color="white" />
       </Text>
-      </View>
-    )
+    </View>
+  );
 
-    var thirdDot = (
-      <View>
-        <Text>
-      <Octicons name="dot" size={24} color="white" />,
-      <Octicons name="dot" size={24} color="white" />,
-      <Octicons name="dot-fill" size={24} color="white" />
+  var thirdDot = (
+    <View>
+      <Text>
+        <Octicons name="dot" size={24} color="white" />,
+        <Octicons name="dot" size={24} color="white" />,
+        <Octicons name="dot-fill" size={24} color="white" />
       </Text>
-      </View>
-    )
+    </View>
+  );
 
-  var advance
+  var advance;
 
   var content;
   if (page === 1) {
     content = status;
-    advance = firstDot
+    advance = firstDot;
   }
   if (page === 2) {
     content = work;
-    advance = secondDot
+    advance = secondDot;
   }
   if (page === 3) {
     content = tag;
-    advance = thirdDot
+    advance = thirdDot;
   }
 
   return (
@@ -330,36 +354,36 @@ function OnBoardingStatus(props) {
       </Overlay>
       <View style={styles.content}>{content}</View>
       <View style={styles.bottom}>
-      <TouchableOpacity>
-        <AntDesign
-          name="left"
-          size={25}
-          color="white"
-          onPress={() => {
-            if (page === 1) {
-              setPage(page)
-            } else {
-            setPage(page - 1);
-            }
-          }}
-        />
+        <TouchableOpacity>
+          <AntDesign
+            name="left"
+            size={25}
+            color="white"
+            onPress={() => {
+              if (page === 1) {
+                setPage(page);
+              } else {
+                setPage(page - 1);
+              }
+            }}
+          />
         </TouchableOpacity>
 
-            {advance}
+        {advance}
 
         <TouchableOpacity>
-        <AntDesign
-          name="right"
-          size={25}
-          color="white"
-          onPress={() => {
-            if (page === 3) {
-              setPage(page)
-            } else {
-            setPage(page + 1);
-            }
-          }}
-        />
+          <AntDesign
+            name="right"
+            size={25}
+            color="white"
+            onPress={() => {
+              if (page === 3) {
+                setPage(page);
+              } else {
+                setPage(page + 1);
+              }
+            }}
+          />
         </TouchableOpacity>
       </View>
     </ImageBackground>
@@ -383,8 +407,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#e74c3c",
     marginTop: "30%",
-    marginBottom: '8%',
-    alignSelf: 'center',
+    marginBottom: "8%",
+    alignSelf: "center",
   },
   bottom: {
     flexDirection: "row",
@@ -432,4 +456,15 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(OnBoardingStatus);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setOnboardingSearch: function (resultsOnboarding) {
+      dispatch({
+        type: "onboardingSearch",
+        resultsOnboarding: resultsOnboarding,
+      });
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(OnBoardingStatus);

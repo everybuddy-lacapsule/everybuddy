@@ -27,6 +27,7 @@ import { IPLOCAL } from "@env";
 import socketIOClient from "socket.io-client";
 
 function ChatScreen(props) {
+  console.log(IPLOCAL)
   //const isFocused = useIsFocused();
   const socket = useRef();
   const scrollRef = useRef();

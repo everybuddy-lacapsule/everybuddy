@@ -3,8 +3,8 @@ import { TouchableOpacity, StyleSheet, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
 import { connect } from "react-redux";
+import { IPLOCAL } from "@env";
 
 import MapScreen from "../screens/MapScreen";
 import NewsScreen from "../screens/NewsScreen";
@@ -22,16 +22,27 @@ const hiddenTabs = ["Buddies", "MyProfile", "Chat", "ProfileScreen"];
 const TabsNavigator = function (props) {
 	const isLeftDrawerVisible = useDrawerStatus();
 	const [isLeftFocused, setIsLeftFocused] = useState("");
+	const [alumniDatas, setAlumniDatas] = useState({});
 
 	useEffect(() => {
 		if (isLeftDrawerVisible == "open") {
-			console.log("prout", isLeftDrawerVisible);
 			setIsLeftFocused(isLeftDrawerVisible);
 		} else {
 			setIsLeftFocused(isLeftDrawerVisible);
-			console.log("prout2", isLeftDrawerVisible);
 		}
 	}, [isLeftDrawerVisible]);
+
+	useEffect(() => {			
+		const getAlumnisDatas = async () => {
+		  const response = await fetch(
+			`${IPLOCAL}/users/getUserDatas?userID=${props.alumniIDSearch}`
+		  );
+		  const dataJSON = await response.json();
+		  setAlumniDatas(dataJSON.userDatas);
+		};
+		getAlumnisDatas();
+	  }, [props.alumniIDSearch]);
+
 
 	return (
 		<Tab.Navigator
@@ -150,6 +161,7 @@ const TabsNavigator = function (props) {
 				name="Chat"
 				component={ChatScreen}
 				options={{
+					title: `${alumniDatas.firstName} ${alumniDatas.name}`,
 					headerRight: () => <View style={styles.right}></View>,
 					unmountOnBlur: true,
 				}}
@@ -203,79 +215,78 @@ const TabsNavigator = function (props) {
 };
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "#fff",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-	searchBar: {
-		height: "100%",
-		width: "100%",
-		backgroundColor: "rgba(255, 255, 255, 0.5)",
-		color: "white",
-		borderTopLeftRadius: 50,
-		borderBottomLeftRadius: 50,
-		paddingLeft: 15,
-		paddingRight: 15,
-	},
-	headers: {
-		backgroundColor: "#0E0E66",
-		height: 56,
-	},
-	headerTitle: {
-		flexDirection: "row",
-		marginRight: 30,
-	},
-	searchButton: {
-		alignSelf: "baseline",
-		backgroundColor: "#E74C3C",
-		padding: 6,
-		borderRadius: 50,
-	},
-	searchButtonBackground: {
-		backgroundColor: "rgba(255, 255, 255, 0.5)",
-		borderTopRightRadius: 50,
-		borderBottomRightRadius: 50,
-	},
-	left: {
-		flex: 1,
-		justifyContent: "center",
-		alignItems: "center",
-		width: 64,
-	},
-	left2: {
-		backgroundColor: "white",
-		marginHorizontal: 20,
-		borderRadius: 5,
-	},
-	right: {
-		flex: 1,
-		justifyContent: "center",
-		alignItems: "center",
-		width: 64,
-	},
-	right2: {
-		backgroundColor: "white",
-		marginHorizontal: 20,
-		borderRadius: 5,
-	},
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  searchBar: {
+    height: "100%",
+    width: "100%",
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    color: "white",
+    borderTopLeftRadius: 50,
+    borderBottomLeftRadius: 50,
+    paddingLeft: 15,
+    paddingRight: 15,
+  },
+  headers: {
+    backgroundColor: "#0E0E66",
+    height: 56,
+  },
+  headerTitle: {
+    flexDirection: "row",
+    marginRight: 30,
+  },
+  searchButton: {
+    alignSelf: "baseline",
+    backgroundColor: "#E74C3C",
+    padding: 6,
+    borderRadius: 50,
+  },
+  searchButtonBackground: {
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    borderTopRightRadius: 50,
+    borderBottomRightRadius: 50,
+  },
+  left: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: 64,
+  },
+  left2: {
+    backgroundColor: "white",
+    marginHorizontal: 20,
+    borderRadius: 5,
+  },
+  right: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: 64,
+  },
+  right2: {
+    backgroundColor: "white",
+    marginHorizontal: 20,
+    borderRadius: 5,
+  },
 });
 
 const mapStateToProps = (state) => {
 	return {
-		searchResults: state.searchResults,
-		userDatas: state.userDatas,
 		drawerStatus: state.drawerStatus,
+		alumniIDSearch: state.alumniIDSearch,
 	};
 };
 
 function mapDispatchToProps(dispatch) {
-	return {
-		leftDrawerStatus: function (status) {
-			dispatch({ type: "leftDrawer status", leftDrawerStatus: status });
-		},
-	};
+  return {
+    leftDrawerStatus: function (status) {
+      dispatch({ type: "leftDrawer status", leftDrawerStatus: status });
+    },
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TabsNavigator);

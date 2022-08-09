@@ -9,14 +9,15 @@ import {
 } from "react-native";
 import { Overlay, Button, Input } from "@rneui/themed";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// import {IPLOCAL} from "@env"
-const IPLOCAL = "http://172.16.190.135:3000";
+import {IPLOCAL} from "@env"
 
 function LoginScreen(props) {
   const [visible, setVisible] = useState(false);
   const [signinEmail, setSigninEmail] = useState("");
   const [signinPwd, setSigninPwd] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  console.log(IPLOCAL)
+
 
   const toggleOverlay = () => {
     setVisible(!visible);
