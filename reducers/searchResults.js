@@ -7,6 +7,8 @@ const initSearchResults = {
 export const searchResults = (searchResults = initSearchResults, action) => {
   if (action.type === "search") {
     return action.results;
+  } else if (action.type === "onboarding") {
+    return action.address;
   } else {
     return searchResults;
   }

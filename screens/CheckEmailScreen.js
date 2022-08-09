@@ -10,7 +10,7 @@ import {
 import { Overlay, Input } from "@rneui/themed";
 
 // import {IPLOCAL} from "@env"
-const IPLOCAL = "http://172.16.189.144:3000";
+const IPLOCAL = "http://172.16.190.135:3000";
 
 
 function CheckEmailScreen(props) {
