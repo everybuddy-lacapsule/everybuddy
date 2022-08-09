@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	View,
 	StyleSheet,
@@ -12,6 +12,8 @@ import { Divider, SocialIcon, hollowWhite } from "@rneui/themed";
 import { Avatar } from "@rneui/base";
 import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
+import { IPLOCAL } from "@env";
+
 
 function EditingProfileContent(props) {
 	const [userData, setUserData] = useState(props.userData);
