@@ -10,11 +10,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { CheckBox } from "@rneui/base";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Octicons } from "@expo/vector-icons";
 import { Badge, Overlay } from "@rneui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 
-const IPLOCAL = "http://172.16.188.131:3000";
+const IPLOCAL = "http://172.16.190.135:3000";
 
 function OnBoardingStatus(props) {
   const [page, setPage] = useState(1);
@@ -137,6 +137,7 @@ function OnBoardingStatus(props) {
     setUserDatas(userDatasInputCopy);
   }
 
+  // PAGE POUR LES STATUTS
   var status = (
     <View>
       <Text style={styles.title}>Alors, pourquoi es-tu ici ?</Text>
@@ -160,8 +161,9 @@ function OnBoardingStatus(props) {
     </View>
   );
 
+  // PAGE POUR LE METIER
   var work = (
-    <ScrollView showsVerticalScrollIndicator={true}>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <Text style={styles.title}>Tu es ?</Text>
       {workDatasList.map(function (work, i) {
         var checked = false;
@@ -201,9 +203,10 @@ function OnBoardingStatus(props) {
     </ScrollView>
   );
 
+   // PAGE POUR LES STACKS
   var tag = (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <Text style={styles.title}>CHOISIS TES TAGS PUTAIN</Text>
+      <Text style={styles.title}>Dans quoi te reconnais-tu ?</Text>
       <View
         style={{
           flex: 1,
@@ -216,10 +219,10 @@ function OnBoardingStatus(props) {
       >
         {tagsDatasList.map(function (tag, i) {
           var color = "#0E0E66";
-          var status = "";
+          var backgroundColor = '#FFFFFF';
           if (userDatasInput.tags.find((i) => i === tag)) {
-            color = "#0e0e66";
-            status = "white";
+            color = "#FFFFFF";
+            backgroundColor = '#E74C3C';
           }
           return (
             <Badge
@@ -227,12 +230,13 @@ function OnBoardingStatus(props) {
               value={tag}
               onPress={() => addTags("tags", tag)}
               containerStyle={{ margin: 5 }}
-              status={status}
-              textStyle={{ color: color, fontSize: 16 }}
+              textStyle={{ color: color, fontSize: 20 }}
               badgeStyle={{
                 borderColor: "#ffffff",
+                justifyContent: 'center',
+                backgroundColor: backgroundColor,
                 borderWidth: 1.1,
-                padding: 2,
+                paddingBottom: 2,
                 height: 30,
                 borderRadius: 15,
               }}
@@ -253,7 +257,7 @@ function OnBoardingStatus(props) {
         <FontAwesome
           style={styles.searchButton}
           name="search"
-          size={16}
+          size={20}
           color="#0e0e66"
           onPress={() => handleVerifyLocation()}
         />
@@ -264,24 +268,54 @@ function OnBoardingStatus(props) {
       >
         <Text style={styles.confirm}>C'est parti !</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => props.navigation.navigate("LoginScreen")}
-      >
-        <Text style={styles.confirm}>Login</Text>
-      </TouchableOpacity>
     </ScrollView>
   );
+
+    // VARIABLE POUR LE DEFILEMENT DES PAGES
+    var firstDot = (
+      <View>
+        <Text>
+      <Octicons name="dot-fill" size={24} color="white" />,
+      <Octicons name="dot" size={24} color="white" />,
+      <Octicons name="dot" size={24} color="white" />
+      </Text>
+      </View>
+    )
+
+    var secondDot = (
+      <View>
+        <Text>
+      <Octicons name="dot" size={24} color="white" />,
+      <Octicons name="dot-fill" size={24} color="white" />,
+      <Octicons name="dot" size={24} color="white" />
+      </Text>
+      </View>
+    )
+
+    var thirdDot = (
+      <View>
+        <Text>
+      <Octicons name="dot" size={24} color="white" />,
+      <Octicons name="dot" size={24} color="white" />,
+      <Octicons name="dot-fill" size={24} color="white" />
+      </Text>
+      </View>
+    )
+
+  var advance
 
   var content;
   if (page === 1) {
     content = status;
+    advance = firstDot
   }
   if (page === 2) {
     content = work;
+    advance = secondDot
   }
   if (page === 3) {
     content = tag;
+    advance = thirdDot
   }
 
   return (
@@ -298,22 +332,37 @@ function OnBoardingStatus(props) {
       </Overlay>
       <View style={styles.content}>{content}</View>
       <View style={styles.bottom}>
+      <TouchableOpacity>
         <AntDesign
           name="left"
           size={25}
           color="white"
           onPress={() => {
+            if (page === 1) {
+              setPage(page)
+            } else {
             setPage(page - 1);
+            }
           }}
         />
+        </TouchableOpacity>
+
+            {advance}
+
+        <TouchableOpacity>
         <AntDesign
           name="right"
           size={25}
           color="white"
           onPress={() => {
+            if (page === 3) {
+              setPage(page)
+            } else {
             setPage(page + 1);
+            }
           }}
         />
+        </TouchableOpacity>
       </View>
     </ImageBackground>
   );
@@ -336,7 +385,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#e74c3c",
     marginTop: "30%",
-    marginBottom: 50,
+    marginBottom: '8%',
+    alignSelf: 'center',
   },
   bottom: {
     flexDirection: "row",
@@ -349,18 +399,19 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "80%",
     backgroundColor: "rgba(255, 255, 255, 0.5)",
+    fontSize: 18,
     borderRadius: 50,
     paddingLeft: 15,
-    paddingRight: 15,
   },
   headerTitle: {
     flexDirection: "row",
+    height: 80,
     paddingVertical: 20,
     justifyContent: "center",
   },
   searchButton: {
     left: -25,
-    top: 5,
+    top: 8,
   },
   button: {
     width: "90%",
