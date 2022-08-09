@@ -83,11 +83,13 @@ function OnBoardingStatus(props) {
       console.log(resJSON.address.city);
       props.setOnboardingSearch({
         // search :true is used to display the radius circle after first search, even with no results
-        search: false,
+        search: true,
         searchResults: resJSON.users,
         searchLocation: {
           long: resJSON.address.long,
-          lat: resJSON.address.lat
+          lat: resJSON.address.lat,
+          locationRequest: resJSON.address.city,
+          radius: resJSON.radius
         },
       });
 
@@ -457,7 +459,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setOnboardingSearch: function (resultsOnboarding) {
-      dispatch({ type: "onboardingSearch", resultsOnboarding: resultsOnboarding });
+      dispatch({
+        type: "onboardingSearch",
+        resultsOnboarding: resultsOnboarding,
+      });
     },
   };
 };
