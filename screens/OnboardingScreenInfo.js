@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Text, ScrollView, Linking } from "react-native";
+import { View, StyleSheet, Text, ScrollView, Linking, TouchableOpacity, ImageBackground, } from "react-native";
 import { Divider, Icon, hollowWhite } from "@rneui/themed";
 import { connect } from "react-redux";
 import { AntDesign } from "@expo/vector-icons";
@@ -43,6 +43,7 @@ export default function OnboardingScreenInfo(props) {
       </ScrollView>
 
       <View style={styles.bottom}>
+        <TouchableOpacity>
         <AntDesign
           name="right"
           size={25}
@@ -51,6 +52,7 @@ export default function OnboardingScreenInfo(props) {
             props.navigation.navigate("OnBoardingStatus");
           }}
         />
+        </TouchableOpacity>
       </View>
     </ImageBackground>
   );

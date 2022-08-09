@@ -14,7 +14,7 @@ import { AntDesign, Octicons } from "@expo/vector-icons";
 import { Badge } from "@rneui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 
-const IPLOCAL = "http://192.168.0.149:3000";
+const IPLOCAL = "http://172.16.190.135:3000";
 
 function OnBoardingStatus(props) {
   const [page, setPage] = useState(1);
@@ -166,7 +166,7 @@ function OnBoardingStatus(props) {
 
   // PAGE POUR LE METIER
   var work = (
-    <ScrollView showsVerticalScrollIndicator={true}>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <Text style={styles.title}>Tu es ?</Text>
       {workDatasList.map(function (work, i) {
         var checked = false;
@@ -269,37 +269,37 @@ function OnBoardingStatus(props) {
       >
         <Text style={styles.confirm}>C'est parti !</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => props.navigation.navigate("LoginScreen")}
-      >
-        <Text style={styles.confirm}>Login</Text>
-      </TouchableOpacity>
     </ScrollView>
   );
 
     // VARIABLE POUR LE DEFILEMENT DES PAGES
     var firstDot = (
       <View>
+        <Text>
       <Octicons name="dot-fill" size={24} color="white" />,
       <Octicons name="dot" size={24} color="white" />,
       <Octicons name="dot" size={24} color="white" />
+      </Text>
       </View>
     )
 
     var secondDot = (
       <View>
+        <Text>
       <Octicons name="dot" size={24} color="white" />,
       <Octicons name="dot-fill" size={24} color="white" />,
       <Octicons name="dot" size={24} color="white" />
+      </Text>
       </View>
     )
 
     var thirdDot = (
       <View>
+        <Text>
       <Octicons name="dot" size={24} color="white" />,
       <Octicons name="dot" size={24} color="white" />,
       <Octicons name="dot-fill" size={24} color="white" />
+      </Text>
       </View>
     )
 
@@ -327,26 +327,39 @@ function OnBoardingStatus(props) {
       <View style={styles.content}>
         {content}
         </View>
+
       <View style={styles.bottom}>
+      <TouchableOpacity>
         <AntDesign
           name="left"
           size={25}
           color="white"
           onPress={() => {
+            if (page === 1) {
+              setPage(page)
+            } else {
             setPage(page - 1);
+            }
           }}
         />
+        </TouchableOpacity>
 
-        {advance}
+            {advance}
 
+        <TouchableOpacity>
         <AntDesign
           name="right"
           size={25}
           color="white"
           onPress={() => {
+            if (page === 3) {
+              setPage(page)
+            } else {
             setPage(page + 1);
+            }
           }}
         />
+        </TouchableOpacity>
       </View>
     </ImageBackground>
   );
