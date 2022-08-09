@@ -12,6 +12,7 @@ import { Avatar } from "@rneui/base";
 import { connect } from "react-redux";
 import { IPLOCAL } from "@env";
 
+
 function ProfileScreen(props) {
   const [alumniDatas, setAlumniDatas] = useState({});
   const [visible, setVisible] = useState(false);
@@ -33,6 +34,21 @@ function ProfileScreen(props) {
       setAlumniDatas(dataJSON.userDatas);
     };
     getAlumnisDatas();
+
+    const getDiscussion = async () => {
+      /* --------------- FIND DISCUSSIONID IF EXIST/ ELSE CREATE A NEW DISCUSSION  ---------------- */
+      const discussionIDRes = await fetch(
+        `${IPLOCAL}/discussions/createDiscussion`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: `senderID=${props.userDatas._id}&receiverID=${props.alumniIDSearch}`,
+        }
+      );
+      const discussionIDJSON = await discussionIDRes.json();
+      setDiscussionID(discussionIDJSON);
+    };
+    getDiscussion();
   }, [props.alumniIDSearch]);
 
   /* ----------------------SEND MESSAGE AND SAVE TO DB---------------- */
@@ -75,7 +91,8 @@ function ProfileScreen(props) {
         } catch (error) {
           console.log(error);
         }
-      } else if (msgSent === false) {
+      }
+      if (msgSent === false) {
         // Dispatch infos of the discussion to store => transfert to ChatScreen
         props.getDiscussionID({
           discussionID: discussionID,
@@ -189,7 +206,9 @@ function ProfileScreen(props) {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.button]}
-            onPress={() => setMsgSent(false)}
+            onPress={() => {
+              setMsgSent(false);
+            }}
           >
             <Text style={{ fontSize: 18, color: "#FFFFFF" }}>
               {"\uD83D\uDCAA"} Envoyer un message

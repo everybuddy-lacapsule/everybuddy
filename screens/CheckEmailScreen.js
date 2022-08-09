@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import { Overlay, Input } from "@rneui/themed";
 import {IPLOCAL} from "@env"
+const urlLocal = 'http://172.16.188.131:3000';
+
 
 function CheckEmailScreen(props) {
   const [visible, setVisible] = useState(false);
@@ -21,7 +23,7 @@ function CheckEmailScreen(props) {
 
   //------------------ FETCH récupère en BDD ------------------------------------
   var handleCheckEmail = async () => {
-    var res = await fetch(`${IPLOCAL}/users/check-email`, {
+    var res = await fetch(`${urlLocal}/users/check-email`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `email=${signinEmail}`,

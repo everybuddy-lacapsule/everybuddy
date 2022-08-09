@@ -14,7 +14,8 @@ import { FontAwesome } from "@expo/vector-icons";
 import BottomDrawer from "react-native-bottom-drawer-view";
 import { connect } from "react-redux";
 import { IPLOCAL } from "@env";
-
+//const urlLocal = "http://" + IPLOCAL + ":3000";
+const urlLocal = 'http://172.16.188.131:3000';
 
 function MapScreen(props) {
   const [resultLink, setResultLink] = useState("liste");
@@ -71,7 +72,7 @@ function MapScreen(props) {
   const getDiscussion = async (alumniID) => {
     /*-------------------Receive discussionID from backend-------------------*/
     const discussionIDRes = await fetch(
-      `${IPLOCAL}/discussions/createDiscussion`,
+      `${urlLocal}/discussions/createDiscussion`,
       {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -81,7 +82,7 @@ function MapScreen(props) {
     const discussionIDJSON = await discussionIDRes.json();
     /*-------------------Receive alumi information from backend-------------------*/
     const alumniInfos = await fetch(
-      `${IPLOCAL}/users/getUserDatas?userID=${alumniID}`
+      `${urlLocal}/users/getUserDatas?userID=${alumniID}`
     );
     const alumniInfosJSON = await alumniInfos.json();
     props.getDiscussionID({

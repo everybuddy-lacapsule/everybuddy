@@ -6,6 +6,8 @@ import { connect } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
 
 import {IPLOCAL} from "@env"
+//var urlLocal = 'http://'+IPLOCAL+ ':3000';
+const urlLocal = 'http://172.16.188.131:3000'
 
 
 function Discussion({ discussionID, discussion, currentUser, navigation, getDiscussionID }) {
@@ -21,7 +23,7 @@ function Discussion({ discussionID, discussion, currentUser, navigation, getDisc
 
     const getAnotherMember = async () => {
       const response = await fetch(
-        `${IPLOCAL}/users/getUserDatas?userID=${anotherMemberID}`
+        `${urlLocal}/users/getUserDatas?userID=${anotherMemberID}`
       );
       const dataJSON = await response.json();
       setAnotherMember(dataJSON.userDatas);
@@ -33,7 +35,7 @@ function Discussion({ discussionID, discussion, currentUser, navigation, getDisc
   useEffect(() => {
     const displayLastMessage = async ()=> {
     const response =  await fetch(
-      `${IPLOCAL}/messages/${discussionID}/lastMessage`
+      `${urlLocal}/messages/${discussionID}/lastMessage`
     );
 
     const dataJSON = await response.json();

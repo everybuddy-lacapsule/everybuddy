@@ -171,12 +171,15 @@ const TabsNavigator = function (props) {
 				component={ProfileScreen}
 				options={{
 					title: "Profil de l'Alumni",
+          unmountOnBlur: true,
 					headerRight: () => (
 						<TouchableOpacity
 							style={styles.right}
 						>
 							<Ionicons name="person" size={25} color="white" />
+              
 						</TouchableOpacity>
+            
 					),
 				}}
 			/>
@@ -185,6 +188,7 @@ const TabsNavigator = function (props) {
 				component={MyProfileScreen}
 				options={{
 					title:"Mon Profil",
+          unmountOnBlur: true,
 					headerRight: () => (
 						<TouchableOpacity
 							style={styles.right}

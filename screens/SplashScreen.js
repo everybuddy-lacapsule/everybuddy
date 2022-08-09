@@ -8,7 +8,13 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connect } from "react-redux";
+<<<<<<< HEAD
 import {IPLOCAL} from "@env"
+=======
+
+import { IPLOCAL } from "@env";
+const urlLocal = "http://172.16.188.131:3000";
+>>>>>>> 6e0324baa78f4056c13a660ef722b7bb2b1af915
 
 function SplashScreen(props) {
   console.log(IPLOCAL)
@@ -16,7 +22,7 @@ function SplashScreen(props) {
     AsyncStorage.getItem("userID", async function (error, userID) {
       if (userID !== null) {
         var datas = await fetch(
-          `${IPLOCAL}/users/getUserDatas?userID=${userID}`
+          `${urlLocal}/users/getUserDatas?userID=${userID}`
         );
         datas = await datas.json();
         props.setUserDatas(datas.userDatas);
