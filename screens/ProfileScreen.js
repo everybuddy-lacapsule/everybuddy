@@ -194,8 +194,7 @@ function ProfileScreen(props) {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.button]}
-        onPress={() => {setMsgSent(false);
-          props.navigation.navigate("Chat");}}>
+        onPress={() => {setMsgSent(false);}}>
           <Text style={{ fontSize: 18, color: "#FFFFFF" }}>
             {"\uD83D\uDCAA"} Envoyer un message
           </Text>
