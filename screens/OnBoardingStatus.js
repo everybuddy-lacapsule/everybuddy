@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from "react-native";
 import { CheckBox } from "@rneui/base";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Octicons } from "@expo/vector-icons";
 
 function OnBoardingStatus(props) {
   const [page, setPage] = useState(1);
@@ -61,6 +61,7 @@ function OnBoardingStatus(props) {
   console.log(userDatasInput);
   console.log("numéro", page);
 
+  // PAGE POUR LES STATUTS
   var status = (
     <View>
       <Text style={styles.title}>Alors, pourquoi es-tu ici ?</Text>
@@ -84,6 +85,7 @@ function OnBoardingStatus(props) {
     </View>
   );
 
+  // PAGE POUR LE METIER
   var work = (
     <ScrollView showsVerticalScrollIndicator={false}>
       <Text style={styles.title}>Tu es ?</Text>
@@ -125,12 +127,34 @@ function OnBoardingStatus(props) {
     </ScrollView>
   );
 
+  // VARIABLE POUR LE DEFILEMENT DES PAGES
+    var firstDot = (
+      <Octicons name="dot-fill" size={24} color="white" />,
+      <Octicons name="dot" size={24} color="white" />,
+      <Octicons name="dot" size={24} color="white" />
+    )
+
+    var secondDot = (
+      <Octicons name="dot" size={24} color="white" />,
+      <Octicons name="dot-fill" size={24} color="white" />,
+      <Octicons name="dot" size={24} color="white" />
+    )
+
+    var thirdDot = (
+      <Octicons name="dot" size={24} color="white" />,
+      <Octicons name="dot" size={24} color="white" />,
+      <Octicons name="dot-fill" size={24} color="white" />
+    )
+
+  var advance
   var content;
   if (page === 1) {
     content = status;
+    advance = firstDot
   }
   if (page === 2) {
     content = work;
+    advance = secondDot
   }
 
   return (
@@ -148,6 +172,7 @@ function OnBoardingStatus(props) {
             setPage(page - 1);
           }}
         />
+        {advance}
         <AntDesign
           name="right"
           size={25}
