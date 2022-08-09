@@ -15,6 +15,7 @@ const IPLOCAL = "http://172.16.189.144:3000";
 
 function SplashScreen(props) {
   useEffect(() => {
+    props.setUserDatas(null)
     AsyncStorage.getItem("userID", async function (error, userID) {
       console.log(userID);
       if (userID !== null) {
