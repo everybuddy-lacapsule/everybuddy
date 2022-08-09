@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { CheckBox } from "@rneui/base";
 import { AntDesign } from "@expo/vector-icons";
-import { Badge } from "@rneui/themed";
+import { Badge, Overlay } from "@rneui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 
 const IPLOCAL = "http://172.16.188.131:3000";
@@ -21,6 +21,8 @@ function OnBoardingStatus(props) {
 
   /*----------------Locals Stats => set datas = datas from DB----------------------*/
   const [statusDatasList, setStatusDatasList] = useState([]);
+  const [visible, setVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [workDatasList, setWorkDatasList] = useState([]);
   const [workTypeDatasList, setWorkTypeDatasList] = useState([]);
   const [tagsDatasList, setTagsDatasList] = useState([]);
@@ -29,17 +31,18 @@ function OnBoardingStatus(props) {
   const [addressValited, setAddressValited] = useState(false);
   const [areSelected, setAreSelected] = useState(false);
   /*--------------------Setting  Overlay----------------------*/
-  const toggleOverlayLocation = () => {
+
+  const toggleOverlay = () => {
     setVisible(!visible);
   };
 
   const [userDatasInput, setUserDatas] = useState({
-    address: null,
+    address: null, // String
     status: "", // Array
     tags: [], // Array
     work: "", // Array
     workType: "", // Array
-    userID: "62ee83d7c569cba82e5d7f2e",
+    userID: props.userDatas._id,
   });
   /*----------------Function => get datas from DB----------------------*/
   const getDatasFromDB = async (typeDatas) => {
@@ -72,16 +75,33 @@ function OnBoardingStatus(props) {
   const handleVerifyLocation = async () => {
     const res = await fetch(`${IPLOCAL}/users/userLocation`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(address),
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `location=${location}`,
     });
+    const resJSON = await res.json();
     if (res) {
       setAddressValited(true);
-      setUserDatas({ ...userDatasInput, address: address });
+      setUserDatas({ ...userDatasInput, address: resJSON.address });
     } else {
-      toggleOverlayLocation();
+      setErrorMessage("Veuillez indiquer un lieu valide")
+      toggleOverlay();
     }
   };
+
+  console.log(userDatasInput);
+
+  /*--------------VERIFY INFORMATIONS ONBOARDING ---------------*/
+  useEffect(() => {
+    if (
+      userDatasInput.address &&
+      userDatasInput.status &&
+      userDatasInput.work &&
+      userDatasInput.workType &&
+      userDatasInput.tags.length > 0
+    ) {
+      setAreSelected(true);
+    }
+  }, [userDatasInput]);
 
   /*--------------VALIDATION AND SAVE USER DATAS IN DB------------------*/
   const handleSubmitValid = async () => {
@@ -91,7 +111,7 @@ function OnBoardingStatus(props) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(location),
       });
-      res = await res.json();
+      props.navigation.navigate("Home");
     } else {
       toggleOverlay();
     }
@@ -103,7 +123,7 @@ function OnBoardingStatus(props) {
     setUserDatas(userDatasInputCopy);
   }
 
-  function addFilters(filter, value) {
+  function addTags(filter, value) {
     let userDatasInputCopy = { ...userDatasInput };
     if (!userDatasInputCopy[filter].find((e) => e === value)) {
       userDatasInputCopy[filter] = [...userDatasInputCopy[filter], value];
@@ -114,13 +134,6 @@ function OnBoardingStatus(props) {
     }
     setUserDatas(userDatasInputCopy);
   }
-
-  useEffect(() => {
-    setUserDatas({ ...userDatasInput, location: location });
-  }, [location]);
-
-  //console.log(userDatasInput);
-  //console.log("numéro", page);
 
   var status = (
     <View>
@@ -210,7 +223,7 @@ function OnBoardingStatus(props) {
             <Badge
               key={i}
               value={tag}
-              onPress={() => addFilters("tags", tag)}
+              onPress={() => addTags("tags", tag)}
               containerStyle={{ margin: 5 }}
               status={status}
               textStyle={{ color: color, fontSize: 16 }}
@@ -232,7 +245,7 @@ function OnBoardingStatus(props) {
           placeholder="Indique ta ville"
           onChangeText={(value) => setLocation(value)}
           onSubmitEditing={({ nativeEvent: { text, eventCount, target } }) =>
-          handleVerifyLocation()
+            handleVerifyLocation()
           }
         ></TextInput>
         <FontAwesome
@@ -274,6 +287,13 @@ function OnBoardingStatus(props) {
       style={styles.container}
       source={require("../assets/back.png")}
     >
+      <Overlay
+        overlayStyle={{ width: 300 }}
+        isVisible={visible}
+        onBackdropPress={toggleOverlay}
+      >
+        <Text>{errorMessage}</Text>
+      </Overlay>
       <View style={styles.content}>{content}</View>
       <View style={styles.bottom}>
         <AntDesign

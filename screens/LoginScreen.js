@@ -9,8 +9,8 @@ import {
 } from "react-native";
 import { Overlay, Button, Input } from "@rneui/themed";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {IPLOCAL} from "@env"
-
+// import {IPLOCAL} from "@env"
+const IPLOCAL = "http://172.16.188.131:3000";
 
 function LoginScreen(props) {
   const [visible, setVisible] = useState(false);
@@ -31,7 +31,6 @@ function LoginScreen(props) {
 
   var handleSubmitSignIn = async () => {
     var res = await fetch(`${IPLOCAL}/users/sign-in`, {
-
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `email=${signinEmail}&pwd=${signinPwd}`,
@@ -41,7 +40,11 @@ function LoginScreen(props) {
     if (res.isLogin) {
       AsyncStorage.setItem("userID", res.userDatas._id);
       props.setUserDatas(res.userDatas);
-      props.navigation.navigate("Home");
+      if (res.userDatas.onboarding) {
+        props.navigation.navigate("Home");
+      } else {
+        props.navigation.navigate("OnboardingScreenInfo");
+      }
     } else {
       setErrorMessage(res.errorMessage);
       toggleOverlay();
