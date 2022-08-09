@@ -8,7 +8,7 @@ import {
 	KeyboardAvoidingView,
 } from "react-native";
 import { TextInput } from "react-native-paper";
-import { Divider, SocialIcon, hollowWhite, SpeedDial } from "@rneui/themed";
+import { Divider, SocialIcon, hollowWhite } from "@rneui/themed";
 import { Avatar } from "@rneui/base";
 import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
@@ -325,25 +325,6 @@ function EditingProfileContent(props) {
 				</View>
 			</View>
 		</ScrollView>
-		{/* <SpeedDial
-    isOpen={open}
-	buttonStyle={{backgroundColor: "#E74C3C", width:40, height:40, padding:0, alignSelf: "center"}}
-    icon={<Ionicons name="add" size={22} color="#fff" style={{ alignSelf: "center"}}/>}
-    openIcon={{ name: 'close', color: '#fff' }}
-    onOpen={() => setOpen(!open)}
-    onClose={() => setOpen(!open)}
-  >
-    <SpeedDial.Action
-      icon={{ name: 'add', color: '#fff' }}
-      title="Add"
-      onPress={() => console.log('Add Something')}
-    />
-    <SpeedDial.Action
-      icon={{ name: 'delete', color: '#fff' }}
-      title="Delete"
-      onPress={() => console.log('Delete Something')}
-    />
-  </SpeedDial> */}
 		</View>
 	);
 }
