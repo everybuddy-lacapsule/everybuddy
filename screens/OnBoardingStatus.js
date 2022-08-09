@@ -95,17 +95,7 @@ function OnBoardingStatus(props) {
 
       setAddressValited(true);
       setUserDatas({ ...userDatasInput, address: resJSON.address });
-      console.log(resJSON.address);
-      /*
-      props.getAddress({
-        search: false,
-        searchLocation: {
-          long: resJSON.address.long,
-          lat: resJSON.address.lat,
-        },
-        searchResults: [props.userDatas],
-      });
-      */
+     
     } else {
       console.log("Fause ville");
       setErrorMessage("Veuillez indiquer un lieu valide");
@@ -134,6 +124,16 @@ function OnBoardingStatus(props) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userDatasInput),
       });
+      var dataJSON
+       const getUserDatas = async () => {
+        const response = await fetch(
+        `${IPLOCAL}/users/getUserDatas?userID=${props.userDatas._id}`
+        );
+         dataJSON = await response.json();
+         return dataJSON;
+      };
+      getUserDatas().then(response =>props.setUserDatas(response)).catch(error => console.log(error));
+      
       props.navigation.navigate("Home");
     } else {
       setErrorMessage("Veuillez valider tous les champs");
@@ -462,7 +462,10 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "onboardingSearch",
         resultsOnboarding: resultsOnboarding,
-      });
+      }); 
+    },
+    setUserDatas: function (userDatas) {
+      dispatch({ type: "register", userDatas });
     },
   };
 };

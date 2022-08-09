@@ -16,7 +16,7 @@ function LoginScreen(props) {
   const [signinEmail, setSigninEmail] = useState("");
   const [signinPwd, setSigninPwd] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  console.log(IPLOCAL)
+  console.log('login screen',IPLOCAL)
 
 
   const toggleOverlay = () => {

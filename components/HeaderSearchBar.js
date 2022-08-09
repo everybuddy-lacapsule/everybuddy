@@ -14,7 +14,6 @@ import {IPLOCAL} from "@env"
 function HeaderSearchBar(props) {
   console.log(IPLOCAL)
 
-
   const [location, setLocation] = useState("");
   const [filters, setFilters] = useState({
     nbBatch: "", // Number

@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 import {IPLOCAL} from "@env"
 
 function SplashScreen(props) {
-  console.log(IPLOCAL)
+  console.log('splash screen: ',IPLOCAL)
   useEffect(() => {
     AsyncStorage.getItem("userID", async function (error, userID) {
       if (userID !== null) {

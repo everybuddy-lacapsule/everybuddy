@@ -178,75 +178,77 @@ function ProfileScreen(props) {
             <Text style={styles.badge1}>{alumniDatas.status}</Text>
           </View>
         </View>
-        <View style={styles.view1}>
-          {/* Localisation actuelle */}
-          <Text style={styles.text2}>
-            {alumniDatas.address?.city} {alumniDatas.address?.country}
-          </Text>
-        </View>
-        <View style={styles.tags}>
-          {/* Tags et compétences */}
-          {alumniDatas.tags?.map((tag, i) => {
-            return (
-              <Text style={styles.badge2} key={i}>
-                {tag}
-              </Text>
-            );
-          })}
-        </View>
-
-        <View>
-          <TouchableOpacity
-            style={[styles.button]}
-            onPress={() => {
-              toggleOverlay();
-            }}
-          >
-            <Text style={{ fontSize: 18, color: "#FFFFFF" }}>
-              {"\uD83C\uDF7B"} Proposer une bière
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.button]}
-            onPress={() => {
-              setMsgSent(false);
-            }}
-          >
-            <Text style={{ fontSize: 18, color: "#FFFFFF" }}>
-              {"\uD83D\uDCAA"} Envoyer un message
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        <ScrollView contentContainerStyle={styles.view2} scrollbar>
-          <Text style={styles.title}>RECHERCHE ACTUELLE</Text>
-          <Text style={styles.text2}>{alumniDatas.searchCurrent}</Text>
-          <Text style={styles.title}>PRÉSENTATION</Text>
-          <Text style={styles.text2}>{alumniDatas.presentation}</Text>
-        </ScrollView>
-
-        <Divider
-          color={hollowWhite}
-          style={{ width: " 90%", marginLeft: "5%" }}
-        />
-
-        <View style={styles.icon}>
-          {/* ICONES RESEAUX SOCIAUX */}
-          {/* ------------- TROUVER COMMENT RECUPERER LES LIENS DE LA BDD ! ---------- */}
-          <SocialIcon
-            onPress={() => {
-              Linking.openURL("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
-            }}
-            type="github"
-          />
-          <SocialIcon
-            onPress={() => {
-              Linking.openURL("https://www.linkedin.com/");
-            }}
-            type="linkedin"
-          />
-        </View>
+      <View style={styles.view1}>
+        {/* Localisation actuelle */}
+        <Text style={styles.text2}>
+          {alumniDatas.address?.city} {alumniDatas.address?.country}
+        </Text>
       </View>
+      <ScrollView 
+      style={{ marginHorizontal: 20, minHeight:'7%' }}
+      contentContainerStyle={styles.tags}
+      horizontal={true}>
+        {/* Tags et compétences */}
+        {alumniDatas.tags?.map((tag, i) => {
+          return (
+            <View style={styles.view3} key={i}>
+            <Text style={styles.badge2}>
+              {tag}
+            </Text>
+            </View>
+          );
+        })}
+      </ScrollView>
+
+      <View style={{ marginHorizontal:20}}>
+        <TouchableOpacity
+          style={[styles.button]}
+          onPress={() => {
+            toggleOverlay();
+          }}
+        >
+          <Text style={{ fontSize: 18, color: "#FFFFFF" }}>
+            {"\uD83C\uDF7B"} Proposer une bière
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.button]}
+        onPress={() => {setMsgSent(false);
+          props.navigation.navigate("Chat");}}>
+          <Text style={{ fontSize: 18, color: "#FFFFFF" }}>
+            {"\uD83D\uDCAA"} Envoyer un message
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      <ScrollView contentContainerStyle={styles.view2} scrollbar>
+        <Text style={styles.title}>RECHERCHE ACTUELLE</Text>
+        <Text style={styles.text2}>{alumniDatas.searchCurrent}</Text>
+        <Text style={styles.title}>PRÉSENTATION</Text>
+        <Text style={styles.text2}>{alumniDatas.presentation}</Text>
+      </ScrollView>
+
+      <Divider
+        color={hollowWhite}
+        style={{ width: " 90%", marginLeft: "5%" }}
+      />
+
+      <View style={styles.icon}>
+        {/* ICONES RESEAUX SOCIAUX */}
+        {/* //TODO------------- TROUVER COMMENT RECUPERER LES LIENS DE LA BDD ! ---------- */}
+        <SocialIcon
+          onPress={() => {
+            Linking.openURL("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+          }}
+          type="github"
+        />
+        <SocialIcon
+          onPress={() => {
+            Linking.openURL("https://www.linkedin.com/");
+          }}
+          type="linkedin"
+        />
+      </View>
+    </View>
     </View>
   );
 }

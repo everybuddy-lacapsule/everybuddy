@@ -16,22 +16,41 @@ import MyProfileScreen from "../screens/MyProfileScreen";
 import HeaderSearchBar from "../components/HeaderSearchBar";
 import ChatScreen from "../screens/ChatScreen";
 import { useDrawerStatus } from "@react-navigation/drawer";
+import editionMode from "../reducers/editionMode";
 
 const Tab = createBottomTabNavigator();
 const hiddenTabs = ["Buddies", "MyProfile", "Chat", "ProfileScreen"];
 
 const TabsNavigator = function (props) {
+	console.log('IP in tabs',IPLOCAL)
 	const isLeftDrawerVisible = useDrawerStatus();
 	const [isLeftFocused, setIsLeftFocused] = useState("");
 	const [alumniDatas, setAlumniDatas] = useState({});
+	const [editing, setEditing] = useState(false);
+
+	useEffect(()=>{
+		props.editionMode(editing);
+
+	}, [])
 
 	useEffect(() => {
 		if (isLeftDrawerVisible == "open") {
 			setIsLeftFocused(isLeftDrawerVisible);
 		} else {
 			setIsLeftFocused(isLeftDrawerVisible);
-		}
+		};
 	}, [isLeftDrawerVisible]);
+	  /*--------------VALIDATION AND SAVE USER DATAS IN DB------------------*/
+  // A METTRE DANS LE HEADER CONCERNE
+  const updateProfileSumbit = async () => {
+    var res = await fetch(`${IPLOCAL}/users/updateProfile`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(props.userDatas),
+    });
+    res = await res.json();
+  };
+
 
 	useEffect(() => {			
 		const getAlumnisDatas = async () => {
@@ -193,8 +212,8 @@ const TabsNavigator = function (props) {
 					headerRight: () => (
 						<TouchableOpacity
 							style={styles.right}
-							//TODO enable profile modification mode
-							//TODO onPress={() => }
+							//* enable profile modification mode
+							onPress={() => {console.log('toggle', editing);props.editionMode(!props.editingMode); updateProfileSumbit()}}
 						>
 							<Ionicons name="pencil" size={25} color="white" />
 						</TouchableOpacity>
@@ -285,15 +304,19 @@ const mapStateToProps = (state) => {
 	return {
 		drawerStatus: state.drawerStatus,
 		alumniIDSearch: state.alumniIDSearch,
+		editingMode: state.editionMode
 	};
 };
 
 function mapDispatchToProps(dispatch) {
-  return {
-    leftDrawerStatus: function (status) {
-      dispatch({ type: "leftDrawer status", leftDrawerStatus: status });
-    },
-  };
+	return {
+		leftDrawerStatus: function (status) {
+			dispatch({ type: "leftDrawer status", leftDrawerStatus: status });
+		},
+		editionMode: function (status) {
+			dispatch({ type: "toggleEditionMode", editionMode: status });
+		},
+	};
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TabsNavigator);
