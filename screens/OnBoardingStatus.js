@@ -14,11 +14,11 @@ import { AntDesign, Octicons } from "@expo/vector-icons";
 import { Badge, Overlay } from "@rneui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 
-const IPLOCAL = "http://172.16.188.131:3000";
+import {IPLOCAL} from "@env"
 
 function OnBoardingStatus(props) {
   const [page, setPage] = useState(1);
-
+  console.log(IPLOCAL)
   /*----------------Locals Stats => set datas = datas from DB----------------------*/
   const [statusDatasList, setStatusDatasList] = useState([]);
   const [visible, setVisible] = useState(false);

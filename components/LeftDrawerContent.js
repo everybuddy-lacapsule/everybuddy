@@ -46,7 +46,7 @@ function CustomLeftDrawerContent(props) {
 					label="Se déconnecter"
 					inactiveTintColor={hollowWhite}
 					activeTintColor="white"
-					onPress={() => {AsyncStorage.clear(), props.navigation.navigate("LoginScreen")}}
+					onPress={() => {AsyncStorage.clear(), props.navigation.navigate("SplashScreen")}}
 				></DrawerItem>
 			</DrawerContentScrollView>
 		</LinearGradient>

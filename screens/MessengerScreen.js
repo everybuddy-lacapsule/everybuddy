@@ -1,5 +1,4 @@
 import {StyleSheet, View, ScrollView} from "react-native";
-
 import { connect } from "react-redux";
 import Discussion from "../components/DiscussionComponent";
 
@@ -8,11 +7,11 @@ import {IPLOCAL} from "@env"
 //import socketIOClient from "socket.io-client";
 import { useEffect, useState } from "react";
 
-
 function MessengerScreen(props) {
 
   //const isFocused = useIsFocused();
   const [discussions, setDiscussions] = useState([]);
+  console.log(IPLOCAL)
 
   useEffect(() => {
     const getDiscussions = async () => {

@@ -11,6 +11,7 @@ function Discussion({ discussionID, discussion, currentUser, navigation, getDisc
   const isFocused = useIsFocused();
   const [anotherMember, setAnotherMember] = useState({});
   const [lastMessage, setLastMessage] = useState("");
+  console.log(IPLOCAL)
 
   useEffect(() => {
     const anotherMemberID = discussion.memberIDs.find(

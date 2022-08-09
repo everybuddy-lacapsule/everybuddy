@@ -10,14 +10,15 @@ import {
 import { Divider, SocialIcon, hollowWhite, Overlay } from "@rneui/themed";
 import { Avatar } from "@rneui/base";
 import { connect } from "react-redux";
-// import { IPLOCAL } from "@env";
-const IPLOCAL = "http://172.16.189.144:3000";
+import { IPLOCAL } from "@env";
 
 function ProfileScreen(props) {
   const [alumniDatas, setAlumniDatas] = useState({});
   const [visible, setVisible] = useState(false);
   const [msgSent, setMsgSent] = useState(null);
   const [discussionID, setDiscussionID] = useState('');
+  console.log(IPLOCAL)
+
 
   const toggleOverlay = () => {
     setVisible(!visible);
@@ -83,6 +84,7 @@ function ProfileScreen(props) {
             discussionID: discussionID,
             anotherMember: alumniDatas,
           });
+          props.navigation.navigate("Chat")
         }
       };
       sendDefaultMsg();
@@ -175,8 +177,7 @@ function ProfileScreen(props) {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.button]}
-        onPress={() => {setMsgSent(false);
-          props.navigation.navigate("Chat");}}>
+        onPress={() => {setMsgSent(false)}}>
           <Text style={{ fontSize: 18, color: "#FFFFFF" }}>
             {"\uD83D\uDCAA"} Envoyer un message
           </Text>

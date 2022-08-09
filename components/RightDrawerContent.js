@@ -19,11 +19,12 @@ import { IPLOCAL } from "@env";
 //* RIGHT DRAWER CONTENT
 function CustomRightDrawerContent(props) {
   let colors = ["#FF1744", "#F94A56", "#7C4DFF"];
-
+  console.log(IPLOCAL)
   // Etats du slider radius
   const [km, setKm] = useState(10);
   const [batch, setBatch] = useState("");
   const [location, setLocation] = useState("");
+  
 
   // Etats pour dérouler et afficher les différentes catégories
   const [expandedCapsule, setExpandedCapsule] = useState(false);

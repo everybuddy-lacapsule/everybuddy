@@ -8,10 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Overlay, Input } from "@rneui/themed";
-
-// import {IPLOCAL} from "@env"
-const IPLOCAL = "http://172.16.190.135:3000";
-
+import {IPLOCAL} from "@env"
 
 function CheckEmailScreen(props) {
   const [visible, setVisible] = useState(false);
