@@ -8,8 +8,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Overlay, Input } from "@rneui/themed";
-
 import {IPLOCAL} from "@env"
+
 
 function CheckEmailScreen(props) {
   const [visible, setVisible] = useState(false);

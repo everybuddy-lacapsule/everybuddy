@@ -7,10 +7,12 @@ import { useIsFocused } from "@react-navigation/native";
 
 import {IPLOCAL} from "@env"
 
+
 function Discussion({ discussionID, discussion, currentUser, navigation, getDiscussionID }) {
   const isFocused = useIsFocused();
   const [anotherMember, setAnotherMember] = useState({});
   const [lastMessage, setLastMessage] = useState("");
+  console.log(IPLOCAL)
 
   useEffect(() => {
     const anotherMemberID = discussion.memberIDs.find(

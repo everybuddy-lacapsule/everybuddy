@@ -15,11 +15,11 @@ import BottomDrawer from "react-native-bottom-drawer-view";
 import { connect } from "react-redux";
 import { IPLOCAL } from "@env";
 
-
 function MapScreen(props) {
   const [resultLink, setResultLink] = useState("liste");
   // Radius default, unit = meter
   const [buddyList, setBuddyList] = useState([]);
+  console.log(IPLOCAL)
 
   /*--------------------Generate circle radius when search is true (reducer searchResult)-------------*/
   let circle;

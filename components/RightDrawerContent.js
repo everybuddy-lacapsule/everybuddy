@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
-import { Divider, Switch, Badge, Slider, Icon, Button } from "@rneui/themed";
+import { Divider, Switch, Badge, Slider, Icon } from "@rneui/themed";
 import { LinearGradient } from "expo-linear-gradient";
 import { ListItem } from "@rneui/base";
 import { ListItemAccordion } from "@rneui/base/dist/ListItem/ListItem.Accordion";
@@ -19,11 +19,12 @@ import { IPLOCAL } from "@env";
 //* RIGHT DRAWER CONTENT
 function CustomRightDrawerContent(props) {
   let colors = ["#FF1744", "#F94A56", "#7C4DFF"];
-
+  console.log(IPLOCAL)
   // Etats du slider radius
   const [km, setKm] = useState(10);
   const [batch, setBatch] = useState("");
   const [location, setLocation] = useState("");
+
 
   // Etats pour dérouler et afficher les différentes catégories
   const [expandedCapsule, setExpandedCapsule] = useState(false);

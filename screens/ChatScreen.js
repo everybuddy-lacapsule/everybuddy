@@ -14,16 +14,20 @@ import { FontAwesome } from "@expo/vector-icons";
 import { useState, useEffect, useRef } from "react";
 import InsetShadow from "react-native-inset-shadow";
 import { connect } from "react-redux";
-// change hook useIsFocused by option unmountOnBlur in the Chat Screen in TabsNavigator 
+// import { format } from "timeago.js";
+//import moment from "moment";
+import moment from 'moment/min/moment-with-locales';
+
+// change hook useIsFocused by option unmountOnBlur in the Chat Screen in TabsNavigator
 //import { useIsFocused } from "@react-navigation/native";
 
-import {IPLOCAL} from "@env"
-
+import { IPLOCAL } from "@env";
 
 /*----Web socket----*/
 import socketIOClient from "socket.io-client";
 
 function ChatScreen(props) {
+  console.log(IPLOCAL)
   //const isFocused = useIsFocused();
   const socket = useRef();
   const scrollRef = useRef();
@@ -41,8 +45,10 @@ function ChatScreen(props) {
         roomID: props.discussionInfos.discussionID,
       },
     });
-  //}, [isFocused]);
-}, []);
+    // set local to fr (default en)
+    moment.locale("fr");
+    //}, [isFocused]);
+  }, []);
 
   /*GET all messages ONCE TIME from Database when ChatScreen is loaded*/
   useEffect(() => {
@@ -83,8 +89,8 @@ function ChatScreen(props) {
       socket.current.off("sendMessageServer");
       //console.log("se désabonner");
     }; // for delete all: // socket.off()
-  //}, [isFocused, allMessages]); // observer le prix du forfait
-}, [allMessages]); // observer le prix du forfait
+    //}, [isFocused, allMessages]); // observer le prix du forfait
+  }, [allMessages]); // observer le prix du forfait
 
   /* Send socket to  */
   const handleGetMessage = async () => {
@@ -95,14 +101,11 @@ function ChatScreen(props) {
     };
     try {
       /* SEND message to DB */
-      const messageDB = await fetch(
-        `${IPLOCAL}/messages/addMessage`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: `message=${currentMessage.content}&discussionID=${currentMessage.discussionID}&userID=${currentMessage.senderID}`,
-        }
-      );
+      const messageDB = await fetch(`${IPLOCAL}/messages/addMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `message=${currentMessage.content}&discussionID=${currentMessage.discussionID}&userID=${currentMessage.senderID}`,
+      });
       const messageDBJson = await messageDB.json();
 
       socket.current.emit("sendMessage", messageDBJson);
@@ -137,6 +140,9 @@ function ChatScreen(props) {
               <Text style={{ textAlign: "right", color: "white" }}>
                 {m.content}
               </Text>
+              <Text style={{ textAlign: "right", color: "white", fontSize: 8 }}>
+                {moment(m.dateSend).format("lll")}
+              </Text>
             </View>
           </LinearGradient>
         </View>
@@ -163,6 +169,9 @@ function ChatScreen(props) {
               </Text>
               <Text style={{ textAlign: "left", color: "white" }}>
                 {m.content}
+              </Text>
+              <Text style={{ textAlign: "left", color: "white", fontSize: 8 }}>
+                {moment(m.dateSend).format("lll")}
               </Text>
             </View>
           </LinearGradient>
