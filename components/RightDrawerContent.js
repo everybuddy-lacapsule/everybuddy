@@ -14,13 +14,14 @@ import { ListItemAccordion } from "@rneui/base/dist/ListItem/ListItem.Accordion"
 import { FontAwesome } from "@expo/vector-icons";
 
 import { connect } from "react-redux";
-import { IPLOCAL } from "@env";
+import { REACT_APP_DEV_MODE } from "@env";
+
 
 //* RIGHT DRAWER CONTENT
 function CustomRightDrawerContent(props) {
-  console.log(IPLOCAL)
+  console.log(REACT_APP_DEV_MODE)
   let colors = ["#FF1744", "#F94A56", "#7C4DFF"];
-  console.log(IPLOCAL)
+  console.log(REACT_APP_DEV_MODE)
   // Etats du slider radius
   const [km, setKm] = useState(10);
   const [batch, setBatch] = useState("");
@@ -91,7 +92,7 @@ function CustomRightDrawerContent(props) {
   async function loadSearchResults() {
     // sans ce commentaire, ca marche pas !!! Si tu delte je te nique tes morts
     var searchResults = await fetch(
-      `${IPLOCAL}/search`, 
+      `${REACT_APP_DEV_MODE}/search`, 
       {
       method: "post",
       headers: { "Content-Type": "application/json" },

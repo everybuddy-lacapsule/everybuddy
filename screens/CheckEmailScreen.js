@@ -8,8 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Overlay, Input } from "@rneui/themed";
-import {IPLOCAL} from "@env"
-
+import {REACT_APP_DEV_MODE} from "@env"
 
 function CheckEmailScreen(props) {
   const [visible, setVisible] = useState(false);
@@ -22,7 +21,7 @@ function CheckEmailScreen(props) {
 
   //------------------ FETCH récupère en BDD ------------------------------------
   var handleCheckEmail = async () => {
-    var res = await fetch(`${IPLOCAL}/users/check-email`, {
+    var res = await fetch(`${REACT_APP_DEV_MODE}/users/check-email`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `email=${signinEmail}`,

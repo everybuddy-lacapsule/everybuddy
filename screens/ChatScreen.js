@@ -21,13 +21,14 @@ import moment from 'moment/min/moment-with-locales';
 // change hook useIsFocused by option unmountOnBlur in the Chat Screen in TabsNavigator
 //import { useIsFocused } from "@react-navigation/native";
 
-import { IPLOCAL } from "@env";
+import { REACT_APP_DEV_MODE } from "@env";
+
 
 /*----Web socket----*/
 import socketIOClient from "socket.io-client";
 
 function ChatScreen(props) {
-  console.log(IPLOCAL)
+  console.log(REACT_APP_DEV_MODE)
   //const isFocused = useIsFocused();
   const socket = useRef();
   const scrollRef = useRef();
@@ -40,7 +41,7 @@ function ChatScreen(props) {
 
   useEffect(() => {
     // init socket.current value with extraHeader which contain a room id (=> discussionID)
-    socket.current = socketIOClient(IPLOCAL, {
+    socket.current = socketIOClient(REACT_APP_DEV_MODE, {
       extraHeaders: {
         roomID: props.discussionInfos.discussionID,
       },
@@ -54,7 +55,7 @@ function ChatScreen(props) {
   useEffect(() => {
     const getMessagesFromDB = async () => {
       const messagesFromDB = await fetch(
-        `${IPLOCAL}/messages/${props.discussionInfos.discussionID}`
+        `${REACT_APP_DEV_MODE}/messages/${props.discussionInfos.discussionID}`
       );
       let messagesFromDBJSON = await messagesFromDB.json();
       setAllMessages(messagesFromDBJSON);
@@ -101,7 +102,7 @@ function ChatScreen(props) {
     };
     try {
       /* SEND message to DB */
-      const messageDB = await fetch(`${IPLOCAL}/messages/addMessage`, {
+      const messageDB = await fetch(`${REACT_APP_DEV_MODE}/messages/addMessage`, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: `message=${currentMessage.content}&discussionID=${currentMessage.discussionID}&userID=${currentMessage.senderID}`,

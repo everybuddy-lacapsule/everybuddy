@@ -9,14 +9,15 @@ import {
 } from "react-native";
 import { Overlay, Input } from "@rneui/themed";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {IPLOCAL} from "@env"
+import {REACT_APP_DEV_MODE} from "@env"
+
 
 function LoginScreen(props) {
   const [visible, setVisible] = useState(false);
   const [signinEmail, setSigninEmail] = useState("");
   const [signinPwd, setSigninPwd] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  console.log('login screen',IPLOCAL)
+  console.log('login screen',REACT_APP_DEV_MODE)
 
 
   const toggleOverlay = () => {
@@ -31,7 +32,7 @@ function LoginScreen(props) {
   }, [props.userEmail]);
 
   var handleSubmitSignIn = async () => {
-    var res = await fetch(`${IPLOCAL}/users/sign-in`, {
+    var res = await fetch(`${REACT_APP_DEV_MODE}/users/sign-in`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `email=${signinEmail}&pwd=${signinPwd}`,

@@ -8,15 +8,16 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connect } from "react-redux";
-import {IPLOCAL} from "@env"
+import {REACT_APP_DEV_MODE} from "@env"
 
 function SplashScreen(props) {
-  console.log('splash screen: ',IPLOCAL)
+  console.log('splash screen: ',REACT_APP_DEV_MODE)
+
   useEffect(() => {
     AsyncStorage.getItem("userID", async function (error, userID) {
       if (userID !== null) {
         var datas = await fetch(
-          `${IPLOCAL}/users/getUserDatas?userID=${userID}`
+          `${REACT_APP_DEV_MODE}/users/getUserDatas?userID=${userID}`
         );
         datas = await datas.json();
         props.setUserDatas(datas.userDatas);

@@ -11,7 +11,7 @@ import { Divider, SocialIcon, hollowWhite } from "@rneui/themed";
 import { Avatar } from "@rneui/base";
 import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
-import { IPLOCAL } from "@env";
+import { REACT_APP_DEV_MODE } from "@env";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Picker } from "@react-native-picker/picker";
 
@@ -37,7 +37,7 @@ function EditingProfileContent(props) {
 	console.log('campus liste de merde', campusList)
 	/*----------------Function => get datas from DB----------------------*/
 	const getDatasFromDB = async (typeDatas) => {
-		const datas = await fetch(`${IPLOCAL}/datas/${typeDatas}`);
+		const datas = await fetch(`${REACT_APP_DEV_MODE}/datas/${typeDatas}`);
 		const datasJSON = await datas.json();
 		return datasJSON;
 	};
@@ -96,6 +96,7 @@ function EditingProfileContent(props) {
 		setUserDatasInput(userDatasInputCopy);
 	}
 	useEffect(() => {
+		console.log('in editing profile content', userDatasInput);
 		props.setUserDatas(userDatasInput);
 	}, [userDatasInput]);
 

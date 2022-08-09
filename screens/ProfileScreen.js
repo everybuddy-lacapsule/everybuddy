@@ -10,9 +10,8 @@ import {
 import { Divider, SocialIcon, hollowWhite, Overlay } from "@rneui/themed";
 import { Avatar } from "@rneui/base";
 import { connect } from "react-redux";
-import { IPLOCAL } from "@env";
+import { REACT_APP_DEV_MODE } from "@env";
 import { Ionicons } from '@expo/vector-icons'; 
-
 
 
 function ProfileScreen(props) {
@@ -20,7 +19,7 @@ function ProfileScreen(props) {
   const [visible, setVisible] = useState(false);
   const [msgSent, setMsgSent] = useState(null);
   const [discussionID, setDiscussionID] = useState('');
-  console.log(IPLOCAL)
+  console.log(REACT_APP_DEV_MODE)
 
 
   const toggleOverlay = () => {
@@ -30,7 +29,7 @@ function ProfileScreen(props) {
   useEffect(() => {
     const getAlumnisDatas = async () => {
       const response = await fetch(
-        `${IPLOCAL}/users/getUserDatas?userID=${props.alumniIDSearch}`
+        `${REACT_APP_DEV_MODE}/users/getUserDatas?userID=${props.alumniIDSearch}`
       );
       const dataJSON = await response.json();
       setAlumniDatas(dataJSON.userDatas);
@@ -40,7 +39,7 @@ function ProfileScreen(props) {
     const getDiscussion = async () => {
       /* --------------- FIND DISCUSSIONID IF EXIST/ ELSE CREATE A NEW DISCUSSION  ---------------- */
       const discussionIDRes = await fetch(
-        `${IPLOCAL}/discussions/createDiscussion`,
+        `${REACT_APP_DEV_MODE}/discussions/createDiscussion`,
         {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -59,7 +58,7 @@ function ProfileScreen(props) {
     const getDiscussion = async () => {
       /* --------------- FIND DISCUSSIONID IF EXIST/ ELSE CREATE A NEW DISCUSSION  ---------------- */
       const discussionIDRes = await fetch(
-        `${IPLOCAL}/discussions/createDiscussion`,
+        `${REACT_APP_DEV_MODE}/discussions/createDiscussion`,
         {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -85,7 +84,7 @@ function ProfileScreen(props) {
         };
         try {
           // SEND message to DB
-          const saveMsgToDB = await fetch(`${IPLOCAL}/messages/addMessage`, {
+          const saveMsgToDB = await fetch(`${REACT_APP_DEV_MODE}/messages/addMessage`, {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: `message=${defautMsgToDB.content}&discussionID=${defautMsgToDB.discussionID}&userID=${defautMsgToDB.senderID}`,

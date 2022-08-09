@@ -9,10 +9,11 @@ import {
 import { FontAwesome } from "@expo/vector-icons";
 
 import { connect } from "react-redux";
-import {IPLOCAL} from "@env"
+import {REACT_APP_DEV_MODE} from "@env"
+
 
 function HeaderSearchBar(props) {
-  console.log(IPLOCAL)
+  console.log(REACT_APP_DEV_MODE)
 
   const [location, setLocation] = useState("");
   const [filters, setFilters] = useState({
@@ -32,7 +33,7 @@ function HeaderSearchBar(props) {
 
   async function loadSearchResults() {
     var searchResults = await fetch(
-      `${IPLOCAL}/search`,
+      `${REACT_APP_DEV_MODE}/search`,
       {method: "post",
       headers:{'Content-Type': 'application/json'},
       body: JSON.stringify(filters),

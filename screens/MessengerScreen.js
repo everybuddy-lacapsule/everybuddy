@@ -2,7 +2,7 @@ import {StyleSheet, View, ScrollView} from "react-native";
 import { connect } from "react-redux";
 import Discussion from "../components/DiscussionComponent";
 
-import {IPLOCAL} from "@env"
+import {REACT_APP_DEV_MODE} from "@env"
 // change hook useIsFocused by option unmountOnBlur in the Messenger Screen in TabsNavigator
 //import { useIsFocused } from "@react-navigation/native";
 
@@ -13,12 +13,13 @@ function MessengerScreen(props) {
 
   //const isFocused = useIsFocused();
   const [discussions, setDiscussions] = useState([]);
-  console.log(IPLOCAL)
+  console.log(REACT_APP_DEV_MODE)
+
 
   useEffect(() => {
     const getDiscussions = async () => {
       try{
-        const response = await fetch(`${IPLOCAL}/discussions/${props.userDatas._id}`);
+        const response = await fetch(`${REACT_APP_DEV_MODE}/discussions/${props.userDatas._id}`);
         let userDiscussions = await response.json();
         setDiscussions(userDiscussions);
       }

@@ -14,11 +14,12 @@ import { AntDesign, Octicons } from "@expo/vector-icons";
 import { Badge, Overlay } from "@rneui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 
-import {IPLOCAL} from "@env"
+import {REACT_APP_DEV_MODE} from "@env"
+
 
 function OnBoardingStatus(props) {
   const [page, setPage] = useState(1);
-  console.log(IPLOCAL)
+  console.log(REACT_APP_DEV_MODE)
   /*----------------Locals Stats => set datas = datas from DB----------------------*/
   const [statusDatasList, setStatusDatasList] = useState([]);
   const [visible, setVisible] = useState(false);
@@ -46,7 +47,7 @@ function OnBoardingStatus(props) {
   });
   /*----------------Function => get datas from DB----------------------*/
   const getDatasFromDB = async (typeDatas) => {
-    const datas = await fetch(`${IPLOCAL}/datas/${typeDatas}`);
+    const datas = await fetch(`${REACT_APP_DEV_MODE}/datas/${typeDatas}`);
     const datasJSON = await datas.json();
     return datasJSON;
   };
@@ -73,7 +74,7 @@ function OnBoardingStatus(props) {
 
   /*--------------VERIFY LOCATION ---------------*/
   const handleVerifyLocation = async () => {
-    const res = await fetch(`${IPLOCAL}/users/userLocation`, {
+    const res = await fetch(`${REACT_APP_DEV_MODE}/users/userLocation`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `location=${location}`,
@@ -119,7 +120,7 @@ function OnBoardingStatus(props) {
   /*--------------VALIDATION AND SAVE USER DATAS IN DB------------------*/
   const handleSubmitValid = async () => {
     if (areSelected) {
-      var res = await fetch(`${IPLOCAL}/users/userDatas`, {
+      var res = await fetch(`${REACT_APP_DEV_MODE}/users/userDatas`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userDatasInput),
@@ -127,7 +128,7 @@ function OnBoardingStatus(props) {
       var dataJSON
        const getUserDatas = async () => {
         const response = await fetch(
-        `${IPLOCAL}/users/getUserDatas?userID=${props.userDatas._id}`
+        `${REACT_APP_DEV_MODE}/users/getUserDatas?userID=${props.userDatas._id}`
         );
          dataJSON = await response.json();
          return dataJSON;

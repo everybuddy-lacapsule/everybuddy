@@ -5,14 +5,13 @@ import { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
 
-import {IPLOCAL} from "@env"
-
+import {REACT_APP_DEV_MODE} from "@env"
 
 function Discussion({ discussionID, discussion, currentUser, navigation, getDiscussionID }) {
   const isFocused = useIsFocused();
   const [anotherMember, setAnotherMember] = useState({});
   const [lastMessage, setLastMessage] = useState("");
-  console.log(IPLOCAL)
+  console.log(REACT_APP_DEV_MODE)
 
   useEffect(() => {
     const anotherMemberID = discussion.memberIDs.find(
@@ -21,7 +20,7 @@ function Discussion({ discussionID, discussion, currentUser, navigation, getDisc
 
     const getAnotherMember = async () => {
       const response = await fetch(
-        `${IPLOCAL}/users/getUserDatas?userID=${anotherMemberID}`
+        `${REACT_APP_DEV_MODE}/users/getUserDatas?userID=${anotherMemberID}`
       );
       const dataJSON = await response.json();
       setAnotherMember(dataJSON.userDatas);
@@ -33,7 +32,7 @@ function Discussion({ discussionID, discussion, currentUser, navigation, getDisc
   useEffect(() => {
     const displayLastMessage = async ()=> {
     const response =  await fetch(
-      `${IPLOCAL}/messages/${discussionID}/lastMessage`
+      `${REACT_APP_DEV_MODE}/messages/${discussionID}/lastMessage`
     );
 
     const dataJSON = await response.json();

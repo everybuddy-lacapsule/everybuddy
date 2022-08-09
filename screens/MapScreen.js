@@ -13,13 +13,14 @@ import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import BottomDrawer from "react-native-bottom-drawer-view";
 import { connect } from "react-redux";
-import { IPLOCAL } from "@env";
+import { REACT_APP_DEV_MODE } from "@env";
+
 
 function MapScreen(props) {
   const [resultLink, setResultLink] = useState("liste");
   // Radius default, unit = meter
   const [buddyList, setBuddyList] = useState([]);
-  console.log(IPLOCAL)
+  console.log(REACT_APP_DEV_MODE)
 
   /*--------------------Generate circle radius when search is true (reducer searchResult)-------------*/
   let circle;
@@ -70,7 +71,7 @@ function MapScreen(props) {
   const getDiscussion = async (alumniID) => {
     /*-------------------Receive discussionID from backend-------------------*/
     const discussionIDRes = await fetch(
-      `${IPLOCAL}/discussions/createDiscussion`,
+      `${REACT_APP_DEV_MODE}/discussions/createDiscussion`,
       {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -80,7 +81,7 @@ function MapScreen(props) {
     const discussionIDJSON = await discussionIDRes.json();
     /*-------------------Receive alumi information from backend-------------------*/
     const alumniInfos = await fetch(
-      `${IPLOCAL}/users/getUserDatas?userID=${alumniID}`
+      `${REACT_APP_DEV_MODE}/users/getUserDatas?userID=${alumniID}`
     );
     const alumniInfosJSON = await alumniInfos.json();
     props.getDiscussionID({

@@ -5,7 +5,8 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { Feather } from '@expo/vector-icons'; 
 import { Ionicons } from "@expo/vector-icons";
 import { connect } from "react-redux";
-import { IPLOCAL } from "@env";
+import { REACT_APP_DEV_MODE } from "@env";
+
 
 import MapScreen from "../screens/MapScreen";
 import NewsScreen from "../screens/NewsScreen";
@@ -17,12 +18,13 @@ import HeaderSearchBar from "../components/HeaderSearchBar";
 import ChatScreen from "../screens/ChatScreen";
 import { useDrawerStatus } from "@react-navigation/drawer";
 import editionMode from "../reducers/editionMode";
+import { clockRunning } from "react-native-reanimated";
 
 const Tab = createBottomTabNavigator();
 const hiddenTabs = ["Buddies", "MyProfile", "Chat", "ProfileScreen"];
 
 const TabsNavigator = function (props) {
-	console.log('IP in tabs',IPLOCAL)
+	console.log('IP in tabs',REACT_APP_DEV_MODE)
 	const isLeftDrawerVisible = useDrawerStatus();
 	const [isLeftFocused, setIsLeftFocused] = useState("");
 	const [alumniDatas, setAlumniDatas] = useState({});
@@ -43,7 +45,8 @@ const TabsNavigator = function (props) {
 	  /*--------------VALIDATION AND SAVE USER DATAS IN DB------------------*/
   // A METTRE DANS LE HEADER CONCERNE
   const updateProfileSumbit = async () => {
-    var res = await fetch(`${IPLOCAL}/users/updateProfile`, {
+	console.log('in tabsnavigator: ',props.userDatas)
+    var res = await fetch(`${REACT_APP_DEV_MODE}/users/updateProfile`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(props.userDatas),
@@ -55,7 +58,7 @@ const TabsNavigator = function (props) {
 	useEffect(() => {			
 		const getAlumnisDatas = async () => {
 		  const response = await fetch(
-			`${IPLOCAL}/users/getUserDatas?userID=${props.alumniIDSearch}`
+			`${REACT_APP_DEV_MODE}/users/getUserDatas?userID=${props.alumniIDSearch}`
 		  );
 		  const dataJSON = await response.json();
 		  setAlumniDatas(dataJSON.userDatas);
@@ -304,7 +307,8 @@ const mapStateToProps = (state) => {
 	return {
 		drawerStatus: state.drawerStatus,
 		alumniIDSearch: state.alumniIDSearch,
-		editingMode: state.editionMode
+		editingMode: state.editionMode,
+		userDatas: state.userDatas,
 	};
 };
 
