@@ -15,8 +15,6 @@ import { FontAwesome } from "@expo/vector-icons";
 
 import { connect } from "react-redux";
 import { IPLOCAL } from "@env";
-//var urlLocal = 'http://'+IPLOCAL+':3000'
-const urlLocal = "http://172.16.188.131:3000";
 
 //* RIGHT DRAWER CONTENT
 function CustomRightDrawerContent(props) {
@@ -92,7 +90,7 @@ function CustomRightDrawerContent(props) {
   async function loadSearchResults() {
     // sans ce commentaire, ca marche pas !!! Si tu delte je te nique tes morts
     var searchResults = await fetch(
-      `${urlLocal}/search`, 
+      `${IPLOCAL}/search`, 
       {
       method: "post",
       headers: { "Content-Type": "application/json" },

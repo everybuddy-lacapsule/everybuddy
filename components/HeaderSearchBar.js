@@ -10,7 +10,6 @@ import { FontAwesome } from "@expo/vector-icons";
 
 import { connect } from "react-redux";
 import {IPLOCAL} from "@env"
-var urlLocal = 'http://172.16.188.131:3000'
 
 function HeaderSearchBar(props) {
   console.log(IPLOCAL)
@@ -34,7 +33,7 @@ function HeaderSearchBar(props) {
 
   async function loadSearchResults() {
     var searchResults = await fetch(
-      `${urlLocal}/search`,
+      `${IPLOCAL}/search`,
       {method: "post",
       headers:{'Content-Type': 'application/json'},
       body: JSON.stringify(filters),
