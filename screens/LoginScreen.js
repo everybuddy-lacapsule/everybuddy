@@ -43,6 +43,13 @@ function LoginScreen(props) {
     if (res.isLogin) {
       AsyncStorage.setItem("userID", res.userDatas._id);
       props.setUserDatas(res.userDatas);
+
+      var buddiesDatas = await fetch(
+        `${REACT_APP_DEV_MODE}/buddies/?userID=${res.userDatas._id}`
+      );
+      buddiesDatas = await buddiesDatas.json();
+      props.setBuddiesListFromDB(buddiesDatas.buddiesInfos);
+
       if (res.userDatas.onboarding) {
         props.navigation.navigate("Home");
       } else {
@@ -159,6 +166,9 @@ function mapDispatchToProps(dispatch) {
     setUserDatas: function (userDatas) {
       dispatch({ type: "register", userDatas });
     },
+    setBuddiesListFromDB: function (buddiesList) {
+      dispatch({ type: "setBuddiesList", buddiesList });
+      },
   };
 }
 

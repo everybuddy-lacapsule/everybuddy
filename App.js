@@ -12,30 +12,32 @@ import drawerStatus from "./reducers/drawerStatus";
 import leftDrawerStatus from "./reducers/leftDrawerStatus";
 import alumniIDSearch from "./reducers/alumniIDSearch";
 import editionMode from "./reducers/editionMode";
+import buddiesList from "./reducers/buddiesList";
 
 LogBox.ignoreAllLogs();
 
 const store = createStore(
-	combineReducers({
-		userDatas,
-		userEmail,
-		searchResults,
-		discussionInfos,
-		drawerStatus,
-		leftDrawerStatus,
-		alumniIDSearch,
+  combineReducers({
+    userDatas,
+    userEmail,
+    searchResults,
+    discussionInfos,
+    drawerStatus,
+    leftDrawerStatus,
+    alumniIDSearch,
     editionMode,
-	})
+    buddiesList,
+  })
 );
 
 // APP ----------------------------------------------------------------
 export default function App() {
-	return (
-		<Provider store={store}>
-			<NavigationContainer>
-				<StatusBar backgroundColor="#8686b3" barStyle="default" />
-				<StackNavigator />
-			</NavigationContainer>
-		</Provider>
-	);
+  return (
+    <Provider store={store}>
+      <NavigationContainer>
+        <StatusBar backgroundColor="#8686b3" barStyle="default" />
+        <StackNavigator />
+      </NavigationContainer>
+    </Provider>
+  );
 }

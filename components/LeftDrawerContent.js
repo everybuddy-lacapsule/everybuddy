@@ -23,7 +23,7 @@ function CustomLeftDrawerContent(props) {
 			<DrawerContentScrollView {...props}>
 				<DrawerItemList {...props} />
 				<DrawerItem
-					label="Buddies"
+					label="Mes Buddies"
 					inactiveTintColor={hollowWhite}
 					activeTintColor="white"
 					onPress={() => props.navigation.navigate("Buddies")}
