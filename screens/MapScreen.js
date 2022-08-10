@@ -19,8 +19,8 @@ import { REACT_APP_DEV_MODE } from "@env";
 function MapScreen(props) {
   const [resultLink, setResultLink] = useState("liste");
   // Radius default, unit = meter
-  const [buddyList, setBuddyList] = useState([]);
-  console.log(REACT_APP_DEV_MODE);
+  //const [buddyList, setBuddyList] = useState(props.buddiesList);
+  //console.log(REACT_APP_DEV_MODE);
 
   /*--------------------Generate circle radius when search is true (reducer searchResult)-------------*/
   let circle;
@@ -61,18 +61,35 @@ function MapScreen(props) {
           }
         }}
       >
-        <Avatar source={{uri :user.avatar}} rounded/>
-        </Marker>
+        <Avatar source={{ uri: user.avatar }} rounded />
+      </Marker>
     );
   });
-
-  function addBuddy(buddy) {
-    if (!buddyList.find((o) => o._id === buddy._id)) {
-      setBuddyList([...buddyList, buddy]);
+  /*--------------------ADD / REMOVE A BUDDY ------------*/
+  const updateBuddies = async (buddy) => {
+    if (props.buddiesList.find((o) => o._id === buddy._id)) {
+      /*------------------------------Remove buddy if exist in list----------------------- */
+      const response = await fetch(
+        `${REACT_APP_DEV_MODE}/buddies/deleteBuddy`,
+        {
+          method: "DELETE",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: `userID=${props.userDatas._id}&buddyID=${buddy._id}`,
+        }
+      );
+      const responseJSON = await response.json();
+      return responseJSON;
     } else {
-      setBuddyList(buddyList.filter((o) => o._id !== buddy._id));
+      /*------------------------------Add buddy if not exist in list----------------------- */
+      const response = await fetch(`${REACT_APP_DEV_MODE}/buddies/addBuddy`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `userID=${props.userDatas._id}&buddyID=${buddy._id}`,
+      });
+      const responseJSON = await response.json();
+      return responseJSON;
     }
-  }
+  };
 
   /*--------------------Get alumni and user's discussion AND get alumni infos-------------*/
   const getDiscussion = async (alumniID) => {
@@ -112,7 +129,7 @@ function MapScreen(props) {
             var buddyIcon = "person-add";
             var buddyIconColor = "#0E0E66";
             var buddyIconStyle = { paddingRight: 2 };
-            if (buddyList.find((o) => o._id === r._id)) {
+            if (props.buddiesList.find((o) => o._id === r._id)) {
               buddyIcon = "person";
               buddyIconColor = "#E74C3C";
               buddyIconStyle = { paddingRight: 0 };
@@ -147,14 +164,21 @@ function MapScreen(props) {
                   </ListItem.Content>
                 </TouchableOpacity>
                 <View style={buddyIconStyle}>
-                  <Ionicons
-                    name={buddyIcon}
-                    size={32}
-                    color={buddyIconColor}
-                    onPress={() => {
-                      addBuddy(r);
-                    }}
-                  />
+                  {r._id === props.userDatas._id ? (
+                    <></>
+                  ) : (
+                    <Ionicons
+                      name={buddyIcon}
+                      size={32}
+                      color={buddyIconColor}
+                      onPress={() => {
+                        updateBuddies(r).then((response) => {
+                          props.setBuddiesList(response.buddiesInfos);
+                          props.getAlumniIDSearch(r._id);
+                        });
+                      }}
+                    />
+                  )}
                 </View>
                 <FontAwesome
                   name="paper-plane"
@@ -258,9 +282,9 @@ function mapDispatchToProps(dispatch) {
     getDiscussionID: function (discussionInfos) {
       dispatch({ type: "getDiscussionID", discussionInfos });
     },
-    setBuddiesList: function (buddyID) {
-      dispatch({ type: "setBuddiesList", buddyID });
-      },
+    setBuddiesList: function (buddiesList) {
+      dispatch({ type: "setBuddiesList", buddiesList });
+    },
   };
 }
 
@@ -269,4 +293,3 @@ export default connect(mapStateToProps, mapDispatchToProps)(MapScreen);
 //   MapScreen: connect(mapStateToProps)(MapScreen),
 //   bottomDrawer: connect(mapStateToProps)(bottomDrawer)
 // }
-
