@@ -3,7 +3,7 @@ import {
 	View,
 	StyleSheet,
 	Text,
-	Button,
+	ActivityIndicator,
 	Image,
 	ScrollView,
 	KeyboardAvoidingView,
@@ -155,7 +155,6 @@ function EditingProfileContent(props) {
 	}
 
 	useEffect(() => {
-		console.log('in editing profile content', userDatasInput);
 		props.setUserDatas(userDatasInput);
 	}, [userDatasInput]);
 
@@ -181,8 +180,6 @@ function EditingProfileContent(props) {
 		const result = await ImagePicker.launchImageLibraryAsync();
 
 		// Explore the result
-		console.log("library perm", result);
-
 		if (!result.cancelled) {
 			var data = new FormData();
 			data.append("photo", {
@@ -195,7 +192,6 @@ function EditingProfileContent(props) {
 				body: data,
 			});
 			var response = await rawResponse.json();
-			console.log("response", response);
 			let userDatasInputCopy = { ...userDatasInput };
 			userDatasInputCopy.avatar = response.url;
 			setUserDatasInput(userDatasInputCopy);
@@ -216,8 +212,6 @@ function EditingProfileContent(props) {
 		const result = await ImagePicker.launchCameraAsync();
 
 		// Explore the result
-		console.log("cam perm", result);
-
 		if (!result.cancelled) {
 			var data = new FormData();
 			data.append("photo", {
@@ -546,7 +540,7 @@ function EditingProfileContent(props) {
 				<Text style={styles.title}>PRÉSENTATION</Text>
 				<TextInput
 					mode="outlined"
-					label="PortFolio / Github Link"
+					label="Presentation"
 					outlineColor="#F0F0F0"
 					style={styles.textinput}
 					activeOutlineColor="#E74C3C"
@@ -570,7 +564,7 @@ function EditingProfileContent(props) {
 					<SocialIcon iconSize={12} type="github" style={{ marginTop: 14 }} />
 					<TextInput
 						mode="outlined"
-						label="PortFolio / Github Link"
+						label="Github Link"
 						outlineColor="#F0F0F0"
 						style={styles.textinput2}
 						activeOutlineColor="#E74C3C"
