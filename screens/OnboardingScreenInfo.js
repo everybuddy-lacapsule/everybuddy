@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Text, ScrollView, Linking, TouchableOpacity, ImageBackground, } from "react-native";
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity, ImageBackground, } from "react-native";
 import { Divider, Icon, hollowWhite } from "@rneui/themed";
 import { connect } from "react-redux";
 import { AntDesign } from "@expo/vector-icons";

@@ -11,7 +11,6 @@ import { Divider, SocialIcon, hollowWhite, Overlay } from "@rneui/themed";
 import { Avatar } from "@rneui/base";
 import { connect } from "react-redux";
 import { REACT_APP_DEV_MODE } from "@env";
-import { Ionicons } from '@expo/vector-icons'; 
 
 function ProfileScreen(props) {
   const [alumniDatas, setAlumniDatas] = useState({});

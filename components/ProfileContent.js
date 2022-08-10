@@ -7,14 +7,14 @@ import { Ionicons } from "@expo/vector-icons";
 import { clockRunning } from "react-native-reanimated";
 
 function ProfileContent(props) {
-	console.log('in profile content: ',props.userDatas)
+	console.log("in profile content: ", props.userDatas);
 
 	return (
 		<View style={styles.container}>
 			{/* //* Bloc info top */}
 			<View style={styles.content}>
 				<View style={styles.avatar}>
-					<Avatar rounded size={130} source={{ uri: props.userDatas.avatar }} />
+					<Avatar rounded size={140} source={{ uri: props.userDatas.avatar }} />
 				</View>
 				<View style={styles.view1}>
 					{/* Nom Prénom */}
@@ -22,12 +22,15 @@ function ProfileContent(props) {
 						{props.userDatas.firstName} {props.userDatas.name}
 					</Text>
 					{/* TypeJob + Job + Entreprise */}
-                    <Text style={{color:'#E74C3C', fontWeight:'bold', fontSize:14}}>
+					<Text style={{ color: "#E74C3C", fontWeight: "bold", fontSize: 14 }}>
 						{props.userDatas.work?.typeWork}
 					</Text>
 					<Text style={styles.text1}>
 						{props.userDatas.work?.work}
-						{"\n"}<Text style={{color:'#0E0E66',fontWeight:'bold'}}>@ {props.userDatas.work?.company}</Text>
+						{"\n"}
+						<Text style={{ color: "#0E0E66", fontWeight: "bold" }}>
+							@ {props.userDatas.work?.company}
+						</Text>
 						{"\n"}
 						{"\n"}
 						{/* Cursus */}
@@ -56,7 +59,7 @@ function ProfileContent(props) {
 				<Text style={styles.badge1}>{props.userDatas.status}</Text>
 			</View>
 			<ScrollView
-				style={{ marginHorizontal: 20, minHeight:90 }}
+				style={{ marginHorizontal: 20, minHeight: 90 }}
 				horizontal={true}
 				scrollbar
 				contentContainerStyle={styles.tags}
@@ -66,12 +69,12 @@ function ProfileContent(props) {
 					return (
 						<View style={styles.view3} key={i}>
 							<Text style={styles.badge2}>{tag}</Text>
-                            <Ionicons
-									name="close"
-									size={16}
-									color="#0E0E66"
-									style={{ width:0,marginTop: 2.5 }}
-								/>
+							<Ionicons
+								name="close"
+								size={16}
+								color="#0E0E66"
+								style={{ width: 0, marginTop: 2.5 }}
+							/>
 						</View>
 					);
 				})}
@@ -145,7 +148,7 @@ var styles = StyleSheet.create({
 	},
 	avatar: {
 		alignSelf: "flex-start",
-		marginTop: 15,
+		marginTop: 25,
 		marginLeft: 20,
 	},
 	view1: {

@@ -17,7 +17,6 @@ import HeaderSearchBar from "../components/HeaderSearchBar";
 import ChatScreen from "../screens/ChatScreen";
 import { useDrawerStatus } from "@react-navigation/drawer";
 import editionMode from "../reducers/editionMode";
-import { clockRunning } from "react-native-reanimated";
 
 const Tab = createBottomTabNavigator();
 const hiddenTabs = ["Buddies", "MyProfile", "Chat", "ProfileScreen"];
@@ -62,6 +61,10 @@ const TabsNavigator = function (props) {
 		};
 		getAlumnisDatas();
 	}, [props.alumniIDSearch]);
+
+	var icon;
+	props.editingMode? icon=<Feather name="check" size={24} color="white" /> : icon = <Ionicons name="pencil" size={20} color="white" />
+
 
 	return (
 		<Tab.Navigator
@@ -212,9 +215,10 @@ const TabsNavigator = function (props) {
 								console.log("toggle", editing);
 								props.editionMode(!props.editingMode);
 								updateProfileSumbit();
+								
 							}}
 						>
-							<Ionicons name="pencil" size={25} color="white" />
+							{icon}
 						</TouchableOpacity>
 					),
 				}}
