@@ -18,6 +18,7 @@ import { connect } from "react-redux";
 //import moment from "moment";
 import moment from 'moment/min/moment-with-locales';
 
+
 // change hook useIsFocused by option unmountOnBlur in the Chat Screen in TabsNavigator
 //import { useIsFocused } from "@react-navigation/native";
 

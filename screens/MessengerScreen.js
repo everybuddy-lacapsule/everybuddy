@@ -2,6 +2,7 @@ import {StyleSheet, View, ScrollView} from "react-native";
 import { connect } from "react-redux";
 import Discussion from "../components/DiscussionComponent";
 
+
 import {REACT_APP_DEV_MODE} from "@env"
 // change hook useIsFocused by option unmountOnBlur in the Messenger Screen in TabsNavigator
 //import { useIsFocused } from "@react-navigation/native";

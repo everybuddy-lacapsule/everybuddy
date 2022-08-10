@@ -15,7 +15,6 @@ import BottomDrawer from "react-native-bottom-drawer-view";
 import { connect } from "react-redux";
 import { REACT_APP_DEV_MODE } from "@env";
 
-
 function MapScreen(props) {
   const [resultLink, setResultLink] = useState("liste");
   // Radius default, unit = meter

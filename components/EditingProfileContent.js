@@ -15,6 +15,7 @@ import { REACT_APP_DEV_MODE } from "@env";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Picker } from "@react-native-picker/picker";
 
+
 function EditingProfileContent(props) {
 	
 	const [userDatasInput, setUserDatasInput] = useState(props.userDatas);

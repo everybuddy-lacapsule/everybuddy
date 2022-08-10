@@ -28,7 +28,6 @@ function Discussion({ discussionID, discussion, currentUser, navigation, getDisc
     getAnotherMember();
   }, [discussion, currentUser._id]);
 
-
   useEffect(() => {
     const displayLastMessage = async ()=> {
     const response =  await fetch(

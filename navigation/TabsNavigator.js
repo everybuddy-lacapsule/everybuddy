@@ -7,7 +7,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { connect } from "react-redux";
 import { REACT_APP_DEV_MODE } from "@env";
 
-
 import MapScreen from "../screens/MapScreen";
 import NewsScreen from "../screens/NewsScreen";
 import MessengerScreen from "../screens/MessengerScreen";

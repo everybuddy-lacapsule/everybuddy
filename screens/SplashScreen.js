@@ -10,6 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connect } from "react-redux";
 import {REACT_APP_DEV_MODE} from "@env"
 
+
 function SplashScreen(props) {
   console.log('splash screen: ',REACT_APP_DEV_MODE)
 

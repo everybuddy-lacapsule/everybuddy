@@ -11,7 +11,6 @@ import { Overlay, Input } from "@rneui/themed";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {REACT_APP_DEV_MODE} from "@env"
 
-
 function LoginScreen(props) {
   const [visible, setVisible] = useState(false);
   const [signinEmail, setSigninEmail] = useState("");
