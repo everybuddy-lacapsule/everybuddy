@@ -25,6 +25,7 @@ import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
 
 function EditingProfileContent(props) {
+	
 	const [userDatasInput, setUserDatasInput] = useState(props.userDatas);
 
 	//*----------------Locals States => set datas = datas from DB----------------------*/
@@ -154,6 +155,7 @@ function EditingProfileContent(props) {
 	}
 
 	useEffect(() => {
+		console.log('in editing profile content', userDatasInput);
 		props.setUserDatas(userDatasInput);
 	}, [userDatasInput]);
 
@@ -640,6 +642,7 @@ var styles = StyleSheet.create({
 		flexDirection: "column",
 		alignSelf: "center",
 		marginBottom: 10,
+		// marginTop: 10,
 		marginHorizontal: 20,
 	},
 	name: {
@@ -714,6 +717,7 @@ var styles = StyleSheet.create({
 	},
 	textinput: {
 		backgroundColor: "white",
+		// height: 140,
 		width: "100%",
 	},
 	textinput2: {
