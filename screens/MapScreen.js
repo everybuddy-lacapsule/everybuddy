@@ -5,6 +5,7 @@ import {
   Dimensions,
   ScrollView,
   TouchableOpacity,
+  Icon,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import MapView, { Marker, Circle } from "react-native-maps";
@@ -52,10 +53,18 @@ function MapScreen(props) {
           latitude: user.address.lat,
           longitude: user.address.long,
         }}
-        title={`${user.name} ${user.firstName}`}
-        description={user.work.work}
+        title={`${user.firstName} ${user.name}`}
+        description={`${user.work.work} ${user.work.typeWork}`}
         pinColor="blue"
-      />
+        onCalloutPress={() => {
+          {
+            props.getAlumniIDSearch(user._id);
+            props.navigation.navigate("ProfileScreen");
+          }
+        }}
+      >
+        <Avatar source={{uri :user.avatar}} rounded/>
+        </Marker>
     );
   });
 
