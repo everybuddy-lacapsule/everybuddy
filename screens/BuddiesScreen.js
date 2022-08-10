@@ -53,11 +53,12 @@ function BuddiesScreen(props) {
             <ListItem.Swipeable
               key={i}
               bottomDivider
-              rightContent={() => (
+              rightContent={(reset) => (
                 <Button
                   title="Delete"
                   onPress={() => {
                     deleteBuddie(r);
+                    reset();
                   }}
                   icon={{ name: "delete", color: "white" }}
                   buttonStyle={{ minHeight: "100%", backgroundColor: "red" }}
