@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import { TouchableOpacity, StyleSheet, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { Feather } from '@expo/vector-icons'; 
+import { Feather } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { connect } from "react-redux";
 import { REACT_APP_DEV_MODE } from "@env";
-
 
 import MapScreen from "../screens/MapScreen";
 import NewsScreen from "../screens/NewsScreen";
@@ -24,48 +23,45 @@ const Tab = createBottomTabNavigator();
 const hiddenTabs = ["Buddies", "MyProfile", "Chat", "ProfileScreen"];
 
 const TabsNavigator = function (props) {
-	console.log('IP in tabs',REACT_APP_DEV_MODE)
+	console.log("IP in tabs", REACT_APP_DEV_MODE);
 	const isLeftDrawerVisible = useDrawerStatus();
 	const [isLeftFocused, setIsLeftFocused] = useState("");
 	const [alumniDatas, setAlumniDatas] = useState({});
 	const [editing, setEditing] = useState(false);
 
-	useEffect(()=>{
+	useEffect(() => {
 		props.editionMode(editing);
-
-	}, [])
+	}, []);
 
 	useEffect(() => {
 		if (isLeftDrawerVisible == "open") {
 			setIsLeftFocused(isLeftDrawerVisible);
 		} else {
 			setIsLeftFocused(isLeftDrawerVisible);
-		};
+		}
 	}, [isLeftDrawerVisible]);
-	  /*--------------VALIDATION AND SAVE USER DATAS IN DB------------------*/
-  // A METTRE DANS LE HEADER CONCERNE
-  const updateProfileSumbit = async () => {
-	console.log('in tabsnavigator: ',props.userDatas)
-    var res = await fetch(`${REACT_APP_DEV_MODE}/users/updateProfile`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(props.userDatas),
-    });
-    res = await res.json();
-  };
+	/*--------------VALIDATION AND SAVE USER DATAS IN DB------------------*/
+	// A METTRE DANS LE HEADER CONCERNE
+	const updateProfileSumbit = async () => {
+		console.log("in tabsnavigator: ", props.userDatas);
+		var res = await fetch(`${REACT_APP_DEV_MODE}/users/updateProfile`, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(props.userDatas),
+		});
+		res = await res.json();
+	};
 
-
-	useEffect(() => {			
+	useEffect(() => {
 		const getAlumnisDatas = async () => {
-		  const response = await fetch(
-			`${REACT_APP_DEV_MODE}/users/getUserDatas?userID=${props.alumniIDSearch}`
-		  );
-		  const dataJSON = await response.json();
-		  setAlumniDatas(dataJSON.userDatas);
+			const response = await fetch(
+				`${REACT_APP_DEV_MODE}/users/getUserDatas?userID=${props.alumniIDSearch}`
+			);
+			const dataJSON = await response.json();
+			setAlumniDatas(dataJSON.userDatas);
 		};
 		getAlumnisDatas();
-	  }, [props.alumniIDSearch]);
-
+	}, [props.alumniIDSearch]);
 
 	return (
 		<Tab.Navigator
@@ -184,7 +180,7 @@ const TabsNavigator = function (props) {
 				name="Chat"
 				component={ChatScreen}
 				options={{
-					title: `${alumniDatas.firstName} ${alumniDatas.name}`,
+					headerTitle: `${alumniDatas.firstName} ${alumniDatas.name}`,
 					headerRight: () => <View style={styles.right}></View>,
 					unmountOnBlur: true,
 				}}
@@ -194,15 +190,11 @@ const TabsNavigator = function (props) {
 				component={ProfileScreen}
 				options={{
 					title: "Profil de l'Alumni",
-          unmountOnBlur: true,
+					unmountOnBlur: true,
 					headerRight: () => (
-						<TouchableOpacity
-							style={styles.right}
-						>
+						<TouchableOpacity style={styles.right}>
 							<Ionicons name="person" size={25} color="white" />
-              
 						</TouchableOpacity>
-            
 					),
 				}}
 			/>
@@ -210,13 +202,17 @@ const TabsNavigator = function (props) {
 				name="MyProfile"
 				component={MyProfileScreen}
 				options={{
-					title:"Mon Profil",
-          unmountOnBlur: true,
+					title: "Mon Profil",
+					unmountOnBlur: true,
 					headerRight: () => (
 						<TouchableOpacity
 							style={styles.right}
 							//* enable profile modification mode
-							onPress={() => {console.log('toggle', editing);props.editionMode(!props.editingMode); updateProfileSumbit()}}
+							onPress={() => {
+								console.log("toggle", editing);
+								props.editionMode(!props.editingMode);
+								updateProfileSumbit();
+							}}
 						>
 							<Ionicons name="pencil" size={25} color="white" />
 						</TouchableOpacity>
@@ -296,8 +292,8 @@ const styles = StyleSheet.create({
 	},
 	right2: {
 		backgroundColor: "white",
-		width:25,
-		textAlign:"right"  ,
+		width: 25,
+		textAlign: "right",
 		marginHorizontal: 21,
 		borderRadius: 5,
 	},
