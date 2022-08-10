@@ -17,16 +17,25 @@ function SplashScreen(props) {
   useEffect(() => {
     AsyncStorage.getItem("userID", async function (error, userID) {
       if (userID !== null) {
+
         var datas = await fetch(
           `${REACT_APP_DEV_MODE}/users/getUserDatas?userID=${userID}`
         );
         datas = await datas.json();
         props.setUserDatas(datas.userDatas);
+
+        var buddiesDatas = await fetch(
+          `${REACT_APP_DEV_MODE}/buddies/?userID=${userID}`
+        );
+        buddiesDatas = await buddiesDatas.json();
+        console.log('TG', buddiesDatas)
+        props.setBuddiesListFromDB(buddiesDatas.buddiesInfos);
       } else {
         props.setUserDatas({})
       }
     });
   }, []);
+
 
   var handleStart = async () => {
     AsyncStorage.getItem("userID", async function (error, userID) {
@@ -110,6 +119,9 @@ function mapDispatchToProps(dispatch) {
     setUserDatas: function (userDatas) {
       dispatch({ type: "register", userDatas });
     },
+    setBuddiesListFromDB: function (buddiesList) {
+      dispatch({ type: "setBuddiesList", buddiesList });
+      },
   };
 }
 

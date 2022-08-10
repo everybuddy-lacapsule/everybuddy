@@ -42,7 +42,6 @@ function MapScreen(props) {
       />
     );
   }
-
   /*--------------------Automate apparence of list Redux-------------*/
   const searchResultsList = props.searchResults.searchResults.map((user, i) => {
     return (
@@ -247,6 +246,7 @@ const mapStateToProps = (state) => {
   return {
     searchResults: state.searchResults,
     userDatas: state.userDatas,
+    buddiesList: state.buddiesList,
   };
 };
 
@@ -258,6 +258,9 @@ function mapDispatchToProps(dispatch) {
     getDiscussionID: function (discussionInfos) {
       dispatch({ type: "getDiscussionID", discussionInfos });
     },
+    setBuddiesList: function (buddyID) {
+      dispatch({ type: "setBuddiesList", buddyID });
+      },
   };
 }
 
