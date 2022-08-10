@@ -179,7 +179,6 @@ function CustomRightDrawerContent(props) {
           loadSearchResults()
         }
       >
-       
         </TextInput>
         <FontAwesome
           style={styles.searchButton}

@@ -46,7 +46,8 @@
     "redux": "^4.2.0",
     "socket.io": "^4.5.1",
     "socket.io-client": "^4.5.1",
-    "@react-native-picker/picker": "2.4.0"
+    "@react-native-picker/picker": "2.4.0",
+    "expo-image-picker": "~13.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

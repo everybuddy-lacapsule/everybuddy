@@ -48,7 +48,6 @@ function HeaderSearchBar(props) {
     Keyboard.dismiss();
   }
 
-
   return (
     <View style={styles.headerTitle}>
       <TextInput

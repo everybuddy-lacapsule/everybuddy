@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
 
-
 import {REACT_APP_DEV_MODE} from "@env"
 
 function Discussion({ discussionID, discussion, currentUser, navigation, getDiscussionID, getAlumniIDSearch }) {

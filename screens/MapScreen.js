@@ -257,3 +257,4 @@ export default connect(mapStateToProps, mapDispatchToProps)(MapScreen);
 //   MapScreen: connect(mapStateToProps)(MapScreen),
 //   bottomDrawer: connect(mapStateToProps)(bottomDrawer)
 // }
+
