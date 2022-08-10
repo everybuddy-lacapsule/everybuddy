@@ -5,9 +5,10 @@ import { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
 
+
 import {REACT_APP_DEV_MODE} from "@env"
 
-function Discussion({ discussionID, discussion, currentUser, navigation, getDiscussionID }) {
+function Discussion({ discussionID, discussion, currentUser, navigation, getDiscussionID, getAlumniIDSearch }) {
   const isFocused = useIsFocused();
   const [anotherMember, setAnotherMember] = useState({});
   const [lastMessage, setLastMessage] = useState("");
@@ -47,6 +48,7 @@ function Discussion({ discussionID, discussion, currentUser, navigation, getDisc
       onPress={() => {
         navigation.navigate("Chat");
         getDiscussionID({discussionID:discussionID, anotherMember:anotherMember});
+        getAlumniIDSearch(anotherMember._id);
       }}
     >
       <Avatar rounded size={90} source={{ uri: anotherMember.avatar }} />
@@ -64,10 +66,13 @@ var styles = StyleSheet.create({
   },
 });
 
-const mapDispatchToProps = (ditpatch) => {
+const mapDispatchToProps = (dispatch) => {
   return {
+    getAlumniIDSearch: function (id) {
+      dispatch({ type: "getAlumniIDSearch", id });
+    },
     getDiscussionID: function (discussionInfos) {
-      ditpatch({ type: "getDiscussionID", discussionInfos: discussionInfos });
+      dispatch({ type: "getDiscussionID", discussionInfos: discussionInfos });
     },
   };
 };

@@ -20,7 +20,7 @@ function MapScreen(props) {
   const [resultLink, setResultLink] = useState("liste");
   // Radius default, unit = meter
   const [buddyList, setBuddyList] = useState([]);
-  console.log(REACT_APP_DEV_MODE)
+  console.log(REACT_APP_DEV_MODE);
 
   /*--------------------Generate circle radius when search is true (reducer searchResult)-------------*/
   let circle;
@@ -88,6 +88,7 @@ function MapScreen(props) {
       discussionID: discussionIDJSON,
       anotherMember: alumniInfosJSON.userDatas,
     });
+    props.navigation.navigate("Chat");
   };
 
   //*BOTTOM DRAWER
@@ -155,7 +156,6 @@ function MapScreen(props) {
                   onPress={() => {
                     props.getAlumniIDSearch(r._id);
                     getDiscussion(r._id);
-                    props.navigation.navigate("Chat");
                   }}
                 />
               </ListItem>

@@ -52,7 +52,7 @@ const TabsNavigator = function (props) {
 		res = await res.json();
 	};
 
-	useEffect(() => {
+	useEffect(() => {			
 		const getAlumnisDatas = async () => {
 			const response = await fetch(
 				`${REACT_APP_DEV_MODE}/users/getUserDatas?userID=${props.alumniIDSearch}`

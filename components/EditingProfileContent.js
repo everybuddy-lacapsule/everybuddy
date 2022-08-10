@@ -15,25 +15,34 @@ import { REACT_APP_DEV_MODE } from "@env";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Picker } from "@react-native-picker/picker";
 
+
 function EditingProfileContent(props) {
+	
 	const [userDatasInput, setUserDatasInput] = useState(props.userDatas);
 
-	console.log(props.userDatas);
 	/*----------------Locals Stats => set datas = datas from DB----------------------*/
 	const [statusDatasList, setStatusDatasList] = useState([]);
 	const [status, setStatus] =  useState('');
+
 	const [workDatasList, setWorkDatasList] = useState([]);
 	const [work, setWork] =  useState('');
+
 	const [workTypeDatasList, setWorkTypeDatasList] = useState([]);
 	const [workType, setWorkType] =  useState('');
+
 	const [tagsDatasList, setTagsDatasList] = useState([]);
-	var cursusList = ["Fullstack", "DevOps", "Code for business"];
+	
 	const [cursus, setCursus] = React.useState("");
+	const [campus, setCampus] = React.useState("");
+
+	const Item = Picker.Item;
+
+
+	var cursusList = ["Fullstack", "DevOps", "Code for business"];
 	cursusList = cursusList.filter(item => item!==userDatasInput.capsule.cursus);
 	var campusList = ["Paris", "Lyon", "Marseille", "Toulouse", "Bordeaux", "Monaco"];
-	const [campus, setCampus] = React.useState("");
-	const Item = Picker.Item;
 	campusList = campusList.filter(item => item!==userDatasInput.capsule.campus);
+
 	console.log('campus liste de merde', campusList)
 	/*----------------Function => get datas from DB----------------------*/
 	const getDatasFromDB = async (typeDatas) => {
@@ -46,15 +55,15 @@ function EditingProfileContent(props) {
 	useEffect(() => {
 		/*------------------------Statuses---------------------*/
 		getDatasFromDB("statuses")
-			.then((response) => setStatusDatasList(response))
+			.then((response) => setStatusDatasList(response.filter(status => status !== userDatasInput.status)))
 			.catch((error) => console.log(error));
 		/*----------------------Works or jobs--------------------*/
 		getDatasFromDB("jobs")
-			.then((response) => setWorkDatasList(response))
+			.then((response) => setWorkDatasList(response.filter(work => work !== userDatasInput.work.work)))
 			.catch((error) => console.log(error));
 		/*----------------------WorkType--------------------*/
 		getDatasFromDB("typeJobs")
-			.then((response) => setWorkTypeDatasList(response))
+			.then((response) => setWorkTypeDatasList(response.filter(workType => workType !== userDatasInput.work.typeWork)))
 			.catch((error) => console.log(error));
 		/*----------------------Tags--------------------*/
 		getDatasFromDB("tags")
@@ -90,7 +99,10 @@ function EditingProfileContent(props) {
 			userDatasInputCopy.work[input] = value;
 		} else if (input === "linkedin" || input === "github") {
 			userDatasInputCopy.linkRs[input] = value;
-		} else {
+		} else if (input ==="location"){
+			userDatasInputCopy.address.city = value;
+
+		}else {
 			userDatasInputCopy[input] = value;
 		}
 		setUserDatasInput(userDatasInputCopy);
@@ -146,17 +158,20 @@ function EditingProfileContent(props) {
 						);
 					})}
 					</Picker>
-				<TextInput
-					mode="outlined"
-					label="Poste"
-					outlineColor="#F0F0F0"
-					style={[styles.textinput3, { textAlignVertical: "top" }]}
-					activeOutlineColor="#E74C3C"
-					placeholderTextColor="rgba(0, 0, 0, 0.5)"
-					editable={true}
-					onChangeText={(text) => addInput("work", text)}
-					value={userDatasInput.work.work}
-				/>
+					<Picker
+						selectedValue={work}
+						onValueChange={(v) => setWorkType(v)}
+						mode="dropdown"
+						enabled={true}
+						style={styles.textinput3}
+					>
+						<Item label={userDatasInput.work.work} value={userDatasInput.work.work} />
+						{workDatasList.map((work, i) => {
+						return (
+							<Item key={i} label={work} value={work} />
+						);
+					})}
+					</Picker>
 				<TextInput
 					mode="outlined"
 					label="Entreprise"
@@ -252,9 +267,20 @@ function EditingProfileContent(props) {
 						value={userDatasInput.address.city}
 					/>
 					{/* Statut : OpenToWork/ Just Curious / Partner / Hiring */}
-					<TouchableOpacity style={[styles.modalbutton, { marginTop: 15 }]}>
-						<Text style={styles.modalText}>STATUT PRO</Text>
-					</TouchableOpacity>
+					<Picker
+						selectedValue={status}
+						onValueChange={(v) => setCampus(v)}
+						mode="dropdown"
+						enabled={true}
+						style={styles.textinput4}
+					>
+						<Item label={userDatasInput.status} value={userDatasInput.status} />
+						{statusDatasList.map((status, i) => {
+						return (
+							<Item key={i} label={status} value={status} />
+						);
+					})}
+					</Picker>
 				</View>
 			</View>
 			<KeyboardAvoidingView style={{ marginVertical: 5 }}>

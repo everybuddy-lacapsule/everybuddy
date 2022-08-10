@@ -26,15 +26,15 @@ function ProfileContent(props) {
 						{props.userDatas.work?.typeWork}
 					</Text>
 					<Text style={styles.text1}>
-						{props.userDatas.work.work}
-						{"\n"}<Text style={{color:'#0E0E66',fontWeight:'bold'}}>@ {props.userDatas.work.company}</Text>
+						{props.userDatas.work?.work}
+						{"\n"}<Text style={{color:'#0E0E66',fontWeight:'bold'}}>@ {props.userDatas.work?.company}</Text>
 						{"\n"}
 						{"\n"}
 						{/* Cursus */}
-						Batch #{props.userDatas.capsule.nbBatch}{" "}
-						{props.userDatas.capsule.campus}
+						Batch #{props.userDatas.capsule?.nbBatch}{" "}
+						{props.userDatas.capsule?.campus}
 						{"\n"}
-						{props.userDatas.capsule.cursus}
+						{props.userDatas.capsule?.cursus}
 					</Text>
 				</View>
 			</View>
@@ -50,7 +50,7 @@ function ProfileContent(props) {
 			>
 				{/* Localisation actuelle */}
 				<Text style={{ textAlignVertical: "center", alignSelf: "center" }}>
-					{props.userDatas.address.city}, {props.userDatas.address.country}
+					{props.userDatas.address?.city}, {props.userDatas.address?.country}
 				</Text>
 				{/* Statut : OpenToWork/ Just Curious / Partner / Hiring */}
 				<Text style={styles.badge1}>{props.userDatas.status}</Text>
@@ -62,7 +62,7 @@ function ProfileContent(props) {
 				contentContainerStyle={styles.tags}
 			>
 				{/* Tags et compétences */}
-				{props.userDatas.tags.map((tag, i) => {
+				{props.userDatas.tags?.map((tag, i) => {
 					return (
 						<View style={styles.view3} key={i}>
 							<Text style={styles.badge2}>{tag}</Text>

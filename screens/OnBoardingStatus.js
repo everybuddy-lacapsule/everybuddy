@@ -16,7 +16,6 @@ import { FontAwesome } from "@expo/vector-icons";
 
 import {REACT_APP_DEV_MODE} from "@env"
 
-
 function OnBoardingStatus(props) {
   const [page, setPage] = useState(1);
   console.log(REACT_APP_DEV_MODE)
