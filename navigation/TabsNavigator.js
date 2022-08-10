@@ -176,6 +176,7 @@ const TabsNavigator = function (props) {
 				name="Buddies"
 				component={BuddiesScreen}
 				options={{
+          title: "Mes Buddies",
 					headerRight: () => <View style={styles.right}></View>,
 				}}
 			/>
@@ -304,23 +305,23 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-	return {
-		drawerStatus: state.drawerStatus,
-		alumniIDSearch: state.alumniIDSearch,
-		editingMode: state.editionMode,
-		userDatas: state.userDatas,
-	};
+  return {
+    drawerStatus: state.drawerStatus,
+    alumniIDSearch: state.alumniIDSearch,
+    editingMode: state.editionMode,
+    userDatas: state.userDatas,
+  };
 };
 
 function mapDispatchToProps(dispatch) {
-	return {
-		leftDrawerStatus: function (status) {
-			dispatch({ type: "leftDrawer status", leftDrawerStatus: status });
-		},
-		editionMode: function (status) {
-			dispatch({ type: "toggleEditionMode", editionMode: status });
-		},
-	};
+  return {
+    leftDrawerStatus: function (status) {
+      dispatch({ type: "leftDrawer status", leftDrawerStatus: status });
+    },
+    editionMode: function (status) {
+      dispatch({ type: "toggleEditionMode", editionMode: status });
+    },
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TabsNavigator);

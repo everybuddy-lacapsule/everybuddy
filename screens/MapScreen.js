@@ -23,6 +23,8 @@ function MapScreen(props) {
   const [buddyList, setBuddyList] = useState([]);
   console.log(REACT_APP_DEV_MODE);
 
+  setBuddyList(props.buddiesList)
+
   /*--------------------Generate circle radius when search is true (reducer searchResult)-------------*/
   let circle;
   let latDelta = 0.1922;
@@ -43,7 +45,6 @@ function MapScreen(props) {
       />
     );
   }
-
   /*--------------------Automate apparence of list Redux-------------*/
   const searchResultsList = props.searchResults.searchResults.map((user, i) => {
     return (
@@ -71,8 +72,10 @@ function MapScreen(props) {
   function addBuddy(buddy) {
     if (!buddyList.find((o) => o._id === buddy._id)) {
       setBuddyList([...buddyList, buddy]);
+      props.setBuddiesList(buddyList)
     } else {
-      setBuddyList(buddyList.filter((o) => o._id !== buddy._id));
+      setBuddyList(buddyList.filter((o) => o._id === buddy._id));
+      props.setBuddiesList(buddyList)
     }
   }
 
@@ -248,6 +251,7 @@ const mapStateToProps = (state) => {
   return {
     searchResults: state.searchResults,
     userDatas: state.userDatas,
+    buddiesList: state.buddiesList,
   };
 };
 
@@ -259,6 +263,9 @@ function mapDispatchToProps(dispatch) {
     getDiscussionID: function (discussionInfos) {
       dispatch({ type: "getDiscussionID", discussionInfos });
     },
+    setBuddiesList: function (buddyID) {
+      dispatch({ type: "setBuddiesList", buddyID });
+      },
   };
 }
 

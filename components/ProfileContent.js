@@ -7,8 +7,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { clockRunning } from "react-native-reanimated";
 
 function ProfileContent(props) {
-	console.log("in profile content: ", props.userDatas);
-
 	return (
 		<View style={styles.container}>
 			{/* //* Bloc info top */}
