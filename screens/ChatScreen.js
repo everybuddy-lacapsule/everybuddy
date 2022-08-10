@@ -23,7 +23,6 @@ import moment from 'moment/min/moment-with-locales';
 
 import { REACT_APP_DEV_MODE } from "@env";
 
-
 /*----Web socket----*/
 import socketIOClient from "socket.io-client";
 

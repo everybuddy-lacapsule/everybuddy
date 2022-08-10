@@ -11,7 +11,6 @@ import { FontAwesome } from "@expo/vector-icons";
 import { connect } from "react-redux";
 import {REACT_APP_DEV_MODE} from "@env"
 
-
 function HeaderSearchBar(props) {
   console.log(REACT_APP_DEV_MODE)
 

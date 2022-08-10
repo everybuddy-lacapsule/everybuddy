@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import ProfileContent from "../components/ProfileContent";
 import EditingProfileContent from "../components/EditingProfileContent";
 
+
 function MyProfileScreen(props) {
   const [editing, setEditing] = useState(false)
   

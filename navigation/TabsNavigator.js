@@ -54,7 +54,6 @@ const TabsNavigator = function (props) {
     res = await res.json();
   };
 
-
 	useEffect(() => {			
 		const getAlumnisDatas = async () => {
 		  const response = await fetch(
