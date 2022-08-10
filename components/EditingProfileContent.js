@@ -3,6 +3,8 @@ import {
 	View,
 	StyleSheet,
 	Text,
+	Button,
+	Image,
 	ScrollView,
 	KeyboardAvoidingView,
 } from "react-native";
@@ -20,6 +22,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { REACT_APP_DEV_MODE } from "@env";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Picker } from "@react-native-picker/picker";
+import * as ImagePicker from "expo-image-picker";
 
 function EditingProfileContent(props) {
 	const [userDatasInput, setUserDatasInput] = useState(props.userDatas);
@@ -42,6 +45,7 @@ function EditingProfileContent(props) {
 	const [visible, setVisible] = useState(false);
 
 	const Item = Picker.Item;
+	const [pickedImagePath, setPickedImagePath] = useState("");
 
 	var cursusList = ["Fullstack", "DevOps", "Code for business"];
 	cursusList = cursusList.filter(
@@ -103,6 +107,8 @@ function EditingProfileContent(props) {
 				)
 			)
 			.catch((error) => console.log(error));
+
+		setPickedImagePath(props.userDatas.avatar);
 	}, []);
 
 	//*  Add inputs to the local state
@@ -153,6 +159,79 @@ function EditingProfileContent(props) {
 
 	const toggleOverlay = () => {
 		setVisible(!visible);
+	};
+	//* EDIT AVATAR
+		//* Library
+			//* Permissions + Selection result
+
+	const showImagePicker = async () => {
+		// Ask the user for the permission to access the media library
+		const permissionResult =
+			await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+		if (permissionResult.granted === false) {
+			alert(
+				"Et la vous me dites, 'Ça marche pas.' Ha bah oui, fallait accepter aussi..."
+			);
+			return;
+		}
+			//* Img response 
+		const result = await ImagePicker.launchImageLibraryAsync();
+
+		// Explore the result
+		console.log("library perm", result);
+
+		if (!result.cancelled) {
+			var data = new FormData();
+			data.append("photo", {
+				uri: result.uri,
+				type: "image/jpg",
+				name: "photo.jpg",
+			});
+			var rawResponse = await fetch(`${REACT_APP_DEV_MODE}/users/upload`, {
+				method: "post",
+				body: data,
+			});
+			var response = await rawResponse.json();
+			console.log("response", response);
+			let userDatasInputCopy = { ...userDatasInput };
+			userDatasInputCopy.avatar = response.url;
+			setUserDatasInput(userDatasInputCopy);
+		}
+	};
+		//* Camera
+			//* Function asks permisisons + snap result
+	const openCamera = async () => {
+		// Ask the user for the permission to access the camera
+		const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+		if (permissionResult.granted === false) {
+			alert("Comment on prend des photos si t'acceptes pas ? Idiot va.");
+			console.log(alert);
+			return;
+		}
+
+		const result = await ImagePicker.launchCameraAsync();
+
+		// Explore the result
+		console.log("cam perm", result);
+
+		if (!result.cancelled) {
+			var data = new FormData();
+			data.append("photo", {
+				uri: result.uri,
+				type: "image/jpg",
+				name: "photo.jpg",
+			});
+			var rawResponse = await fetch(`${REACT_APP_DEV_MODE}/users/upload`, {
+				method: "post",
+				body: data,
+			});
+			var response = await rawResponse.json();
+			let userDatasInputCopy = { ...userDatasInput };
+			userDatasInputCopy.avatar = response.url;
+			setUserDatasInput(userDatasInputCopy);
+		}
 	};
 
 	return (
@@ -206,11 +285,29 @@ function EditingProfileContent(props) {
 				</View>
 			</Overlay>
 
-			{/* //! AVATAR - IMAGE PICKER / CAMERA? */}
-			<View style={styles.avatar}>
-				<Avatar rounded size={150} source={{ uri: userDatasInput.avatar }} />
-			</View>
+			{/* //* AVATAR - IMAGE PICKER / CAMERA? */}
 			<View style={{ marginHorizontal: 20 }}>
+				<View style={styles.screen}>
+					<View style={styles.imageContainer}>
+						{userDatasInput.avatar !== "" && (
+							<Image
+								source={{ uri: userDatasInput.avatar }}
+								style={styles.image}
+							/>
+						)}
+					</View>
+					<View style={styles.buttonContainer}>
+						<TouchableOpacity
+							style={styles.modalbutton}
+							onPress={showImagePicker}
+						>
+							<Text style={styles.buttons}>Ma bibliothèque</Text>
+						</TouchableOpacity>
+						<TouchableOpacity style={styles.modalbutton} onPress={openCamera}>
+							<Text style={styles.buttons}>Appareil Photo</Text>
+						</TouchableOpacity>
+					</View>
+				</View>
 				{/* //* PRÉNOM */}
 				<TextInput
 					mode="outlined"
@@ -401,7 +498,7 @@ function EditingProfileContent(props) {
 					{/* //* BUTTON Opening Modal */}
 					<Ionicons
 						name="add-circle"
-						size={40}
+						size={36}
 						color="#E74C3C"
 						style={{ marginTop: 1.5 }}
 						onPress={() => toggleOverlay()}
@@ -649,6 +746,7 @@ var styles = StyleSheet.create({
 		fontSize: 14,
 		borderRadius: 50,
 		marginVertical: 10,
+		elevation: 4,
 	},
 	overlay: {
 		justifyContent: "center",
@@ -658,4 +756,33 @@ var styles = StyleSheet.create({
 		borderRadius: 10,
 	},
 	modalText: { fontWeight: "bold", color: "white", marginHorizontal: "12%" },
+
+	//! CAMERA & LIBRARY STYLES
+	screen: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	buttonContainer: {
+		flexWrap: "wrap",
+		width: "100%",
+		flexDirection: "row",
+		justifyContent: "space-between",
+	},
+	imageContainer: {
+		padding: 30,
+	},
+	image: {
+		width: 250,
+		height: 250,
+		resizeMode: "cover",
+		borderRadius: 125,
+	},
+	buttons: {
+		marginHorizontal: 15,
+		fontWeight: "bold",
+		color: "#fff",
+		textAlign: "center",
+		textAlignVertical: "center",
+	},
 });
