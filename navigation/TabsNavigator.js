@@ -17,7 +17,6 @@ import HeaderSearchBar from "../components/HeaderSearchBar";
 import ChatScreen from "../screens/ChatScreen";
 import { useDrawerStatus } from "@react-navigation/drawer";
 import editionMode from "../reducers/editionMode";
-import { clockRunning } from "react-native-reanimated";
 
 const Tab = createBottomTabNavigator();
 const hiddenTabs = ["Buddies", "MyProfile", "Chat", "ProfileScreen"];

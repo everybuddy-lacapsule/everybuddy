@@ -132,7 +132,7 @@ function OnBoardingStatus(props) {
          dataJSON = await response.json();
          return dataJSON;
       };
-      getUserDatas().then(response =>props.setUserDatas(response)).catch(error => console.log(error));
+      getUserDatas().then(response =>props.setUserDatas(response.userDatas)).catch(error => console.log(error));
       
       props.navigation.navigate("Home");
     } else {
@@ -471,3 +471,4 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OnBoardingStatus);
+
