@@ -24,6 +24,7 @@ import moment from 'moment/min/moment-with-locales';
 
 import { REACT_APP_DEV_MODE } from "@env";
 
+
 /*----Web socket----*/
 import socketIOClient from "socket.io-client";
 
@@ -189,7 +190,6 @@ function ChatScreen(props) {
         <ScrollView ref={scrollRef}>{allMessagesDisplayed}</ScrollView>
         <KeyboardAvoidingView
           style={styles.textInput}
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <TextInput
@@ -207,7 +207,7 @@ function ChatScreen(props) {
               onPress={handleGetMessage}
             >
               <View style={styles.searchButton}>
-                <FontAwesome name="send" size={16} color="white" />
+                <FontAwesome name="send" size={16} color="white" style={{ alignSelf: "center", paddingRight: 1 }} />
               </View>
             </TouchableOpacity>
           </View>
@@ -228,10 +228,10 @@ var styles = StyleSheet.create({
     paddingRight: 15,
   },
   searchButton: {
-    alignSelf: "center",
     backgroundColor: "#E74C3C",
     padding: 6,
     borderRadius: 50,
+
   },
   searchButtonBackground: {
     backgroundColor: "rgba(255, 255, 255, 0.5)",
