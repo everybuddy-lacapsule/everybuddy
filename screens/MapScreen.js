@@ -5,6 +5,7 @@ import {
   Dimensions,
   ScrollView,
   TouchableOpacity,
+  Icon
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import MapView, { Marker, Circle } from "react-native-maps";
@@ -55,7 +56,8 @@ function MapScreen(props) {
         title={`${user.name} ${user.firstName}`}
         description={user.work.work}
         pinColor="blue"
-      />
+      >
+        </Marker>
     );
   });
 

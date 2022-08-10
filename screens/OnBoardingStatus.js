@@ -24,7 +24,7 @@ function OnBoardingStatus(props) {
   const [visible, setVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [workDatasList, setWorkDatasList] = useState([]);
-  const [workTypeDatasList, setWorkTypeDatasList] = useState([]);
+  const [typeWorkDatasList, setTypeWorkDatasList] = useState([]);
   const [tagsDatasList, setTagsDatasList] = useState([]);
   /*----------------Locals Stats => verify information of onboarding----------------------*/
   const [location, setLocation] = useState("");
@@ -41,7 +41,7 @@ function OnBoardingStatus(props) {
     status: "", // Array
     tags: [], // Array
     work: "", // Array
-    workType: "", // Array
+    typeWork: "", // Array
     userID: props.userDatas._id,
   });
   /*----------------Function => get datas from DB----------------------*/
@@ -61,9 +61,9 @@ function OnBoardingStatus(props) {
     getDatasFromDB("jobs")
       .then((response) => setWorkDatasList(response))
       .catch((error) => console.log(error));
-    /*----------------------WorkType--------------------*/
+    /*----------------------typeWork--------------------*/
     getDatasFromDB("typeJobs")
-      .then((response) => setWorkTypeDatasList(response))
+      .then((response) => setTypeWorkDatasList(response))
       .catch((error) => console.log(error));
     /*----------------------Tags--------------------*/
     getDatasFromDB("tags")
@@ -107,7 +107,7 @@ function OnBoardingStatus(props) {
       userDatasInput.address &&
       userDatasInput.status &&
       userDatasInput.work &&
-      userDatasInput.workType &&
+      userDatasInput.typeWork &&
       userDatasInput.tags.length > 0
     ) {
       setAreSelected(true);
@@ -203,9 +203,9 @@ function OnBoardingStatus(props) {
         );
       })}
       <Text style={styles.title}>Et plutôt ?</Text>
-      {workTypeDatasList.map(function (work, i) {
+      {typeWorkDatasList.map(function (work, i) {
         var checked = false;
-        if (userDatasInput.workType === work) {
+        if (userDatasInput.typeWork === work) {
           checked = true;
         }
         return (
@@ -216,7 +216,7 @@ function OnBoardingStatus(props) {
             title={work}
             checked={checked}
             checkedColor="#0E0E66"
-            onPress={() => addData("workType", work)}
+            onPress={() => addData("typeWork", work)}
           />
         );
       })}
@@ -274,6 +274,7 @@ function OnBoardingStatus(props) {
             handleVerifyLocation()
           }
         ></TextInput>
+        <TouchableOpacity>
         <FontAwesome
           style={styles.searchButton}
           name="search"
@@ -281,6 +282,7 @@ function OnBoardingStatus(props) {
           color="#0e0e66"
           onPress={() => handleVerifyLocation()}
         />
+        </TouchableOpacity>
       </View>
       <TouchableOpacity
         style={styles.button}
