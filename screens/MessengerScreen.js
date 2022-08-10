@@ -16,7 +16,6 @@ function MessengerScreen(props) {
   const [discussions, setDiscussions] = useState([]);
   console.log(REACT_APP_DEV_MODE)
 
-
   useEffect(() => {
     const getDiscussions = async () => {
       try{

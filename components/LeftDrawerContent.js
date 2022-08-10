@@ -29,7 +29,7 @@ function CustomLeftDrawerContent(props) {
 					onPress={() => props.navigation.navigate("Buddies")}
 				></DrawerItem>
 				<DrawerItem
-					label="My Profile"
+					label="Mon Profil"
 					inactiveTintColor={hollowWhite}
 					activeTintColor="white"
 					onPress={() => props.navigation.navigate("MyProfile")}

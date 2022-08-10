@@ -17,6 +17,7 @@ function LoginScreen(props) {
   const [signinPwd, setSigninPwd] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   console.log('login screen',REACT_APP_DEV_MODE)
+  
 
 
   const toggleOverlay = () => {

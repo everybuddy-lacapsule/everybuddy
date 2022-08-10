@@ -28,7 +28,6 @@ function SplashScreen(props) {
     });
   }, []);
 
-
   var handleStart = async () => {
     AsyncStorage.getItem("userID", async function (error, userID) {
       if (userID !== null) {

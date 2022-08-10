@@ -80,7 +80,6 @@ function OnBoardingStatus(props) {
     });
     const resJSON = await res.json();
     if (resJSON.success) {
-      console.log(resJSON.address.city);
       props.setOnboardingSearch({
         // search :true is used to display the radius circle after first search, even with no results
         search: true,
@@ -97,7 +96,6 @@ function OnBoardingStatus(props) {
       setUserDatas({ ...userDatasInput, address: resJSON.address });
      
     } else {
-      console.log("Fause ville");
       setErrorMessage("Veuillez indiquer un lieu valide");
       toggleOverlay();
     }
@@ -132,7 +130,7 @@ function OnBoardingStatus(props) {
          dataJSON = await response.json();
          return dataJSON;
       };
-      getUserDatas().then(response =>props.setUserDatas(response)).catch(error => console.log(error));
+      getUserDatas().then((response) =>props.setUserDatas(response.userDatas)).catch((error) => console.log(error));
       
       props.navigation.navigate("Home");
     } else {

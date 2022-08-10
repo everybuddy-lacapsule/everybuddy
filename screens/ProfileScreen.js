@@ -53,26 +53,9 @@ function ProfileScreen(props) {
 
   /* ----------------------SEND MESSAGE AND SAVE TO DB---------------- */
   useEffect(() => {
-    /* --------------- SEND A DEFAULT MESSAGE ---------------- */
-    const getDiscussion = async () => {
-      /* --------------- FIND DISCUSSIONID IF EXIST/ ELSE CREATE A NEW DISCUSSION  ---------------- */
-      const discussionIDRes = await fetch(
-        `${REACT_APP_DEV_MODE}/discussions/createDiscussion`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: `senderID=${props.userDatas._id}&receiverID=${props.alumniIDSearch}`,
-        }
-      );
-      const discussionIDJSON = await discussionIDRes.json();
-      setDiscussionID(discussionIDJSON);
-      //console.log("DiscussionIDJSON", discussionIDJSON);
-    };
-    getDiscussion();
     // Create an obj === a document saved in message collection when BUTTON SEND default MSG actived
     // Send default msg if button 'red' cliked
     const defautMsg = `Hello ${alumniDatas.firstName}, envie d’aller boire une bière ?`;
-    console.log("TEST", defautMsg);
     const sendDefaultMsg = async () => {
       if (msgSent) {
         //console.log("MSG default", defautMsg);
@@ -210,8 +193,7 @@ function ProfileScreen(props) {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.button]}
-        onPress={() => {setMsgSent(false);
-          props.navigation.navigate("Chat");}}>
+        onPress={() => {setMsgSent(false);}}>
           <Text style={{ fontSize: 18, color: "#FFFFFF" }}>
             {"\uD83D\uDCAA"} Envoyer un message
           </Text>
