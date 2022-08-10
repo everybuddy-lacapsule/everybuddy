@@ -24,7 +24,7 @@ import { Picker } from "@react-native-picker/picker";
 function EditingProfileContent(props) {
 	const [userDatasInput, setUserDatasInput] = useState(props.userDatas);
 
-	/*----------------Locals Stats => set datas = datas from DB----------------------*/
+	//*----------------Locals States => set datas = datas from DB----------------------*/
 	const [statusDatasList, setStatusDatasList] = useState([]);
 	const [status, setStatus] = useState("");
 
@@ -59,15 +59,14 @@ function EditingProfileContent(props) {
 		(item) => item !== userDatasInput.capsule.campus
 	);
 
-	// console.log('campus', campusList)
-	/*----------------Function => get datas from DB----------------------*/
+	//*---------------- Get datas from DB----------------------*/
 	const getDatasFromDB = async (typeDatas) => {
 		const datas = await fetch(`${REACT_APP_DEV_MODE}/datas/${typeDatas}`);
 		const datasJSON = await datas.json();
 		return datasJSON;
 	};
 
-	/*--------------GET ALLS DATAS FROM DB ONCE TIME => FILL Statuses/Works/TypeWorks List------------------*/
+	//*--------------GET ALLS DATAS FROM DB ON SCREENLOAD => FILL Statuses/Works/TypeWorks List------------------*/
 	useEffect(() => {
 		/*------------------------Statuses---------------------*/
 		getDatasFromDB("statuses")
@@ -104,10 +103,9 @@ function EditingProfileContent(props) {
 				)
 			)
 			.catch((error) => console.log(error));
-		console.log("shitbag", tagsDatasList);
 	}, []);
 
-	//   Add inputs to the local state
+	//*  Add inputs to the local state
 	function addInput(input, value) {
 		let userDatasInputCopy = { ...userDatasInput };
 		if (input === "tags") {
@@ -142,16 +140,14 @@ function EditingProfileContent(props) {
 		setUserDatasInput(userDatasInputCopy);
 	}
 
-	function removeTag(tag){
+	//* Remove tag on click in scrollview
+	function removeTag(tag) {
 		let userDatasInputCopy = { ...userDatasInput };
-		userDatasInputCopy.tags = userDatasInputCopy.tags.filter(
-			(e) => e !== tag
-		);
+		userDatasInputCopy.tags = userDatasInputCopy.tags.filter((e) => e !== tag);
 		setUserDatasInput(userDatasInputCopy);
 	}
 
 	useEffect(() => {
-		// console.log('in editing profile content', userDatasInput);
 		props.setUserDatas(userDatasInput);
 	}, [userDatasInput]);
 
@@ -161,54 +157,61 @@ function EditingProfileContent(props) {
 
 	return (
 		<ScrollView style={styles.container}>
-			{/* //!OVERLAY */}
+			{/* //*OVERLAY */}
 			<Overlay
 				isVisible={visible}
 				animationType="fade"
 				overlayStyle={styles.overlay}
 				onBackdropPress={toggleOverlay}
 			>
-					<Text style={{ fontSize: 16, color: "#0E0E66", fontWeight: "bold", marginVertical:20 }}>
-						Selectionnez vos compétences
-					</Text>
-					<View
-						style={{ flexWrap:'wrap', flexDirection: "column" }}
-					>
-						{tagsDatasList.map(function (tag, i) {
-							var color = "#0E0E66";
-							var backgroundColor = "#fff";
-							borderColor = "#0E0E66";
+				<Text
+					style={{
+						fontSize: 16,
+						color: "#0E0E66",
+						fontWeight: "bold",
+						marginVertical: 20,
+					}}
+				>
+					Selectionnez vos compétences
+				</Text>
+				<View style={{ flexWrap: "wrap", flexDirection: "column" }}>
+					{tagsDatasList.map(function (tag, i) {
+						var color = "#0E0E66";
+						var backgroundColor = "#fff";
+						borderColor = "#0E0E66";
 
-							if (userDatasInput.tags.find((i) => i === tag)) {
-								color = "#FFFFFF";
-								backgroundColor = "#E74C3C";
-								borderColor = "transparent";
-							}
-							return (
-								<Badge
-									key={i}
-									value={tag}
-									onPress={() => addInput("tags", tag)}
-									containerStyle={{ margin: 5 }}
-									textStyle={{ color: color, fontSize: 16, margin: 4 }}
-									badgeStyle={{
-										borderColor: borderColor,
-										justifyContent: "center",
-										backgroundColor: backgroundColor,
-										borderWidth: 1.1,
-										minHeight: 40,
-										borderRadius: 50,
-									}}
-								/>
-							);
-						})}
-					</View>
+						if (userDatasInput.tags.find((i) => i === tag)) {
+							color = "#FFFFFF";
+							backgroundColor = "#E74C3C";
+							borderColor = "transparent";
+						}
+						return (
+							<Badge
+								key={i}
+								value={tag}
+								onPress={() => addInput("tags", tag)}
+								containerStyle={{ margin: 5 }}
+								textStyle={{ color: color, fontSize: 16, margin: 4 }}
+								badgeStyle={{
+									borderColor: borderColor,
+									justifyContent: "center",
+									backgroundColor: backgroundColor,
+									borderWidth: 1.1,
+									minHeight: 40,
+									borderRadius: 50,
+								}}
+							/>
+						);
+					})}
+				</View>
 			</Overlay>
 
+			{/* //! AVATAR - IMAGE PICKER / CAMERA? */}
 			<View style={styles.avatar}>
 				<Avatar rounded size={150} source={{ uri: userDatasInput.avatar }} />
 			</View>
 			<View style={{ marginHorizontal: 20 }}>
+				{/* //* PRÉNOM */}
 				<TextInput
 					mode="outlined"
 					label="Prénom"
@@ -220,6 +223,7 @@ function EditingProfileContent(props) {
 					onChangeText={(text) => addInput("firstName", text)}
 					value={userDatasInput.firstName}
 				/>
+				{/* //* NOM */}
 				<TextInput
 					mode="outlined"
 					label="Nom"
@@ -237,7 +241,7 @@ function EditingProfileContent(props) {
 					style={{ width: " 90%", marginLeft: "5%" }}
 				/>
 
-				{/* //!  STATUT PRO */}
+				{/* //*  STATUT PRO */}
 				<Picker
 					selectedValue={workType}
 					onValueChange={(v) => setWorkType(v)}
@@ -253,6 +257,7 @@ function EditingProfileContent(props) {
 						return <Item key={i} label={workType} value={workType} />;
 					})}
 				</Picker>
+				{/* //* POSTE ACTUEL */}
 				<Picker
 					selectedValue={work}
 					onValueChange={(v) => setWorkType(v)}
@@ -267,6 +272,8 @@ function EditingProfileContent(props) {
 					{workDatasList.map((work, i) => {
 						return <Item key={i} label={work} value={work} />;
 					})}
+
+					{/* //* ENTREPRISE */}
 				</Picker>
 				<TextInput
 					mode="outlined"
@@ -294,7 +301,7 @@ function EditingProfileContent(props) {
 						},
 					]}
 				>
-					{/* //!CURSUS */}
+					{/* //*CURSUS */}
 					<Picker
 						selectedValue={cursus}
 						onValueChange={(v) => setCursus(v)}
@@ -310,7 +317,7 @@ function EditingProfileContent(props) {
 							return <Item key={i} label={cursus} value={cursus} />;
 						})}
 					</Picker>
-					{/* //!CAMPUS */}
+					{/* //*CAMPUS */}
 					<Picker
 						selectedValue={campus}
 						onValueChange={(v) => setCampus(v)}
@@ -327,6 +334,7 @@ function EditingProfileContent(props) {
 						})}
 					</Picker>
 				</View>
+				{/* //* EDIT BATCH NUMBER  */}
 				<TextInput
 					mode="outlined"
 					label="Batch#"
@@ -354,7 +362,7 @@ function EditingProfileContent(props) {
 						},
 					]}
 				>
-					{/* //!Localisation actuelle */}
+					{/* //* LOCALISATION ACTUELLE  */}
 					<TextInput
 						mode="outlined"
 						label="Ville de résidence"
@@ -366,7 +374,7 @@ function EditingProfileContent(props) {
 						onChangeText={(text) => addInput("location", text)}
 						value={userDatasInput.address.city}
 					/>
-					{/* Statut : OpenToWork/ Just Curious / Partner / Hiring */}
+					{/* //* EDIT STATUS */}
 					<Picker
 						selectedValue={status}
 						onValueChange={(v) => setCampus(v)}
@@ -381,6 +389,8 @@ function EditingProfileContent(props) {
 					</Picker>
 				</View>
 			</View>
+
+			{/* //* TAGLIST */}
 			<KeyboardAvoidingView style={{ marginVertical: 5 }}>
 				<ScrollView
 					style={{ marginHorizontal: 20, minHeight: 110 }}
@@ -388,7 +398,7 @@ function EditingProfileContent(props) {
 					scrollbar
 					contentContainerStyle={styles.tags}
 				>
-					{/* Tags et compétences */}
+					{/* //* BUTTON Opening Modal */}
 					<Ionicons
 						name="add-circle"
 						size={40}
@@ -396,9 +406,14 @@ function EditingProfileContent(props) {
 						style={{ marginTop: 1.5 }}
 						onPress={() => toggleOverlay()}
 					/>
+					{/* //* PRESSABLE TAGS to remove */}
 					{userDatasInput.tags.map((tag, i) => {
 						return (
-							<TouchableOpacity style={styles.view3} key={i} onPress={()=> removeTag(tag)}>
+							<TouchableOpacity
+								style={styles.view3}
+								key={i}
+								onPress={() => removeTag(tag)}
+							>
 								<Text style={styles.badge2}>{tag}</Text>
 								<Ionicons
 									name="close"
@@ -410,6 +425,8 @@ function EditingProfileContent(props) {
 						);
 					})}
 				</ScrollView>
+
+				{/* //* EDIT CURRENTLY SEARCHING */}
 			</KeyboardAvoidingView>
 			<View style={styles.view2} scrollbar>
 				<Text style={styles.title}>RECHERCHE ACTUELLE</Text>
@@ -426,6 +443,7 @@ function EditingProfileContent(props) {
 					onChangeText={(text) => addInput("searchCurrent", text)}
 					value={userDatasInput.searchCurrent}
 				/>
+				{/* //* EDIT PRESENTATION */}
 				<Text style={styles.title}>PRÉSENTATION</Text>
 				<TextInput
 					mode="outlined"
@@ -440,9 +458,8 @@ function EditingProfileContent(props) {
 					value={userDatasInput.presentation}
 				/>
 			</View>
+			{/* //*ICONES RESEAUX SOCIAUX */}
 			<View style={styles.icon}>
-				{/* ICONES RESEAUX SOCIAUX */}
-				{/* ------------- TROUVER COMMENT RECUPERER LES LIENS DE LA BDD ! ---------- */}
 				<View
 					style={{
 						flexDirection: "row",
@@ -536,7 +553,7 @@ var styles = StyleSheet.create({
 	avatar: {
 		size: 100,
 		alignSelf: "center",
-		marginTop: 15,
+		marginTop: 25,
 	},
 	view1: {
 		width: "55%",
@@ -638,7 +655,7 @@ var styles = StyleSheet.create({
 		alignItems: "center",
 		padding: 20,
 		maxHeight: "50%",
-		borderRadius:10,
+		borderRadius: 10,
 	},
 	modalText: { fontWeight: "bold", color: "white", marginHorizontal: "12%" },
 });

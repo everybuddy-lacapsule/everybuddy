@@ -14,7 +14,7 @@ function ProfileContent(props) {
 			{/* //* Bloc info top */}
 			<View style={styles.content}>
 				<View style={styles.avatar}>
-					<Avatar rounded size={130} source={{ uri: props.userDatas.avatar }} />
+					<Avatar rounded size={140} source={{ uri: props.userDatas.avatar }} />
 				</View>
 				<View style={styles.view1}>
 					{/* Nom Prénom */}
@@ -145,7 +145,7 @@ var styles = StyleSheet.create({
 	},
 	avatar: {
 		alignSelf: "flex-start",
-		marginTop: 15,
+		marginTop: 25,
 		marginLeft: 20,
 	},
 	view1: {
