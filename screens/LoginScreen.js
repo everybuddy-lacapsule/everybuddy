@@ -92,7 +92,7 @@ function LoginScreen(props) {
           isVisible={visible}
           onBackdropPress={toggleOverlay}
         >
-        <Text style={{textAlign: "center", color: '0e0e66'}}>{errorMessage}</Text>
+        <Text style={{textAlign: "center", color: '#0E0E66'}}>{errorMessage}</Text>
         </Overlay>
         <View style={styles.content}>
           <View style={styles.input}>
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
   resetmdp: {
     textDecorationLine: "underline",
     fontSize: 17,
-    color: "#0e0e66",
+    color:"#0E0E66",
   },
 });
 

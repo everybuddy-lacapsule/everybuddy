@@ -48,7 +48,7 @@ function BuddiesScreen(props) {
   return (
     <View>
       <ScrollView>
-        { props.buddiesList>0?props.buddiesList.map((r, i) => {
+        { props.buddiesList.length > 0 ? props.buddiesList.map((r, i) => {
           return (
             <ListItem.Swipeable
               key={i}
