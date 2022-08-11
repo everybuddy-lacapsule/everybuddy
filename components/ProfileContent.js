@@ -94,14 +94,12 @@ function ProfileContent(props) {
 				{/* ICONES RESEAUX SOCIAUX */}
 				{/* ------------- TROUVER COMMENT RECUPERER LES LIENS DE LA BDD ! ---------- */}
 				<SocialIcon
-					onPress={() => {
-						Linking.openURL("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+					onPress={() => { props.userDatas.linkRs.github ? Linking.openURL(props.userDatas.linkRs.github) : alert("Aucun lien Github renseigné")
 					}}
 					type="github"
 				/>
 				<SocialIcon
-					onPress={() => {
-						Linking.openURL("https://www.linkedin.com/");
+					onPress={() => { props.userDatas.linkRs.linkedin ? Linking.openURL(props.userDatas.linkRs.linkedin) : alert("Aucun lien LinkedIn renseigné")
 					}}
 					type="linkedin"
 				/>

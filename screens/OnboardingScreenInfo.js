@@ -1,22 +1,28 @@
 import React from "react";
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity, ImageBackground, } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  ImageBackground,
+} from "react-native";
 import { Divider, Icon, hollowWhite } from "@rneui/themed";
 import { connect } from "react-redux";
 import { AntDesign } from "@expo/vector-icons";
 
 export default function OnboardingScreenInfo(props) {
   return (
-    <ImageBackground 
-    style={styles.container}
-    source={require("../assets/back.png")}
+    <ImageBackground
+      style={styles.container}
+      source={require("../assets/back.png")}
     >
       <ScrollView>
         <View style={styles.view1}>
           <Text style={styles.badge2}>1</Text>
 
           <Text style={styles.text2}>
-            EveryBuddy te permet de trouver les Alumnis de la Capsule selon tes
-            critères et ta zone de recherche !
+            Avec EveryBuddy tu vas pouvoir te connecter à tous les Alumnis de la Capsule !
           </Text>
           <Divider
             color={hollowWhite}
@@ -25,8 +31,8 @@ export default function OnboardingScreenInfo(props) {
 
           <Text style={styles.badge2}>2</Text>
           <Text style={styles.text2}>
-            Tu vas pouvoir préciser les interactions que tu recherches : un
-            emploi, un collaborateur, un buddy pour échanger...
+            Tu recherches un emploi ? Un nouveau
+            collaborateur ? Ou simplement un buddy pour échanger et progresser ?
           </Text>
           <Divider
             color={hollowWhite}
@@ -36,22 +42,21 @@ export default function OnboardingScreenInfo(props) {
           <Text style={styles.badge2}>3</Text>
 
           <Text style={styles.text2}>
-            N'oublie pas de compléter ta page de Profil pour améliorer la
-            recherche !
+            Lance ta première recherche et prends contact avec tes nouveaux buddies !
           </Text>
         </View>
       </ScrollView>
 
       <View style={styles.bottom}>
         <TouchableOpacity>
-        <AntDesign
-          name="right"
-          size={25}
-          color="white"
-          onPress={() => {
-            props.navigation.navigate("OnBoardingStatus");
-          }}
-        />
+          <AntDesign
+            name="right"
+            size={25}
+            color="white"
+            onPress={() => {
+              props.navigation.navigate("OnBoardingStatus");
+            }}
+          />
         </TouchableOpacity>
       </View>
     </ImageBackground>
