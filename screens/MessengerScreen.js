@@ -43,6 +43,7 @@ function MessengerScreen(props) {
               discussion={discussion}
               currentUser={props.userDatas}
               navigation={props.navigation}
+              options={{ unmountOnBlur: true }}
             />
           ))
         ) : (
