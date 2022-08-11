@@ -36,11 +36,33 @@ function SplashScreen(props) {
     });
   }, []);
 
+  async function searchLocation() {
+    const res = await fetch(`${REACT_APP_DEV_MODE}/users/userLocation`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `location=${props.userDatas.address.city}`,
+    });
+    return res.json();
+  }
 
   var handleStart = async () => {
     AsyncStorage.getItem("userID", async function (error, userID) {
       if (userID !== null) {
-      props.navigation.navigate("Home");
+        searchLocation().then((response) => {
+          if (response.success) {
+            props.setSplashSearch({
+              // search :true is used to display the radius circle after first search, even with no results
+              search: true,
+              searchResults: response.users,
+              searchLocation: {
+                long: response.address.long,
+                lat: response.address.lat,
+                locationRequest: response.address.city,
+                radius: response.radius,
+              },
+            })
+          }
+        }).then(()=>{props.navigation.navigate("Home")});
     } else {
       props.navigation.navigate("LoginScreen");
     }
@@ -113,6 +135,9 @@ function mapDispatchToProps(dispatch) {
     },
     setBuddiesListFromDB: function (buddiesList) {
       dispatch({ type: "setBuddiesList", buddiesList });
+      },
+      setSplashSearch: function (splashSearch) {
+        dispatch({ type: "splashSearch", splashSearch });
       },
   };
 }

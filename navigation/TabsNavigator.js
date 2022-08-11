@@ -49,6 +49,10 @@ const TabsNavigator = function (props) {
       body: JSON.stringify(props.userDatas),
     });
     res = await res.json();
+    let userDatasCopy = {...props.userDatas}
+    userDatasCopy.address.country = res.country
+    props.setUserDatas(userDatasCopy)
+
   };
 
   /*--------------------ADD / REMOVE A BUDDY ------------*/
@@ -364,6 +368,9 @@ function mapDispatchToProps(dispatch) {
     },
     setBuddiesList: function (buddiesList) {
       dispatch({ type: "setBuddiesList", buddiesList });
+    },
+    setUserDatas: function (userDatas) {
+      dispatch({ type: "register", userDatas });
     },
   };
 }

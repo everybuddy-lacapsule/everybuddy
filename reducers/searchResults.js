@@ -9,7 +9,14 @@ export const searchResults = (searchResults = initSearchResults, action) => {
     return action.results;
   } else if (action.type === "onboardingSearch") {
     return action.resultsOnboarding;
-  } else {
+  } 
+  else if (action.type === "loginSearch") {
+    return action.loginSearch;
+  }
+  else if (action.type === "splashSearch") {
+    return action.splashSearch;
+  }
+  else {
     return searchResults;
   }
 };

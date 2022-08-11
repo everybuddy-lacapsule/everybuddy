@@ -9,16 +9,23 @@ import {
 } from "react-native";
 import { Overlay, Input } from "@rneui/themed";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {REACT_APP_DEV_MODE} from "@env"
+import { REACT_APP_DEV_MODE } from "@env";
 
 function LoginScreen(props) {
   const [visible, setVisible] = useState(false);
   const [signinEmail, setSigninEmail] = useState("");
   const [signinPwd, setSigninPwd] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  console.log('login screen',REACT_APP_DEV_MODE)
-  
+  console.log("login screen", REACT_APP_DEV_MODE);
 
+  async function searchLocation() {
+    const res = await fetch(`${REACT_APP_DEV_MODE}/users/userLocation`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `location=${props.userDatas.address.city}`,
+    });
+    return res.json();
+  }
 
   const toggleOverlay = () => {
     setVisible(!visible);
@@ -50,7 +57,21 @@ function LoginScreen(props) {
       props.setBuddiesListFromDB(buddiesDatas.buddiesInfos);
 
       if (res.userDatas.onboarding) {
-        props.navigation.navigate("Home");
+        searchLocation().then((response) => {
+          if (response.success) {
+            props.setLoginSearch({
+              // search :true is used to display the radius circle after first search, even with no results
+              search: true,
+              searchResults: response.users,
+              searchLocation: {
+                long: response.address.long,
+                lat: response.address.lat,
+                locationRequest: response.address.city,
+                radius: response.radius,
+              },
+            })
+          }
+        }).then(()=>{props.navigation.navigate("Home")});
       } else {
         props.navigation.navigate("OnboardingScreenInfo");
       }
@@ -138,7 +159,6 @@ const styles = StyleSheet.create({
     padding: 15,
     alignSelf: "center",
     elevation: 4,
-
   },
   confirm: {
     fontSize: 20,
@@ -154,7 +174,9 @@ const styles = StyleSheet.create({
 
 //Fonction qui récupère dans le reducers userEmail l'email et le renvoie dans la fonction
 function mapStateToProps(state) {
-  return { userEmail: state.userEmail };
+  return { userEmail: state.userEmail,
+          userDatas: state.userDatas
+  };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -164,9 +186,11 @@ function mapDispatchToProps(dispatch) {
     },
     setBuddiesListFromDB: function (buddiesList) {
       dispatch({ type: "setBuddiesList", buddiesList });
-      },
+    },
+    setLoginSearch: function (loginSearch) {
+      dispatch({ type: "loginSearch", loginSearch });
+    },
   };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
-
