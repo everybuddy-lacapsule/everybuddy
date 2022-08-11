@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, View, TouchableOpacity, StyleSheet } from "react-native";
+import { ScrollView, View, TouchableOpacity, StyleSheet, Text } from "react-native";
 import { connect } from "react-redux";
 
 import { ListItem, Avatar } from "@rneui/base";
@@ -48,7 +48,7 @@ function BuddiesScreen(props) {
   return (
     <View>
       <ScrollView>
-        {props.buddiesList.map((r, i) => {
+        { props.buddiesList>0?props.buddiesList.map((r, i) => {
           return (
             <ListItem.Swipeable
               key={i}
@@ -102,7 +102,18 @@ function BuddiesScreen(props) {
               />
             </ListItem.Swipeable>
           );
-        })}
+        }): <Text
+        style={{
+          fontSize: 20,
+          marginHorizontal: 30,
+          marginVertical: "70%",
+          fontStyle: "italic",
+          textAlign: "center",
+        }}
+      >
+        Vous êtes seul au monde ...{"\n"}Heureusement, vous pouvez trouver
+        des buddies ! 🍻
+      </Text>}
       </ScrollView>
     </View>
   );
