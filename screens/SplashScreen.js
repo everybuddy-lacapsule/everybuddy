@@ -54,14 +54,6 @@ function SplashScreen(props) {
       <View
         style={{ flex: 1, flexDirection: "column", justifyContent: "flex-end" }}
       >
-        <Text
-          style={[styles.confirm, { marginBottom: 50 }]}
-          onPress={() => {
-            AsyncStorage.clear(), props.setUserDatas(null);
-          }}
-        >
-          Clear local storage
-        </Text>
         <TouchableOpacity style={styles.button} onPress={() => handleStart()}>
           <Text style={styles.confirm}>Commencer</Text>
         </TouchableOpacity>

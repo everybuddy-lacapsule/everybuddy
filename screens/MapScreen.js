@@ -124,7 +124,7 @@ function MapScreen(props) {
           {searchResults.length} resultats {""}
           <Text style={styles.link}>voir {resultLink}</Text>
         </Text>
-        <ScrollView>
+        <ScrollView style={{ marginBottom: 164}}>
           {searchResults.map((r, i) => {
             var buddyIcon = "person-add";
             var buddyIconColor = "#0E0E66";
@@ -169,7 +169,7 @@ function MapScreen(props) {
                   ) : (
                     <Ionicons
                       name={buddyIcon}
-                      size={32}
+                      size={24}
                       color={buddyIconColor}
                       onPress={() => {
                         updateBuddies(r).then((response) => {
@@ -182,7 +182,7 @@ function MapScreen(props) {
                 </View>
                 <FontAwesome
                   name="paper-plane"
-                  size={32}
+                  size={24}
                   color="#0E0E66"
                   onPress={() => {
                     props.getAlumniIDSearch(r._id);
