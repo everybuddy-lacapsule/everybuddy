@@ -151,10 +151,14 @@ function MapScreen(props) {
                     <ListItem.Title>
                       {r.firstName} {r.name}{" "}
                     </ListItem.Title>
+                    {r.work.company?
                     <ListItem.Subtitle>{r.work.company}</ListItem.Subtitle>
-                    <ListItem.Subtitle style={styles.listItemText}>
-                      Batch #{r.nbBatch}
+                    : <></>}
+                    { r.capsule.nbBatch? <ListItem.Subtitle style={styles.listItemText}>
+                      Batch #{r.capsule.nbBatch}
                     </ListItem.Subtitle>
+                    : <></>
+                    }
                     <ListItem.Subtitle style={styles.listItemText}>
                       {r.work.work}
                     </ListItem.Subtitle>

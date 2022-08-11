@@ -79,10 +79,14 @@ function BuddiesScreen(props) {
                   <ListItem.Title>
                     {r.firstName} {r.name}{" "}
                   </ListItem.Title>
-                  <ListItem.Subtitle>{r.work.company}</ListItem.Subtitle>
-                  <ListItem.Subtitle style={styles.listItemText}>
-                    Batch #{r.nbBatch}
-                  </ListItem.Subtitle>
+                  {r.work.company?
+                    <ListItem.Subtitle>{r.work.company}</ListItem.Subtitle>
+                    : <></>}
+                    { r.capsule.nbBatch? <ListItem.Subtitle style={styles.listItemText}>
+                      Batch #{r.capsule.nbBatch}
+                    </ListItem.Subtitle>
+                    : <></>
+                    }
                   <ListItem.Subtitle style={styles.listItemText}>
                     {r.work.work}
                   </ListItem.Subtitle>
