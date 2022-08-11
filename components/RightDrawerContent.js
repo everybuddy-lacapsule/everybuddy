@@ -37,6 +37,15 @@ function CustomRightDrawerContent(props) {
   const [toggledTags, setToggledTags] = useState();
   const [toggledJobs, setToggledJobs] = useState();
 
+   /*----------------Locals Stats => set datas = datas from DB----------------------*/
+   const [statusDatasList, setStatusDatasList] = useState([]);
+   const [workDatasList, setWorkDatasList] = useState([]);
+   const [typeWorkDatasList, setTypeWorkDatasList] = useState([]);
+   const [tagsDatasList, setTagsDatasList] = useState([]);
+   const campusDatasList1 = ["Paris", "Lyon", "Marseille"];
+   const campusDatasList2 = ["Toulouse", "Bordeaux", "Monaco"];
+   const cursusDatasList = ["Fullstack", "DevOps", "Code for business"];
+
   // Etat avec toutes les datas
   const [filters, setFilters] = useState({
     nbBatch: "", // Number
@@ -107,47 +116,70 @@ function CustomRightDrawerContent(props) {
     });
   }
 
-  const campusDatasList1 = ["Paris", "Lyon", "Marseille"];
-  const campusDatasList2 = ["Toulouse", "Bordeaux", "Monaco"];
-  const cursusDatasList = ["Fullstack", "DevOps", "Code for business"];
-  const statusDatasList = [
-    "#OPEN TO WORK",
-    "#HIRING",
-    "#PARTNER",
-    "#JUST CURIOUS",
-  ];
-  const tagsDatasList = [
-    "Frontend",
-    "Backend",
-    "Fullstack",
-    "JavaScript",
-    "AngularJS",
-    "ReactJS",
-    "VueJS",
-    "TypeScript",
-    "ReactNative",
-    "Swift",
-    "Kotlin",
-    "Flutter",
-    "BDD",
-    "API",
-    "Java",
-    "Python",
-    "PHP",
-  ];
-  const workDatasList = [
-    "Développeur",
-    "Product Owner",
-    "Data Scientist",
-    "DevOps",
-    "Scrum Master",
-  ];
-  const workTypeDatasList = [
-    "Entrepreneur",
-    "En contrat",
-    "Freelance",
-    "En recherche",
-  ];
+    /*----------------Function => get datas from DB----------------------*/
+    const getDatasFromDB = async (typeDatas) => {
+      const datas = await fetch(`${REACT_APP_DEV_MODE}/datas/${typeDatas}`);
+      const datasJSON = await datas.json();
+      return datasJSON;
+    };
+  
+    /*--------------GET ALLS DATAS FROM DB ONCE TIME => FILL Statuses/Works/TypeWorks List------------------*/
+    useEffect(() => {
+      /*------------------------Statuses---------------------*/
+      getDatasFromDB("statuses")
+        .then((response) => setStatusDatasList(response))
+        .catch((error) => console.log(error));
+      /*----------------------Works or jobs--------------------*/
+      getDatasFromDB("jobs")
+        .then((response) => setWorkDatasList(response))
+        .catch((error) => console.log(error));
+      /*----------------------typeWork--------------------*/
+      getDatasFromDB("typeJobs")
+        .then((response) => setTypeWorkDatasList(response))
+        .catch((error) => console.log(error));
+      /*----------------------Tags--------------------*/
+      getDatasFromDB("tags")
+        .then((response) => setTagsDatasList(response))
+        .catch((error) => console.log(error));
+    }, []);
+  // const statusDatasList = [
+  //   "#OPEN TO WORK",
+  //   "#HIRING",
+  //   "#PARTNER",
+  //   "#JUST CURIOUS",
+  // ];
+  // const tagsDatasList = [
+  //   "Frontend",
+  //   "Backend",
+  //   "FullStack",
+  //   "JavaScript",
+  //   "AngularJS",
+  //   "ReactJS",
+  //   "VueJS",
+  //   "TypeScript",
+  //   "ReactNative",
+  //   "Swift",
+  //   "Kotlin",
+  //   "Flutter",
+  //   "BDD",
+  //   "API",
+  //   "Java",
+  //   "Python",
+  //   "PHP",
+  // ];
+  // const workDatasList = [
+  //   "Développeur",
+  //   "Product Owner",
+  //   "Data Scientist",
+  //   "DevOps",
+  //   "Scrum Master",
+  // ];
+  // const workTypeDatasList = [
+  //   "Entrepreneur",
+  //   "En contrat",
+  //   "Freelance",
+  //   "En recherche",
+  // ];
 
   var displayValue = km;
   if (km === 100) {
@@ -566,7 +598,7 @@ function CustomRightDrawerContent(props) {
               <Text style={styles.text}>Statut</Text>
             </View>
 
-            {workTypeDatasList.map(function (workType, i) {
+            {typeWorkDatasList.map(function (workType, i) {
               var checked = false;
               if (filters.workType.find((e) => e === workType)) {
                 checked = true;
