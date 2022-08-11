@@ -74,9 +74,6 @@ function LoginScreen(props) {
           <Text>{errorMessage}</Text>
         </Overlay>
         <View style={styles.content}>
-          <Text style={styles.text}>
-            Consultez vos emails pour récupérer votre mot de passe
-          </Text>
           <View style={styles.input}>
             <Input
               className="Login-input"
@@ -98,7 +95,7 @@ function LoginScreen(props) {
             onPress={() => props.navigation.navigate("CheckEmail")}
           >
             <Text style={styles.resetmdp}>
-              Première connexion ou mot de passe oublié ?
+              Générer un mot de passe
             </Text>
           </TouchableOpacity>
         </View>
