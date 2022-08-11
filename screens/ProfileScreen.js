@@ -143,6 +143,7 @@ function ProfileScreen(props) {
           <View style={styles.avatar}>
             <Avatar rounded size={140} source={{ uri: alumniDatas.avatar }} />
           </View>
+          {/* //*Right infos */}
           <View style={styles.view1}>
 					{/* Nom Prénom */}
 					<Text style={styles.name}>
@@ -167,14 +168,24 @@ function ProfileScreen(props) {
 						{alumniDatas.capsule?.cursus}
 					</Text>
 				</View>
-
         </View>
-        <View style={styles.view1}>
-          {/* Localisation actuelle */}
-          <Text style={styles.text2}>
-            {alumniDatas.address?.city} {alumniDatas.address?.country}
-          </Text>
-        </View>
+        <View
+				style={[
+					{
+						flexDirection: "row",
+						alignItems: "flex-start",
+						justifyContent: "space-between",
+						marginHorizontal: 20,
+					},
+				]}
+			>
+				{/* Localisation actuelle */}
+				<Text style={{ textAlignVertical: "center", alignSelf: "center" }}>
+					{alumniDatas.address?.city}, {alumniDatas.address?.country}
+				</Text>
+				{/* Statut : OpenToWork/ Just Curious / Partner / Hiring */}
+				<Text style={styles.badge1}>{alumniDatas.status}</Text>
+			</View>
         <ScrollView
           style={{ marginHorizontal: 20, minHeight: "7%" }}
           contentContainerStyle={styles.tags}
