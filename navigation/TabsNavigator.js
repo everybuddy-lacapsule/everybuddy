@@ -235,8 +235,8 @@ const TabsNavigator = function (props) {
             >
               {
 				props.buddiesList.find(buddy => buddy._id === props.alumniIDSearch) 
-				? (<Ionicons name="person" size={25} color="red" />)
-				: (<Ionicons name="person" size={25} color="white" />)
+				? (<Ionicons name="person" size={25} color="#E74C3C" />)
+				: (<Ionicons name="person-add" size={25} color="white" style={{paddingRight:2.5}} />)
 			  }
             </TouchableOpacity>
           ),

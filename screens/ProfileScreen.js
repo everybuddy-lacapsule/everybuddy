@@ -141,24 +141,33 @@ function ProfileScreen(props) {
       <View style={styles.container}>
         <View style={styles.content}>
           <View style={styles.avatar}>
-            <Avatar rounded size={142} source={{ uri: alumniDatas.avatar }} />
+            <Avatar rounded size={140} source={{ uri: alumniDatas.avatar }} />
           </View>
           <View style={styles.view1}>
-            {/* Nom Prénom */}
-            <Text style={styles.name}>
-              {alumniDatas.firstName} {alumniDatas.name}
-            </Text>
-            {/* Cursus */}
-            <Text style={styles.text1}>
-              Batch {alumniDatas.capsule?.nbBatch} {alumniDatas.capsule?.campus}
-            </Text>
-            {/* Job + Entreprise */}
-            <Text style={styles.text1}>
-              {alumniDatas.work?.work} @ {alumniDatas.work?.company}
-            </Text>
-            {/* Statut : OpenToWork/ Just Curious / Partner / Hiring */}
-            <Text style={styles.badge1}>{alumniDatas.status}</Text>
-          </View>
+					{/* Nom Prénom */}
+					<Text style={styles.name}>
+						{alumniDatas.firstName} {alumniDatas.name}
+					</Text>
+					{/* TypeJob + Job + Entreprise */}
+					<Text style={{ color: "#E74C3C", fontWeight: "bold", fontSize: 14 }}>
+						{alumniDatas.work?.typeWork}
+					</Text>
+					<Text style={styles.text1}>
+						{alumniDatas.work?.work}
+						{"\n"}
+						<Text style={{ color: "#0E0E66", fontWeight: "bold" }}>
+							@ {alumniDatas.work?.company}
+						</Text>
+						{"\n"}
+						{"\n"}
+						{/* Cursus */}
+						Batch #{alumniDatas.capsule?.nbBatch}{" "}
+						{alumniDatas.capsule?.campus}
+						{"\n"}
+						{alumniDatas.capsule?.cursus}
+					</Text>
+				</View>
+
         </View>
         <View style={styles.view1}>
           {/* Localisation actuelle */}
@@ -266,16 +275,16 @@ var styles = StyleSheet.create({
     marginBottom: 5,
     marginTop: 20,
   },
-  avatar: {
-    size: 100,
-    alignSelf: "flex-start",
-    marginTop: 15,
-  },
-  view1: {
-    justifyContent: "space-between",
-    marginHorizontal: 20,
-    width: "55%",
-  },
+	avatar: {
+		alignSelf: "flex-start",
+		marginTop: 25,
+		marginLeft: 20,
+	},
+	view1: {
+		width: "55%",
+		justifyContent: "space-between",
+		marginHorizontal: 20,
+	},
   view2: {
     justifyContent: "space-between",
     margin: 20,
