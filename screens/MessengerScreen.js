@@ -1,4 +1,4 @@
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView, Text } from "react-native";
 import { connect } from "react-redux";
 import Discussion from "../components/DiscussionComponent";
 
@@ -30,20 +30,36 @@ function MessengerScreen(props) {
     //}, [isFocused]);
   }, []);
 
-  console.log("userDiscussions is", discussions);
+  console.log(discussions);
+  //console.log("userDiscussions is", discussions);
   return (
     <View>
       <ScrollView>
-        {discussions.map((discussion, i) => (
-          <Discussion
-            key={i}
-            discussionID={discussion._id}
-            discussion={discussion}
-            currentUser={props.userDatas}
-            navigation={props.navigation}
-            options={{ unmountOnBlur: true }}
-          />
-        ))}
+        {discussions.length > 0 ? (
+          discussions.map((discussion, i) => (
+            <Discussion
+              key={i}
+              discussionID={discussion._id}
+              discussion={discussion}
+              currentUser={props.userDatas}
+              navigation={props.navigation}
+              options={{ unmountOnBlur: true }}
+            />
+          ))
+        ) : (
+          <Text
+            style={{
+              fontSize: 20,
+              marginHorizontal: 30,
+              marginVertical: "70%",
+              fontStyle: "italic",
+              textAlign: "center",
+            }}
+          >
+            Vous êtes seul au monde ...{"\n"}Heureusement, vous pouvez trouver
+            des buddies ! 🍻
+          </Text>
+        )}
       </ScrollView>
     </View>
   );
