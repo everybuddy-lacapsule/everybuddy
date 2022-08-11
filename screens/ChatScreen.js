@@ -153,11 +153,18 @@ function ChatScreen(props) {
     } else {
       return (
         <View key={`${i}-${m.senderID}`} style={styles.leftMessage}>
-          <Image
-            style={styles.img}
-            rounded
-            source={{ uri: props.discussionInfos.anotherMember.avatar }}
-          />
+          <TouchableOpacity
+            onPress={() => {
+              props.getAlumniIDSearch(props.discussionInfos.anotherMember._id);
+              props.navigation.navigate("ProfileScreen");
+            }}
+          >
+            <Image
+              style={styles.img}
+              rounded
+              source={{ uri: props.discussionInfos.anotherMember.avatar }}
+            />
+          </TouchableOpacity>
 
           <LinearGradient
             colors={colors}
@@ -335,4 +342,12 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(ChatScreen);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getAlumniIDSearch: (id) => {
+      dispatch({ type: "getAlumniIDSearch", id });
+    }
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatScreen);
