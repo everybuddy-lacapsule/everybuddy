@@ -16,9 +16,8 @@ function ProfileScreen(props) {
   const [alumniDatas, setAlumniDatas] = useState({});
   const [visible, setVisible] = useState(false);
   const [msgSent, setMsgSent] = useState(null);
-  const [discussionID, setDiscussionID] = useState('');
-  console.log(REACT_APP_DEV_MODE)
-
+  const [discussionID, setDiscussionID] = useState("");
+  console.log(REACT_APP_DEV_MODE);
 
   const toggleOverlay = () => {
     setVisible(!visible);
@@ -65,11 +64,14 @@ function ProfileScreen(props) {
         };
         try {
           // SEND message to DB
-          const saveMsgToDB = await fetch(`${REACT_APP_DEV_MODE}/messages/addMessage`, {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: `message=${defautMsgToDB.content}&discussionID=${defautMsgToDB.discussionID}&userID=${defautMsgToDB.senderID}`,
-          });
+          const saveMsgToDB = await fetch(
+            `${REACT_APP_DEV_MODE}/messages/addMessage`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: `message=${defautMsgToDB.content}&discussionID=${defautMsgToDB.discussionID}&userID=${defautMsgToDB.senderID}`,
+            }
+          );
         } catch (error) {
           console.log(error);
         }
@@ -158,76 +160,79 @@ function ProfileScreen(props) {
             <Text style={styles.badge1}>{alumniDatas.status}</Text>
           </View>
         </View>
-      <View style={styles.view1}>
-        {/* Localisation actuelle */}
-        <Text style={styles.text2}>
-          {alumniDatas.address?.city} {alumniDatas.address?.country}
-        </Text>
-      </View>
-      <ScrollView 
-      style={{ marginHorizontal: 20, minHeight:'7%' }}
-      contentContainerStyle={styles.tags}
-      horizontal={true}>
-        {/* Tags et compétences */}
-        {alumniDatas.tags?.map((tag, i) => {
-          return (
-            <View style={styles.view3} key={i}>
-            <Text style={styles.badge2}>
-              {tag}
-            </Text>
-            </View>
-          );
-        })}
-      </ScrollView>
-
-      <View style={{ marginHorizontal:20}}>
-        <TouchableOpacity
-          style={[styles.button]}
-          onPress={() => {
-            toggleOverlay();
-          }}
+        <View style={styles.view1}>
+          {/* Localisation actuelle */}
+          <Text style={styles.text2}>
+            {alumniDatas.address?.city} {alumniDatas.address?.country}
+          </Text>
+        </View>
+        <ScrollView
+          style={{ marginHorizontal: 20, minHeight: "7%" }}
+          contentContainerStyle={styles.tags}
+          horizontal={true}
         >
-          <Text style={{ fontSize: 18, color: "#FFFFFF" }}>
-            {"\uD83C\uDF7B"} Proposer une bière
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.button]}
-        onPress={() => {setMsgSent(false);}}>
-          <Text style={{ fontSize: 18, color: "#FFFFFF" }}>
-            {"\uD83D\uDCAA"} Envoyer un message
-          </Text>
-        </TouchableOpacity>
-      </View>
+          {/* Tags et compétences */}
+          {alumniDatas.tags?.map((tag, i) => {
+            return (
+              <View style={styles.view3} key={i}>
+                <Text style={styles.badge2}>{tag}</Text>
+              </View>
+            );
+          })}
+        </ScrollView>
 
-      <ScrollView contentContainerStyle={styles.view2} scrollbar>
-        <Text style={styles.title}>RECHERCHE ACTUELLE</Text>
-        <Text style={styles.text2}>{alumniDatas.searchCurrent}</Text>
-        <Text style={styles.title}>PRÉSENTATION</Text>
-        <Text style={styles.text2}>{alumniDatas.presentation}</Text>
-      </ScrollView>
+        <View style={{ marginHorizontal: 20 }}>
+          <TouchableOpacity
+            style={[styles.button]}
+            onPress={() => {
+              toggleOverlay();
+            }}
+          >
+            <Text style={{ fontSize: 18, color: "#FFFFFF" }}>
+              {"\uD83C\uDF7B"} Proposer une bière
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.button]}
+            onPress={() => {
+              setMsgSent(false);
+            }}
+          >
+            <Text style={{ fontSize: 18, color: "#FFFFFF" }}>
+              {"\uD83D\uDCAA"} Envoyer un message
+            </Text>
+          </TouchableOpacity>
+        </View>
 
-      <Divider
-        color={hollowWhite}
-        style={{ width: " 90%", marginLeft: "5%" }}
-      />
+        <ScrollView contentContainerStyle={styles.view2} scrollbar>
+          <Text style={styles.title}>RECHERCHE ACTUELLE</Text>
+          <Text style={styles.text2}>{alumniDatas.searchCurrent}</Text>
+          <Text style={styles.title}>PRÉSENTATION</Text>
+          <Text style={styles.text2}>{alumniDatas.presentation}</Text>
+        </ScrollView>
 
-      <View style={styles.icon}>
-        {/* ICONES RESEAUX SOCIAUX */}
-        {/* //TODO------------- TROUVER COMMENT RECUPERER LES LIENS DE LA BDD ! ---------- */}
-        <SocialIcon
-          onPress={() => {
-            Linking.openURL("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
-          }}
-          type="github"
+        <Divider
+          color={hollowWhite}
+          style={{ width: " 90%", marginLeft: "5%" }}
         />
-        <SocialIcon
-          onPress={() => {
-            Linking.openURL("https://www.linkedin.com/");
-          }}
-          type="linkedin"
-        />
+
+        <View style={styles.icon}>
+          {/* ICONES RESEAUX SOCIAUX */}
+          {/* //TODO------------- TROUVER COMMENT RECUPERER LES LIENS DE LA BDD ! ---------- */}
+          <SocialIcon
+            onPress={() => {
+              Linking.openURL("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+            }}
+            type="github"
+          />
+          <SocialIcon
+            onPress={() => {
+              Linking.openURL("https://www.linkedin.com/");
+            }}
+            type="linkedin"
+          />
+        </View>
       </View>
-    </View>
     </View>
   );
 }
@@ -269,22 +274,22 @@ var styles = StyleSheet.create({
   view1: {
     justifyContent: "space-between",
     marginHorizontal: 20,
-    width: '55%',
+    width: "55%",
   },
   view2: {
     justifyContent: "space-between",
     margin: 20,
   },
-  view3:{
-    flexDirection:'row',
-    alignItems: 'center',
+  view3: {
+    flexDirection: "row",
+    alignItems: "center",
     justifyContent: "center",
     borderColor: "#0E0E66",
     borderRadius: 50,
     borderWidth: 1.2,
     padding: 5,
-    marginRight:5,
-    marginVertical: 2.5
+    marginRight: 5,
+    marginVertical: 2.5,
   },
   text1: {
     color: "#0e0e66",
@@ -318,9 +323,8 @@ var styles = StyleSheet.create({
     color: "#0E0E66",
     fontSize: 10,
     textAlign: "center",
-    textAlignVertical:"center",
-    margin:5
-  
+    textAlignVertical: "center",
+    margin: 5,
   },
   button: {
     width: "100%",
@@ -361,10 +365,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (ditpatch) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     getDiscussionID: function (discussionInfos) {
-      ditpatch({ type: "getDiscussionID", discussionInfos: discussionInfos });
+      dispatch({ type: "getDiscussionID", discussionInfos: discussionInfos });
     },
   };
 };
