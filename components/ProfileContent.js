@@ -24,7 +24,7 @@ function ProfileContent(props) {
 						{props.userDatas.work?.typeWork}
 					</Text>
 					<Text style={styles.text1}>
-						{props.userDatas.work?.work}
+						{props.userDatas.work.work}
 						{"\n"}
 						<Text style={{ color: "#0E0E66", fontWeight: "bold" }}>
 						{props.userDatas.work.company? "@" + props.userDatas.work.company : '' } 
@@ -57,7 +57,7 @@ function ProfileContent(props) {
 				<Text style={styles.badge1}>{props.userDatas.status}</Text>
 			</View>
 			<ScrollView
-				style={{ marginHorizontal: 20}}
+				style={{ marginHorizontal: 20, marginVertical:20, minHeight:70}}
 				horizontal={true}
 				scrollbar
 				contentContainerStyle={styles.tags}

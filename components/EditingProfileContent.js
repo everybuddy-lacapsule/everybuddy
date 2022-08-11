@@ -384,7 +384,7 @@ function EditingProfileContent(props) {
 				{/* //* POSTE ACTUEL */}
 				<Picker
 					selectedValue={work}
-					onValueChange={(v) => setWorkType(v)}
+					onValueChange={(v) => setWork(v)}
 					mode="dropdown"
 					enabled={true}
 					style={styles.wideInputs}
@@ -397,8 +397,8 @@ function EditingProfileContent(props) {
 						return <Item key={i} label={work} value={work} />;
 					})}
 
-					{/* //* ENTREPRISE */}
 				</Picker>
+				{/* //* ENTREPRISE */}
 				<TextInput
 					mode="outlined"
 					label="Entreprise"
@@ -511,7 +511,7 @@ function EditingProfileContent(props) {
 			{/* //* TAGLIST */}
 			<KeyboardAvoidingView style={{ marginVertical: 5 }}>
 				<ScrollView
-					style={{ marginHorizontal: 20, minHeight: 110 }}
+					style={{ marginHorizontal: 20, minHeight: 70, marginTop:20 }}
 					horizontal={true}
 					scrollbar
 					contentContainerStyle={styles.tags}
@@ -550,11 +550,10 @@ function EditingProfileContent(props) {
 				<Text style={styles.title}>RECHERCHE ACTUELLE</Text>
 				<TextInput
 					mode="outlined"
-					label="Tell your personal goals"
+					label="Objectifs personnels"
 					outlineColor="#F0F0F0"
 					style={[styles.multilineInput, { textAlignVertical: "top" }]}
 					activeOutlineColor="#E74C3C"
-					placeholderTextColor="rgba(0, 0, 0, 0.5)"
 					multiline={true}
 					editable={true}
 					numberOfLines={4}
