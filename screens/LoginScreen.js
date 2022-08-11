@@ -71,7 +71,7 @@ function LoginScreen(props) {
           isVisible={visible}
           onBackdropPress={toggleOverlay}
         >
-          <Text>{errorMessage}</Text>
+        <Text style={{textAlign: "center", color: '0e0e66'}}>{errorMessage}</Text>
         </Overlay>
         <View style={styles.content}>
           <View style={styles.input}>
