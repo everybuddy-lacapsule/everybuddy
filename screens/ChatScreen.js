@@ -16,20 +16,18 @@ import InsetShadow from "react-native-inset-shadow";
 import { connect } from "react-redux";
 // import { format } from "timeago.js";
 //import moment from "moment";
-import moment from 'moment/min/moment-with-locales';
-
+import moment from "moment/min/moment-with-locales";
 
 // change hook useIsFocused by option unmountOnBlur in the Chat Screen in TabsNavigator
 //import { useIsFocused } from "@react-navigation/native";
 
 import { REACT_APP_DEV_MODE } from "@env";
 
-
 /*----Web socket----*/
 import socketIOClient from "socket.io-client";
 
 function ChatScreen(props) {
-  console.log(REACT_APP_DEV_MODE)
+  console.log(REACT_APP_DEV_MODE);
   //const isFocused = useIsFocused();
   const socket = useRef();
   const scrollRef = useRef();
@@ -103,11 +101,14 @@ function ChatScreen(props) {
     };
     try {
       /* SEND message to DB */
-      const messageDB = await fetch(`${REACT_APP_DEV_MODE}/messages/addMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `message=${currentMessage.content}&discussionID=${currentMessage.discussionID}&userID=${currentMessage.senderID}`,
-      });
+      const messageDB = await fetch(
+        `${REACT_APP_DEV_MODE}/messages/addMessage`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: `message=${currentMessage.content}&discussionID=${currentMessage.discussionID}&userID=${currentMessage.senderID}`,
+        }
+      );
       const messageDBJson = await messageDB.json();
 
       socket.current.emit("sendMessage", messageDBJson);
@@ -188,9 +189,7 @@ function ChatScreen(props) {
         style={{ flex: 1, elevation: 10, shadowRadius: 10, shadowOpacity: 1 }}
       >
         <ScrollView ref={scrollRef}>{allMessagesDisplayed}</ScrollView>
-        <KeyboardAvoidingView
-          style={styles.textInput}
-        >
+        <KeyboardAvoidingView style={styles.textInput}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <TextInput
               style={styles.searchBar}
@@ -200,14 +199,27 @@ function ChatScreen(props) {
               onChangeText={(value) => setMessage(value)}
               onSubmitEditing={({
                 nativeEvent: { text, eventCount, target },
-              }) => handleGetMessage()}
+              }) => {
+                if (message !== "") {
+                  handleGetMessage();
+                }
+              }}
             />
             <TouchableOpacity
               style={styles.searchButtonBackground}
-              onPress={handleGetMessage}
+              onPress={() => {
+                if (message !== "") {
+                  handleGetMessage();
+                }
+              }}
             >
               <View style={styles.searchButton}>
-                <FontAwesome name="send" size={16} color="white" style={{ alignSelf: "center", paddingRight: 1 }} />
+                <FontAwesome
+                  name="send"
+                  size={16}
+                  color="white"
+                  style={{ alignSelf: "center", paddingRight: 1 }}
+                />
               </View>
             </TouchableOpacity>
           </View>
@@ -231,7 +243,6 @@ var styles = StyleSheet.create({
     backgroundColor: "#E74C3C",
     padding: 6,
     borderRadius: 50,
-
   },
   searchButtonBackground: {
     backgroundColor: "rgba(255, 255, 255, 0.5)",
@@ -325,4 +336,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, null)(ChatScreen);
-
