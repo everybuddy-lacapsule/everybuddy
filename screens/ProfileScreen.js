@@ -104,7 +104,7 @@ function ProfileScreen(props) {
           Proposer une bière à {alumniDatas.firstName} ?
         </Text>
         <Text style={{ color: "#0e0e66" }}>
-          Sur everyBuddy, nous souhaitons vous inciter partager un verre / un
+          Sur everyBuddy, nous souhaitons vous inciter à partager un verre / un
           repas avec les alumnis !
         </Text>
         <Text style={{ color: "#0e0e66" }}>

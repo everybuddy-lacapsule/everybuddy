@@ -202,7 +202,7 @@ function OnBoardingStatus(props) {
           />
         );
       })}
-      <Text style={styles.title}>Et plutôt ?</Text>
+      <Text style={styles.title}>En tant que ?</Text>
       {typeWorkDatasList.map(function (work, i) {
         var checked = false;
         if (userDatasInput.typeWork === work) {
@@ -350,7 +350,7 @@ function OnBoardingStatus(props) {
         isVisible={visible}
         onBackdropPress={toggleOverlay}
       >
-        <Text>{errorMessage}</Text>
+        <Text style={{textAlign: "center", color: '0e0e66'}}>{errorMessage}</Text>
       </Overlay>
       <View style={styles.content}>{content}</View>
       <View style={styles.bottom}>
@@ -406,7 +406,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
     color: "#e74c3c",
-    marginTop: "30%",
+    marginTop: "20%",
     marginBottom: "8%",
     alignSelf: "center",
   },
