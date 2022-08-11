@@ -141,33 +141,52 @@ function ProfileScreen(props) {
       <View style={styles.container}>
         <View style={styles.content}>
           <View style={styles.avatar}>
-            <Avatar rounded size={142} source={{ uri: alumniDatas.avatar }} />
+            <Avatar rounded size={140} source={{ uri: alumniDatas.avatar }} />
           </View>
+          {/* //*Right infos */}
           <View style={styles.view1}>
-            {/* Nom Prénom */}
-            <Text style={styles.name}>
-              {alumniDatas.firstName} {alumniDatas.name}
-            </Text>
-            {/* Cursus */}
-            <Text style={styles.text1}>
-              Batch {alumniDatas.capsule?.nbBatch} {alumniDatas.capsule?.campus}
-            </Text>
-            {/* Job + Entreprise */}
-            <Text style={styles.text1}>
-              {alumniDatas.work?.work} @ {alumniDatas.work?.company}
-            </Text>
-            {/* Statut : OpenToWork/ Just Curious / Partner / Hiring */}
-            <Text style={styles.badge1}>{alumniDatas.status}</Text>
-          </View>
+					{/* Nom Prénom */}
+					<Text style={styles.name}>
+						{alumniDatas.firstName} {alumniDatas.name}
+					</Text>
+					{/* TypeJob + Job + Entreprise */}
+					<Text style={{ color: "#E74C3C", fontWeight: "bold", fontSize: 14 }}>
+						{alumniDatas.work?.typeWork ? alumniDatas.work.typeWork  : ""}
+					</Text>
+					<Text style={styles.text1}>
+						{alumniDatas.work?.work ? alumniDatas.work.work : ''}
+						{"\n"}
+						<Text style={{ color: "#0E0E66", fontWeight: "bold" }}>
+						{alumniDatas.work?.company ? "@ " + alumniDatas.work.company : ''}
+						</Text>
+						{"\n"}
+						{/* Cursus */}
+						{alumniDatas.capsule?.nbBatch ? `Batch# ${alumniDatas.capsule.nbBatch} ` : ''}
+						{alumniDatas.capsule?.campus ? alumniDatas.capsule.campus : ''}
+						{"\n"}
+						{alumniDatas.capsule?.cursus ? alumniDatas.capsule.cursus : ''}
+					</Text>
+				</View>
         </View>
-        <View style={styles.view1}>
-          {/* Localisation actuelle */}
-          <Text style={styles.text2}>
-            {alumniDatas.address?.city} {alumniDatas.address?.country}
-          </Text>
-        </View>
+        <View
+				style={[
+					{
+						flexDirection: "row",
+						alignItems: "flex-start",
+						justifyContent: "space-between",
+						marginHorizontal: 20,
+					},
+				]}
+			>
+				{/* Localisation actuelle */}
+				<Text style={{ textAlignVertical: "center", alignSelf: "center" }}>
+					{alumniDatas.address?.city}, {alumniDatas.address?.country}
+				</Text>
+				{/* Statut : OpenToWork/ Just Curious / Partner / Hiring */}
+				<Text style={styles.badge1}>{alumniDatas.status}</Text>
+			</View>
         <ScrollView
-          style={{ marginHorizontal: 20, minHeight: "7%" }}
+          style={{ marginHorizontal: 20, minHeight: "7%", marginVertical:20}}
           contentContainerStyle={styles.tags}
           horizontal={true}
         >
@@ -218,16 +237,15 @@ function ProfileScreen(props) {
 
         <View style={styles.icon}>
           {/* ICONES RESEAUX SOCIAUX */}
-          {/* //TODO------------- TROUVER COMMENT RECUPERER LES LIENS DE LA BDD ! ---------- */}
           <SocialIcon
-            onPress={() => {
-              Linking.openURL("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
-            }}
+            onPress={() => { alumniDatas.linkRs.linkedin?
+              Linking.openURL(alumniDatas.linkRs.linkedin) : alert("Aucun lien GitHub renseigné");
+            }}  
             type="github"
           />
           <SocialIcon
-            onPress={() => {
-              Linking.openURL("https://www.linkedin.com/");
+            onPress={() => { alumniDatas.linkRs.linkedin?
+              Linking.openURL(alumniDatas.linkRs.linkedin) : alert("Aucun lien LinkedIn renseigné")
             }}
             type="linkedin"
           />
@@ -260,22 +278,21 @@ var styles = StyleSheet.create({
     margin: 3,
   },
   name: {
-    color: "#0e0e66",
-    fontWeight: "bold",
-    fontSize: 22,
-    marginBottom: 5,
-    marginTop: 20,
+    color:"#0E0E66",
+		fontWeight: "bold",
+		fontSize: 22,
+		marginTop: 20,
   },
-  avatar: {
-    size: 100,
-    alignSelf: "flex-start",
-    marginTop: 15,
-  },
-  view1: {
-    justifyContent: "space-between",
-    marginHorizontal: 20,
-    width: "55%",
-  },
+	avatar: {
+		alignSelf: "flex-start",
+		marginTop: 25,
+		marginLeft: 20,
+	},
+	view1: {
+		width: "55%",
+		justifyContent: "space-between",
+		marginHorizontal: 20,
+	},
   view2: {
     justifyContent: "space-between",
     margin: 20,
@@ -308,15 +325,15 @@ var styles = StyleSheet.create({
     marginBottom: 5,
   },
   badge1: {
-    marginRight: 10,
-    backgroundColor: "#0E0E66",
-    color: "white",
-    fontSize: 18,
-    borderColor: "#0E0E66",
-    borderRadius: 50,
-    borderWidth: 1.2,
-    textAlign: "center",
-    paddingTop: 2,
+		width: "55%",
+		backgroundColor: "#0E0E66",
+		color: "white",
+		fontSize: 18,
+		borderColor: "#0E0E66",
+		borderRadius: 50,
+		borderWidth: 1.2,
+		textAlign: "center",
+		padding: 2,
   },
   badge2: {
     fontWeight: "bold",

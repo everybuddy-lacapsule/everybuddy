@@ -24,18 +24,18 @@ function ProfileContent(props) {
 						{props.userDatas.work?.typeWork}
 					</Text>
 					<Text style={styles.text1}>
-						{props.userDatas.work?.work}
+						{props.userDatas.work.work}
 						{"\n"}
 						<Text style={{ color: "#0E0E66", fontWeight: "bold" }}>
-							@ {props.userDatas.work?.company}
+						{props.userDatas.work.company? "@" + props.userDatas.work.company : '' } 
 						</Text>
 						{"\n"}
 						{"\n"}
 						{/* Cursus */}
-						Batch #{props.userDatas.capsule?.nbBatch}{" "}
-						{props.userDatas.capsule?.campus}
+						{props.userDatas.capsule.nbBatch ? "Batch# " + props.userDatas.capsule.nbBatch : ''}
+						{props.userDatas.capsule.campus ? props.userDatas.capsule.campus : ''}
 						{"\n"}
-						{props.userDatas.capsule?.cursus}
+						{props.userDatas.capsule.cursus ? props.userDatas.capsule.cursus : ''}
 					</Text>
 				</View>
 			</View>
@@ -57,7 +57,7 @@ function ProfileContent(props) {
 				<Text style={styles.badge1}>{props.userDatas.status}</Text>
 			</View>
 			<ScrollView
-				style={{ marginHorizontal: 20, minHeight: 90 }}
+				style={{ marginHorizontal: 20, marginVertical:20, minHeight:70}}
 				horizontal={true}
 				scrollbar
 				contentContainerStyle={styles.tags}
@@ -138,6 +138,7 @@ var styles = StyleSheet.create({
 		marginTop: 10,
 	},
 	name: {
+		color:"#0E0E66",
 		fontWeight: "bold",
 		fontSize: 22,
 		marginTop: 20,

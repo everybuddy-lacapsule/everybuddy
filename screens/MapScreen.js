@@ -11,12 +11,15 @@ import React, { useEffect, useState } from "react";
 import MapView, { Marker, Circle } from "react-native-maps";
 import { ListItem, Avatar } from "@rneui/base";
 import { Ionicons } from "@expo/vector-icons";
+import { SimpleLineIcons } from '@expo/vector-icons';
 import { FontAwesome } from "@expo/vector-icons";
 import BottomDrawer from "react-native-bottom-drawer-view";
 import { connect } from "react-redux";
 import { REACT_APP_DEV_MODE } from "@env";
 
 function MapScreen(props) {
+  const [swipeIcon, setSwipeIcon] = useState(<SimpleLineIcons name="arrow-up" size={18} color="#E74C3C"/>)
+
   const [resultLink, setResultLink] = useState("liste");
   // Radius default, unit = meter
   //const [buddyList, setBuddyList] = useState(props.buddiesList);
@@ -120,11 +123,15 @@ function MapScreen(props) {
   function bottomDrawer(searchResults) {
     return (
       <View>
+        <View style={{flexDirection:"row", justifyContent: "center"}}>
+        <View style={{alignSelf: 'center', marginRight:10}}>{swipeIcon}</View>
+
         <Text style={styles.listHeader}>
           {searchResults.length} resultats {""}
           <Text style={styles.link}>voir {resultLink}</Text>
         </Text>
-        <ScrollView>
+        </View>
+        <ScrollView style={{ marginBottom: 164}}>
           {searchResults.map((r, i) => {
             var buddyIcon = "person-add";
             var buddyIconColor = "#0E0E66";
@@ -169,7 +176,7 @@ function MapScreen(props) {
                   ) : (
                     <Ionicons
                       name={buddyIcon}
-                      size={32}
+                      size={24}
                       color={buddyIconColor}
                       onPress={() => {
                         updateBuddies(r).then((response) => {
@@ -182,7 +189,7 @@ function MapScreen(props) {
                 </View>
                 <FontAwesome
                   name="paper-plane"
-                  size={32}
+                  size={24}
                   color="#0E0E66"
                   onPress={() => {
                     props.getAlumniIDSearch(r._id);
@@ -226,10 +233,11 @@ function MapScreen(props) {
         downDisplay={windowHeight * 0.812}
         roundedEdges={false}
         onExpanded={() => {
-          setResultLink("map");
+          setResultLink("map"); setSwipeIcon(<SimpleLineIcons name="arrow-down" size={18} color="#E74C3C"/>)
         }}
         onCollapsed={() => {
-          setResultLink("list");
+          setResultLink("liste");
+          setSwipeIcon(<SimpleLineIcons name="arrow-up" size={18} color="#E74C3C"  />);
         }}
       >
         {bottomDrawer(props.searchResults.searchResults)}
@@ -252,11 +260,11 @@ var styles = StyleSheet.create({
   link: {
     fontWeight: "normal",
     color: "#E74C3C",
-    textDecorationLine: "underline",
+    // textDecorationLine: "underline",
+    marginRight:20,
   },
   listHeader: {
     fontWeight: "bold",
-    marginLeft: 20,
     height: 32,
     textAlignVertical: "center",
   },

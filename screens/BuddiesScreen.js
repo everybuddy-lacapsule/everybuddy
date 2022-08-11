@@ -93,7 +93,7 @@ function BuddiesScreen(props) {
               </TouchableOpacity>
               <FontAwesome
                 name="paper-plane"
-                size={32}
+                size={24}
                 color="#0E0E66"
                 onPress={() => {
                   props.getAlumniIDSearch(r._id);
