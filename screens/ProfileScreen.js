@@ -11,6 +11,7 @@ import { Divider, SocialIcon, hollowWhite, Overlay } from "@rneui/themed";
 import { Avatar } from "@rneui/base";
 import { connect } from "react-redux";
 import { REACT_APP_DEV_MODE } from "@env";
+import { getToken, sendPushNotification } from "../services/api.js";
 
 function ProfileScreen(props) {
   const [alumniDatas, setAlumniDatas] = useState({});
@@ -72,6 +73,16 @@ function ProfileScreen(props) {
               body: `message=${defautMsgToDB.content}&discussionID=${defautMsgToDB.discussionID}&userID=${defautMsgToDB.senderID}`,
             }
           );
+          let deviceToken;
+          console.log(alumniDatas._id);
+          await getToken(alumniDatas._id).then(response => deviceToken = response.deviceToken[0].deviceToken);
+          if (deviceToken) {
+            sendPushNotification(
+              deviceToken,
+              props.userDatas.name,
+              defautMsgToDB.content
+            );
+          };
         } catch (error) {
           console.log(error);
         }
@@ -145,48 +156,54 @@ function ProfileScreen(props) {
           </View>
           {/* //*Right infos */}
           <View style={styles.view1}>
-					{/* Nom Prénom */}
-					<Text style={styles.name}>
-						{alumniDatas.firstName} {alumniDatas.name}
-					</Text>
-					{/* TypeJob + Job + Entreprise */}
-					<Text style={{ color: "#E74C3C", fontWeight: "bold", fontSize: 14 }}>
-						{alumniDatas.work?.typeWork ? alumniDatas.work.typeWork  : ""}
-					</Text>
-					<Text style={styles.text1}>
-						{alumniDatas.work?.work ? alumniDatas.work.work : ''}
-						{"\n"}
-						<Text style={{ color: "#0E0E66", fontWeight: "bold" }}>
-						{alumniDatas.work?.company ? "@ " + alumniDatas.work.company : ''}
-						</Text>
-						{"\n"}
-						{/* Cursus */}
-						{alumniDatas.capsule?.nbBatch ? `Batch# ${alumniDatas.capsule.nbBatch} ` : ''}
-						{alumniDatas.capsule?.campus ? alumniDatas.capsule.campus : ''}
-						{"\n"}
-						{alumniDatas.capsule?.cursus ? alumniDatas.capsule.cursus : ''}
-					</Text>
-				</View>
+            {/* Nom Prénom */}
+            <Text style={styles.name}>
+              {alumniDatas.firstName} {alumniDatas.name}
+            </Text>
+            {/* TypeJob + Job + Entreprise */}
+            <Text
+              style={{ color: "#E74C3C", fontWeight: "bold", fontSize: 14 }}
+            >
+              {alumniDatas.work?.typeWork ? alumniDatas.work.typeWork : ""}
+            </Text>
+            <Text style={styles.text1}>
+              {alumniDatas.work?.work ? alumniDatas.work.work : ""}
+              {"\n"}
+              <Text style={{ color: "#0E0E66", fontWeight: "bold" }}>
+                {alumniDatas.work?.company
+                  ? "@ " + alumniDatas.work.company
+                  : ""}
+              </Text>
+              {"\n"}
+              {/* Cursus */}
+              {alumniDatas.capsule?.nbBatch
+                ? `Batch# ${alumniDatas.capsule.nbBatch} `
+                : ""}
+              {alumniDatas.capsule?.campus ? alumniDatas.capsule.campus : ""}
+              {"\n"}
+              {alumniDatas.capsule?.cursus ? alumniDatas.capsule.cursus : ""}
+            </Text>
+          </View>
         </View>
         <View
-				style={[
-					{
-						flexDirection: "row",
-						alignItems: "flex-start",
-						justifyContent: "space-between",
-						marginHorizontal: 20,
-					},
-				]}
-			>
-				{/* Localisation actuelle */}
-				<Text style={{ textAlignVertical: "center", alignSelf: "center" }}>
-					{alumniDatas.address?.city}, {alumniDatas.address?.country}
-				</Text>
-				{/* Statut : OpenToWork/ Just Curious / Partner / Hiring */}
-				<Text style={styles.badge1}>{alumniDatas.status}</Text>
-			</View>
+          style={[
+            {
+              flexDirection: "row",
+              alignItems: "flex-start",
+              justifyContent: "space-between",
+              marginHorizontal: 20,
+            },
+          ]}
+        >
+          {/* Localisation actuelle */}
+          <Text style={{ textAlignVertical: "center", alignSelf: "center" }}>
+            {alumniDatas.address?.city}, {alumniDatas.address?.country}
+          </Text>
+          {/* Statut : OpenToWork/ Just Curious / Partner / Hiring */}
+          <Text style={styles.badge1}>{alumniDatas.status}</Text>
+        </View>
         <ScrollView
-          style={{ marginHorizontal: 20, minHeight: "7%", marginVertical:20}}
+          style={{ marginHorizontal: 20, minHeight: "7%", marginVertical: 20 }}
           contentContainerStyle={styles.tags}
           horizontal={true}
         >
@@ -238,14 +255,18 @@ function ProfileScreen(props) {
         <View style={styles.icon}>
           {/* ICONES RESEAUX SOCIAUX */}
           <SocialIcon
-            onPress={() => { alumniDatas.linkRs.linkedin?
-              Linking.openURL(alumniDatas.linkRs.linkedin) : alert("Aucun lien GitHub renseigné");
-            }}  
+            onPress={() => {
+              alumniDatas.linkRs.linkedin
+                ? Linking.openURL(alumniDatas.linkRs.linkedin)
+                : alert("Aucun lien GitHub renseigné");
+            }}
             type="github"
           />
           <SocialIcon
-            onPress={() => { alumniDatas.linkRs.linkedin?
-              Linking.openURL(alumniDatas.linkRs.linkedin) : alert("Aucun lien LinkedIn renseigné")
+            onPress={() => {
+              alumniDatas.linkRs.linkedin
+                ? Linking.openURL(alumniDatas.linkRs.linkedin)
+                : alert("Aucun lien LinkedIn renseigné");
             }}
             type="linkedin"
           />
@@ -278,21 +299,21 @@ var styles = StyleSheet.create({
     margin: 3,
   },
   name: {
-    color:"#0E0E66",
-		fontWeight: "bold",
-		fontSize: 22,
-		marginTop: 20,
+    color: "#0E0E66",
+    fontWeight: "bold",
+    fontSize: 22,
+    marginTop: 20,
   },
-	avatar: {
-		alignSelf: "flex-start",
-		marginTop: 25,
-		marginLeft: 20,
-	},
-	view1: {
-		width: "55%",
-		justifyContent: "space-between",
-		marginHorizontal: 20,
-	},
+  avatar: {
+    alignSelf: "flex-start",
+    marginTop: 25,
+    marginLeft: 20,
+  },
+  view1: {
+    width: "55%",
+    justifyContent: "space-between",
+    marginHorizontal: 20,
+  },
   view2: {
     justifyContent: "space-between",
     margin: 20,
@@ -325,15 +346,15 @@ var styles = StyleSheet.create({
     marginBottom: 5,
   },
   badge1: {
-		width: "55%",
-		backgroundColor: "#0E0E66",
-		color: "white",
-		fontSize: 18,
-		borderColor: "#0E0E66",
-		borderRadius: 50,
-		borderWidth: 1.2,
-		textAlign: "center",
-		padding: 2,
+    width: "55%",
+    backgroundColor: "#0E0E66",
+    color: "white",
+    fontSize: 18,
+    borderColor: "#0E0E66",
+    borderRadius: 50,
+    borderWidth: 1.2,
+    textAlign: "center",
+    padding: 2,
   },
   badge2: {
     fontWeight: "bold",

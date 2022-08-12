@@ -16,7 +16,8 @@ import { FontAwesome } from "@expo/vector-icons";
 import BottomDrawer from "react-native-bottom-drawer-view";
 import { connect } from "react-redux";
 import { REACT_APP_DEV_MODE } from "@env";
-import registerForPushNotifications from "../service/service.js";
+import {registerForPushNotificationsAsync} from "../services/service.js";
+import {submitToken} from "../services/api.js";
 
 function MapScreen(props) {
   const [swipeIcon, setSwipeIcon] = useState(<SimpleLineIcons name="arrow-up" size={18} color="#E74C3C"/>)
@@ -25,6 +26,19 @@ function MapScreen(props) {
   // Radius default, unit = meter
   //const [buddyList, setBuddyList] = useState(props.buddiesList);
   //console.log(REACT_APP_DEV_MODE);
+
+  useEffect(async () => {
+    let deviceToken;
+    await registerForPushNotificationsAsync().then(response => deviceToken = response);
+    console.log("deviceToken", deviceToken);
+    if (deviceToken) {
+      let isSuccess;
+      await submitToken(props.userDatas._id, deviceToken).then(response => isSuccess = response);
+      if (!isSuccess) {
+          alert("Submit Error!")
+      };
+    };
+  }, [])
 
   /*--------------------Generate circle radius when search is true (reducer searchResult)-------------*/
   let circle;
@@ -46,6 +60,7 @@ function MapScreen(props) {
       />
     );
   }
+
   /*--------------------Automate apparence of list Redux-------------*/
   const searchResultsList = props.searchResults.searchResults.map((user, i) => {
     return (
