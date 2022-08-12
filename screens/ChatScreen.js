@@ -207,7 +207,7 @@ function ChatScreen(props) {
               onSubmitEditing={({
                 nativeEvent: { text, eventCount, target },
               }) => {
-                if (message !== "") {
+                if (message.trim() !== "") {
                   handleGetMessage();
                 }
               }}
@@ -215,7 +215,7 @@ function ChatScreen(props) {
             <TouchableOpacity
               style={styles.searchButtonBackground}
               onPress={() => {
-                if (message !== "") {
+                if (message.trim() !== "") {
                   handleGetMessage();
                 }
               }}
