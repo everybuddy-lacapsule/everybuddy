@@ -16,6 +16,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import BottomDrawer from "react-native-bottom-drawer-view";
 import { connect } from "react-redux";
 import { REACT_APP_DEV_MODE } from "@env";
+import registerForPushNotifications from "../service/service.js";
 
 function MapScreen(props) {
   const [swipeIcon, setSwipeIcon] = useState(<SimpleLineIcons name="arrow-up" size={18} color="#E74C3C"/>)
