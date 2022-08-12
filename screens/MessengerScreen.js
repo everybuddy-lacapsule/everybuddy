@@ -15,6 +15,7 @@ function MessengerScreen(props) {
   console.log(REACT_APP_DEV_MODE);
 
   useEffect(() => {
+    const ac = new AbortController();
     const getDiscussions = async () => {
       try {
         const response = await fetch(
@@ -27,10 +28,11 @@ function MessengerScreen(props) {
       }
     };
     getDiscussions();
+    return () => ac.abort();
     //}, [isFocused]);
   }, []);
 
-  console.log(discussions);
+  //console.log(discussions);
   //console.log("userDiscussions is", discussions);
   return (
     <View>
@@ -43,7 +45,6 @@ function MessengerScreen(props) {
               discussion={discussion}
               currentUser={props.userDatas}
               navigation={props.navigation}
-              options={{ unmountOnBlur: true }}
             />
           ))
         ) : (

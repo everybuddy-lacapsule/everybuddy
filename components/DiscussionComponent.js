@@ -18,16 +18,20 @@ function Discussion({
   const isFocused = useIsFocused();
   const [anotherMember, setAnotherMember] = useState({});
   const [lastMessage, setLastMessage] = useState("");
-  console.log(REACT_APP_DEV_MODE);
 
   useEffect(() => {
-    const anotherMemberID = discussion.memberIDs.find(
-      (id) => id !== currentUser._id
-    );
-
+    // initiate anotherMemberID by currentUserID
+    let anotherMemberID = currentUser._id;
+    // if it's not a safe discussion so, reassign anotherMemberID by anotherUserID
+    if(discussion.memberIDs.filter(id => id === currentUser._id).length !== 2){
+      anotherMemberID = discussion.memberIDs.find(
+        (id) => id !== currentUser._id
+      );
+    }
+    
     const getAnotherMember = async () => {
       const response = await fetch(
-        `${REACT_APP_DEV_MODE}/users/getUserDatas?userID=${anotherMemberID}`
+        `${REACT_APP_DEV_MODE}/users/getUserDiscussion?userID=${anotherMemberID}`
       );
       const dataJSON = await response.json();
       setAnotherMember(dataJSON.userDatas);
