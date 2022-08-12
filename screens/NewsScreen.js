@@ -1,12 +1,30 @@
 import { Button, Text, View, StyleSheet, Image, ImageBackground, ScrollView } from 'react-native';
-import { Card } from "@rneui/themed";
+import { Card, Overlay } from "@rneui/themed";
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import React, {useState} from 'react';
 
 export default function NewsScreen(props) {
+  const [visible, setVisible] = useState(false)
+  const toggleOverlay = () => {
+		setVisible(!visible);
+	};
+
     return(
+
       <ImageBackground 
       style={styles.container}
       source={require("../assets/back.png")}
       >
+              <Overlay
+				isVisible={visible}
+				animationType="fade"
+				overlayStyle={styles.overlay}
+				onBackdropPress={toggleOverlay}
+			>
+        <Text style={styles.modalText}> LET'S GOOOOOOO!!! {"\n"}{"\n"} Participation validée !</Text>
+        <Image source={require('../assets/woo.webp')} style={{marginTop:20}} />
+        <Text style={[styles.modalText, {marginTop:20, color:"#0E0E66"}]}> WOOOOOOH !!!</Text>
+			</Overlay>
 <ScrollView>
   {/* CARD 1 */}
 <Card
@@ -38,9 +56,9 @@ Venez partager un barbecue autour de citations de qualité telles que :
   <View
   style={styles.content}
   >
-  <Text style={styles.badge1}>
-JE PARTICIPE !
-  </Text>
+  <TouchableOpacity style={[styles.badge1, {padding:11.4}]} onPress={() => toggleOverlay()}>
+<Text style={{ color:"#fff", fontWeight:'bold', fontSize: 11.4}} >JE PARTICIPE !</Text>
+  </TouchableOpacity>
   <Text style={styles.badge2}>
 J'AI PONEY
   </Text>
@@ -180,4 +198,12 @@ var styles = StyleSheet.create({
     textAlign: "center",
     padding: 10,
   },
+  overlay: {
+		justifyContent: "center",
+		alignItems: "center",
+		padding: 20,
+		borderRadius: 10,
+	},
+	modalText: { fontWeight: "bold", color: "#E74C3C", textAlign: "center"},
+
 });
