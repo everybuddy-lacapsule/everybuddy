@@ -13,6 +13,8 @@ import leftDrawerStatus from "./reducers/leftDrawerStatus";
 import alumniIDSearch from "./reducers/alumniIDSearch";
 import editionMode from "./reducers/editionMode";
 import buddiesList from "./reducers/buddiesList";
+//import * as Device from "expo-device";
+import * as Notifications from "expo-notifications";
 
 LogBox.ignoreAllLogs();
 
@@ -30,8 +32,31 @@ const store = createStore(
   })
 );
 
+// Settings for the notification handler
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
+
 // APP ----------------------------------------------------------------
 export default function App() {
+  const notificationListener = useRef();
+/*
+  useEffect(() => {
+    // This listener is fired whenever a notification is received while the app is foregrounded
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        setNotification(notification);
+      });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+    };
+  }, []);
+*/
   return (
     <Provider store={store}>
       <NavigationContainer>

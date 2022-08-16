@@ -16,8 +16,10 @@ import { FontAwesome } from "@expo/vector-icons";
 import BottomDrawer from "react-native-bottom-drawer-view";
 import { connect } from "react-redux";
 import { REACT_APP_DEV_MODE } from "@env";
-import {registerForPushNotificationsAsync} from "../services/service.js";
+//import {registerForPushNotificationsAsync} from "../services/service.js";
+import * as Device from 'expo-device';
 import {submitToken} from "../services/api.js";
+import * as Notifications from 'expo-notifications';
 
 function MapScreen(props) {
   const [swipeIcon, setSwipeIcon] = useState(<SimpleLineIcons name="arrow-up" size={18} color="#E74C3C"/>)
@@ -27,17 +29,48 @@ function MapScreen(props) {
   //const [buddyList, setBuddyList] = useState(props.buddiesList);
   //console.log(REACT_APP_DEV_MODE);
 
-  useEffect(async () => {
-    let deviceToken;
-    await registerForPushNotificationsAsync().then(response => deviceToken = response);
-    console.log("deviceToken", deviceToken);
-    if (deviceToken) {
-      let isSuccess;
-      await submitToken(props.userDatas._id, deviceToken).then(response => isSuccess = response);
-      if (!isSuccess) {
-          alert("Submit Error!")
+  useEffect( () => {
+    async function registerForPushNotificationsAsync() {
+      let token;
+      if (Device.isDevice) {
+        const { status: existingStatus } = await Notifications.getPermissionsAsync();
+        console.log('existingStatus', existingStatus);
+        let finalStatus = existingStatus;
+        if (existingStatus !== 'granted') {
+          const { status } = await Notifications.requestPermissionsAsync();
+          finalStatus = status;
+          console.log('finalStatus', finalStatus);
+        }
+        if (finalStatus !== 'granted') {
+          alert('Failed to get push token for push notification!');
+          return;
+        }
+        token = (await Notifications.getExpoPushTokenAsync()).data;
+        console.log(token);
+      } else {
+        alert('Must use physical device for Push Notifications');
+      }
+    
+      if (Platform.OS === 'android') {
+        Notifications.setNotificationChannelAsync('default', {
+          name: 'default',
+          importance: Notifications.AndroidImportance.MAX,
+          vibrationPattern: [0, 250, 250, 250],
+          lightColor: '#FF231F7C',
+        });
+      }
+    
+      return token;
+    }
+    registerForPushNotificationsAsync().then(response => {
+      if (response) {
+        submitToken(props.userDatas._id, response).then(response => {
+          if(!response){
+              alert("Submit Error!");
+          }
+        });
       };
-    };
+    });
   }, [])
 
   /*--------------------Generate circle radius when search is true (reducer searchResult)-------------*/
