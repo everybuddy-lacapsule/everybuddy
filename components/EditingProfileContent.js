@@ -239,7 +239,7 @@ function EditingProfileContent(props) {
 			var data = new FormData();
 			data.append("photo", {
 				uri: manipResult.uri,
-				type: "image/jpg",
+				type: "image/jpeg",
 				name: "photo.jpg",
 			});
 			var rawResponse = await fetch(`${REACT_APP_DEV_MODE}/users/upload`, {

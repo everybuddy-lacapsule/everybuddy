@@ -4,7 +4,8 @@ import { Divider, SocialIcon, hollowWhite } from "@rneui/themed";
 import { Avatar } from "@rneui/base";
 import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
-import { clockRunning } from "react-native-reanimated";
+import { useFonts } from 'expo-font';
+
 
 function ProfileContent(props) {
 	return (
@@ -94,12 +95,14 @@ function ProfileContent(props) {
 				{/* ICONES RESEAUX SOCIAUX */}
 				{/* ------------- TROUVER COMMENT RECUPERER LES LIENS DE LA BDD ! ---------- */}
 				<SocialIcon
-					onPress={() => { props.userDatas.linkRs.github ? Linking.openURL(props.userDatas.linkRs.github) : alert("Aucun lien Github renseigné")
+					onPress={() => {
+						Linking.openURL("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
 					}}
 					type="github"
 				/>
 				<SocialIcon
-					onPress={() => { props.userDatas.linkRs.linkedin ? Linking.openURL(props.userDatas.linkRs.linkedin) : alert("Aucun lien LinkedIn renseigné")
+					onPress={() => {
+						Linking.openURL("https://www.linkedin.com/");
 					}}
 					type="linkedin"
 				/>

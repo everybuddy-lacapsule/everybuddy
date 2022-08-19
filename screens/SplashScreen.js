@@ -12,7 +12,7 @@ import {REACT_APP_DEV_MODE} from "@env"
 
 
 function SplashScreen(props) {
-  console.log('splash screen: ',REACT_APP_DEV_MODE)
+  // console.log('splash screen: ',REACT_APP_DEV_MODE)
 
   useEffect(() => {
     AsyncStorage.getItem("userID", async function (error, userID) {
@@ -40,7 +40,7 @@ function SplashScreen(props) {
     const res = await fetch(`${REACT_APP_DEV_MODE}/users/userLocation`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `location=${props.userDatas.address.city}`,
+      body: `location=${props.userDatas?.address.city}`,
     });
     return res.json();
   }

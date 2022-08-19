@@ -22,7 +22,7 @@ const Tab = createBottomTabNavigator();
 const hiddenTabs = ["Buddies", "MyProfile", "Chat", "ProfileScreen"];
 
 const TabsNavigator = function (props) {
-	console.log("IP in tabs", REACT_APP_DEV_MODE);
+	// console.log("IP in tabs", REACT_APP_DEV_MODE);
 	const isLeftDrawerVisible = useDrawerStatus();
 	const [isLeftFocused, setIsLeftFocused] = useState("");
 	const [alumniDatas, setAlumniDatas] = useState({});
@@ -70,7 +70,7 @@ const TabsNavigator = function (props) {
 			const responseJSON = await response.json();
 			return responseJSON;
 		} else {
-			/*------------------------------Add buddy if not exist in list----------------------- */
+			/*------------------------------Add buddy if not in list----------------------- */
 			const response = await fetch(`${REACT_APP_DEV_MODE}/buddies/addBuddy`, {
 				method: "PUT",
 				headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -165,9 +165,7 @@ const TabsNavigator = function (props) {
 					}
 				},
 				tabBarButton: hiddenTabs.includes(route.name) ? () => null : undefined,
-			})}
-			tabBarOptions={{
-				showLabel: false,
+				tabBarShowLabel: false,
 				style: {
 					height: 55,
 					position: "absolute",
@@ -176,11 +174,12 @@ const TabsNavigator = function (props) {
 					right: 0,
 					borderTopWidth: 0,
 				},
-				activeBackgroundColor: "#0E0E66",
-				inactiveBackgroundColor: "#0E0E66",
-				activeTintColor: "#FFFFFF",
-				inactiveTintColor: "rgba(255, 255, 255, 0.5)",
-			}}
+				tabBarActiveBackgroundColor: "#0E0E66",
+				tabBarInactiveBackgroundColor: "#0E0E66",
+				tabBarActiveTintColor: "#FFFFFF",
+				tabBarInactiveTintColor: "rgba(255, 255, 255, 0.5)",
+				tabBarHideOnKeyboard:true,
+			})}
 		>
 			<Tab.Screen
 				name="HomeMap"
@@ -281,7 +280,7 @@ const TabsNavigator = function (props) {
 							style={styles.right}
 							//* enable profile modification mode
 							onPress={() => {
-								console.log("toggle", editing);
+								// console.log("toggle", editing);
 								props.editionMode(!props.editingMode);
 								updateProfileSumbit();
 							}}
