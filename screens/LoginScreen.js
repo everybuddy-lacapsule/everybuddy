@@ -16,7 +16,7 @@ function LoginScreen(props) {
   const [signinEmail, setSigninEmail] = useState("");
   const [signinPwd, setSigninPwd] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  console.log("login screen", REACT_APP_DEV_MODE);
+  // console.log("login screen", REACT_APP_DEV_MODE);
 
   async function searchLocation() {
     const res = await fetch(`${REACT_APP_DEV_MODE}/users/userLocation`, {
