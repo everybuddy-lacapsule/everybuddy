@@ -70,11 +70,8 @@ function ChatScreen(props) {
   }, [props.discussionInfos.discussionID]);
 
   useEffect(() => {
-    //console.log("s'inscrire au forfait mobile quand le component est généré");
-    // si forfait augmente, on change l'opérateur
     socket.current.on("sendMessageServer", (message) => {
       if (message.senderID !== props.userDatas._id) {
-        //console.log('another member');
         setAllMessages([...allMessages, message]);
       }
     });
@@ -84,7 +81,6 @@ function ChatScreen(props) {
     });
 
     // clear the socket before the next execution of the effect
-    // on résilie l'ancien opérateur
     return () => {
       socket.current.off("sendMessageServer");
       //console.log("se désabonner");

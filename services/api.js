@@ -1,5 +1,4 @@
 import axios from "axios";
-import { EXPO_TOKEN_TEST } from "@env";
 import { REACT_APP_DEV_MODE } from "@env";
 
 const EXPO_SERVER_URL = "https://exp.host/--/api/v2/push/send";
