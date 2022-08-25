@@ -28,7 +28,6 @@ function SplashScreen(props) {
           `${REACT_APP_DEV_MODE}/buddies/?userID=${userID}`
         );
         buddiesDatas = await buddiesDatas.json();
-        console.log('TG', buddiesDatas)
         props.setBuddiesListFromDB(buddiesDatas.buddiesInfos);
       } else {
         props.setUserDatas({})

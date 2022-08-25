@@ -12,7 +12,6 @@ import { useEffect, useState } from "react";
 function MessengerScreen(props) {
   //const isFocused = useIsFocused();
   const [discussions, setDiscussions] = useState([]);
-  console.log(REACT_APP_DEV_MODE);
 
   useEffect(() => {
     const ac = new AbortController();
@@ -32,8 +31,6 @@ function MessengerScreen(props) {
     //}, [isFocused]);
   }, []);
 
-  //console.log(discussions);
-  //console.log("userDiscussions is", discussions);
   return (
     <View>
       <ScrollView>

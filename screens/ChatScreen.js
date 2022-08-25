@@ -27,8 +27,7 @@ import { REACT_APP_DEV_MODE } from "@env";
 import socketIOClient from "socket.io-client";
 
 function ChatScreen(props) {
-  console.log(REACT_APP_DEV_MODE);
-  //const isFocused = useIsFocused();
+
   const socket = useRef();
   const scrollRef = useRef();
 
@@ -58,7 +57,6 @@ function ChatScreen(props) {
       );
       let messagesFromDBJSON = await messagesFromDB.json();
       setAllMessages(messagesFromDBJSON);
-      //console.log("discussionId", props.discussionInfos.discussionID);
     };
     getMessagesFromDB();
 
@@ -83,7 +81,6 @@ function ChatScreen(props) {
     // clear the socket before the next execution of the effect
     return () => {
       socket.current.off("sendMessageServer");
-      //console.log("se désabonner");
     }; // for delete all: // socket.off()
     //}, [isFocused, allMessages]); // observer le prix du forfait
   }, [allMessages]); // observer le prix du forfait
