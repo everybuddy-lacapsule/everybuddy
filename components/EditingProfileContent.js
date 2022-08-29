@@ -31,25 +31,17 @@ function EditingProfileContent(props) {
 	//*----------------Locals States => set datas = datas from DB----------------------*/
 	const [statusDatasList, setStatusDatasList] = useState([]);
 	const [status, setStatus] = useState("");
-
 	const [workDatasList, setWorkDatasList] = useState([]);
 	const [work, setWork] = useState("");
-
 	const [workTypeDatasList, setWorkTypeDatasList] = useState([]);
 	const [workType, setWorkType] = useState("");
-
 	const [tagsDatasList, setTagsDatasList] = useState([]);
-
 	const [cursus, setCursus] = React.useState("");
 	const [campus, setCampus] = React.useState("");
-
 	const [visible, setVisible] = useState(false);
-
-	const [ready, setReady] = useState(false);
-	const [image, setImage] = useState(null);
+	const [indicator, setIndicator] = useState(false);
 
 	const Item = Picker.Item;
-	const [indicator, setIndicator] = useState(false);
 	// change l'opacité de l'avatar tant que le spinner est actif
 	var opacity;
 	indicator ? (opacity = 0.3) : (opacity = 1);
