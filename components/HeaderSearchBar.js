@@ -12,7 +12,6 @@ import { connect } from "react-redux";
 import {REACT_APP_DEV_MODE} from "@env"
 
 function HeaderSearchBar(props) {
-  console.log(REACT_APP_DEV_MODE)
 
   const [location, setLocation] = useState("");
   const [filters, setFilters] = useState({

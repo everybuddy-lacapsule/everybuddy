@@ -27,19 +27,16 @@ function MapScreen(props) {
   const [resultLink, setResultLink] = useState("liste");
   // Radius default, unit = meter
   //const [buddyList, setBuddyList] = useState(props.buddiesList);
-  //console.log(REACT_APP_DEV_MODE);
 
   useEffect( () => {
     async function registerForPushNotificationsAsync() {
       let token;
       if (Device.isDevice) {
         const { status: existingStatus } = await Notifications.getPermissionsAsync();
-        console.log('existingStatus', existingStatus);
         let finalStatus = existingStatus;
         if (existingStatus !== 'granted') {
           const { status } = await Notifications.requestPermissionsAsync();
           finalStatus = status;
-          console.log('finalStatus', finalStatus);
         }
         if (finalStatus !== 'granted') {
           alert('Failed to get push token for push notification!');

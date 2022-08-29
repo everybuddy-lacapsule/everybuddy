@@ -16,7 +16,6 @@ function LoginScreen(props) {
   const [signinEmail, setSigninEmail] = useState("");
   const [signinPwd, setSigninPwd] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  console.log("login screen", REACT_APP_DEV_MODE);
 
   async function searchLocation() {
     const res = await fetch(`${REACT_APP_DEV_MODE}/users/userLocation`, {
@@ -45,7 +44,6 @@ function LoginScreen(props) {
       body: `email=${signinEmail}&pwd=${signinPwd}`,
     });
     res = await res.json();
-    //console.log(res.userDatas);
     if (res.isLogin) {
       AsyncStorage.setItem("userID", res.userDatas._id);
       props.setUserDatas(res.userDatas);

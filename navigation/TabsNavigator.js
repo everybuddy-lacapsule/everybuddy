@@ -21,7 +21,6 @@ const Tab = createBottomTabNavigator();
 const hiddenTabs = ["Buddies", "MyProfile", "Chat", "ProfileScreen"];
 
 const TabsNavigator = function (props) {
-	console.log("IP in tabs", REACT_APP_DEV_MODE);
 	const isLeftDrawerVisible = useDrawerStatus();
 	const [isLeftFocused, setIsLeftFocused] = useState("");
 	const [alumniDatas, setAlumniDatas] = useState({});
@@ -41,7 +40,6 @@ const TabsNavigator = function (props) {
   /*--------------VALIDATION AND SAVE USER DATAS IN DB------------------*/
   // A METTRE DANS LE HEADER CONCERNE
   const updateProfileSumbit = async () => {
-    console.log("in tabsnavigator: ", props.userDatas);
     var res = await fetch(`${REACT_APP_DEV_MODE}/users/updateProfile`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -280,7 +278,6 @@ const TabsNavigator = function (props) {
 							style={styles.right}
 							//* enable profile modification mode
 							onPress={() => {
-								console.log("toggle", editing);
 								props.editionMode(!props.editingMode);
 								updateProfileSumbit();
 							}}

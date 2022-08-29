@@ -12,7 +12,6 @@ import {REACT_APP_DEV_MODE} from "@env"
 
 
 function SplashScreen(props) {
-  console.log('splash screen: ',REACT_APP_DEV_MODE)
 
   useEffect(() => {
     AsyncStorage.getItem("userID", async function (error, userID) {

@@ -18,7 +18,6 @@ function ProfileScreen(props) {
   const [visible, setVisible] = useState(false);
   const [msgSent, setMsgSent] = useState(null);
   const [discussionID, setDiscussionID] = useState("");
-  console.log(REACT_APP_DEV_MODE);
 
   const toggleOverlay = () => {
     setVisible(!visible);
@@ -57,7 +56,6 @@ function ProfileScreen(props) {
     const defautMsg = `Hello ${alumniDatas.firstName}, envie d’aller boire une bière ?`;
     const sendDefaultMsg = async () => {
       if (msgSent) {
-        //console.log("MSG default", defautMsg);
         const defautMsgToDB = {
           discussionID: discussionID,
           senderID: props.userDatas._id,
@@ -74,7 +72,6 @@ function ProfileScreen(props) {
             }
           );
           let deviceToken;
-          console.log(alumniDatas._id);
           await getToken(alumniDatas._id).then(response => deviceToken = response.deviceToken[0].deviceToken);
           if (deviceToken) {
             sendPushNotification(

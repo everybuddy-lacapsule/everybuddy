@@ -18,9 +18,7 @@ import { REACT_APP_DEV_MODE } from "@env";
 
 //* RIGHT DRAWER CONTENT
 function CustomRightDrawerContent(props) {
-  console.log(REACT_APP_DEV_MODE)
   let colors = ["#FF1744", "#F94A56", "#7C4DFF"];
-  console.log(REACT_APP_DEV_MODE)
   // Etats du slider radius
   const [km, setKm] = useState(10);
   const [batch, setBatch] = useState("");

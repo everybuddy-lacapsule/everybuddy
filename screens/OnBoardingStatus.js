@@ -18,7 +18,6 @@ import {REACT_APP_DEV_MODE} from "@env"
 
 function OnBoardingStatus(props) {
   const [page, setPage] = useState(1);
-  console.log(REACT_APP_DEV_MODE)
   /*----------------Locals Stats => set datas = datas from DB----------------------*/
   const [statusDatasList, setStatusDatasList] = useState([]);
   const [visible, setVisible] = useState(false);
